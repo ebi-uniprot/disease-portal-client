@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { FranklinSite, Header, Card } from "franklin-sites";
 import "./App.css";
 import logo from "./svg/uniprot-rgb.svg";
-import SearchComponent from "./search/SearchComponent";
+import CardContainer, { Context } from "./components/CardContainer";
 
 class App extends Component {
   render() {
@@ -12,16 +12,13 @@ class App extends Component {
         <BrowserRouter>
           <Switch>
             <Route
-              path="/"
-              exact={true}
+              path={`/:context/:id`}
               render={() => (
                 <Fragment>
                   <Header
-                    isHomePage={false}
-                    search={<SearchComponent />}
                     logo={<img src={logo} alt="logo" width={120} height={50} />}
                   />
-                  <Card title="P05067" children={<p>Some example content</p>} />
+                  <CardContainer />
                 </Fragment>
               )}
             />
