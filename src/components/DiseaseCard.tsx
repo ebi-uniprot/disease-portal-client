@@ -1,7 +1,7 @@
 import React, { Fragment, FunctionComponent } from "react";
 import { Card } from "franklin-sites";
 import color from "../config.json";
-import { Context } from "./CardContainer";
+import { Context } from "../types/context";
 
 export type DiseaseData = {
   diseaseId: string;

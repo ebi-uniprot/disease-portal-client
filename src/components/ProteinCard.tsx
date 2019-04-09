@@ -1,7 +1,7 @@
-import React, { Fragment, FunctionComponent } from "react";
+import React, { FunctionComponent } from "react";
 import { Card } from "franklin-sites";
 import color from "../config.json";
-import { Context } from "./CardContainer";
+import { Context } from "../types/context";
 
 export type ProteinData = {
   proteinId: string;
@@ -22,6 +22,7 @@ export type ProteinData = {
   xrefs?: string[];
   interactions?: string[];
   diseases?: string[];
+  variants?: string[];
 };
 
 export const formatLargeNumber = (x: number) => {
@@ -29,7 +30,6 @@ export const formatLargeNumber = (x: number) => {
 };
 
 const generateProteinLinks = (proteinItem: ProteinData) => {
-  console.log(proteinItem);
   const proteinLinks = [];
   if (proteinItem.interactions && proteinItem.interactions.length > 0) {
     proteinLinks.push({
@@ -47,6 +47,24 @@ const generateProteinLinks = (proteinItem: ProteinData) => {
       }`,
       link: `/${Context.PATHWAY}/${proteinItem.accession}`,
       color: color.PATHWAY
+    });
+  }
+  if (proteinItem.variants && proteinItem.variants.length > 0) {
+    proteinLinks.push({
+      name: `${proteinItem.variants.length} variant${
+        proteinItem.variants.length > 1 ? "s" : ""
+      }`,
+      link: `/${Context.VARIANT}/${proteinItem.accession}`,
+      color: color.VARIANT
+    });
+  }
+  if (proteinItem.diseases && proteinItem.diseases.length > 0) {
+    proteinLinks.push({
+      name: `${proteinItem.diseases.length} disease${
+        proteinItem.diseases.length > 1 ? "s" : ""
+      }`,
+      link: `/${Context.DISEASE}/${proteinItem.accession}`,
+      color: color.DISEASE
     });
   }
   return proteinLinks;
