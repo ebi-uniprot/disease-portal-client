@@ -1,14 +1,19 @@
-import React, { FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import ProtvistaVariation from "protvista-variation";
+import ProtvistaManager from "protvista-manager";
+import ProtvistaSequence from "protvista-sequence";
+import ProtvistaNavigation from "protvista-navigation";
+import { v1 } from "uuid";
 import { Card } from "franklin-sites";
 
-type VariantData = {
+export type VariantData = {
   alternativeSequence: string;
   featureId: string;
   report: string;
   featureStatus: string;
   begin: number;
   end: number;
+  sourceType: string;
 };
 
 export type VariationData = {
@@ -17,6 +22,7 @@ export type VariationData = {
 };
 
 interface ProtvistaVariation extends Element {
+  length: number;
   data: {
     sequence: string;
     variants: any[];
@@ -40,9 +46,11 @@ const processVariantData = (variantData: VariantData[]) =>
   });
 
 const VariantCard: FunctionComponent<{ data: VariationData }> = ({ data }) => {
+  const id = v1();
+
   useEffect(() => {
     const protvistaVariation = document.querySelector<ProtvistaVariation>(
-      "protvista-variation"
+      `[data-uuid='${id}_var']`
     );
     if (protvistaVariation) {
       protvistaVariation.data = {
@@ -52,10 +60,27 @@ const VariantCard: FunctionComponent<{ data: VariationData }> = ({ data }) => {
     }
   }, []);
 
+  loadWebComponent("protvista-sequence", ProtvistaSequence);
+  loadWebComponent("protvista-manager", ProtvistaManager);
+  loadWebComponent("protvista-navigation", ProtvistaNavigation);
   loadWebComponent("protvista-variation", ProtvistaVariation);
   return (
     <Card title="Variants">
-      <protvista-variation length="770" />
+      <protvista-manager attributes="displaystart displayend highlightstart highlightend">
+        <protvista-navigation
+          data-uuid={`${id}_nav`}
+          length={data.sequence.length}
+        />
+        <protvista-sequence
+          data-uuid={`${id}_seq`}
+          sequence={data.sequence}
+          length={data.sequence.length}
+        />
+        <protvista-variation
+          data-uuid={`${id}_var`}
+          length={data.sequence.length}
+        />
+      </protvista-manager>
     </Card>
   );
 };

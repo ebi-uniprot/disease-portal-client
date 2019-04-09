@@ -8249,6 +8249,28 @@ property-information@^5.0.0, property-information@^5.0.1:
   dependencies:
     xtend "^4.0.1"
 
+protvista-manager@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/protvista-manager/-/protvista-manager-2.0.0.tgz#c9d53e6b427f0628909ff066f2ae734d999c0af9"
+  integrity sha512-vX84GSNZ17Nso3CvQfM0H/GWhreFPpYMWSF8HVL5AHHtglgafw+EcLU/3p6adQPNMIXvySeoLwaViw9tXLeieA==
+  dependencies:
+    lodash-es "^4.17.11"
+
+protvista-navigation@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/protvista-navigation/-/protvista-navigation-2.0.0.tgz#a4e00f320083d561f63a4bf628a6bff0e4ac5272"
+  integrity sha512-Hq0UwIyVO2rim+yffgEELwTE5boLtfdgn5H/X2EZMYo6949JZOG/x/llOkS4qmWdRS2F7HCbCXeflDfWgEFXfQ==
+  dependencies:
+    lodash-es "^4.17.11"
+
+protvista-sequence@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/protvista-sequence/-/protvista-sequence-2.0.0.tgz#1164b86867c683561145c35c2700a58e68e84a7d"
+  integrity sha512-xJxcPq7QF/Scg+MVNpozAEfnVf02AWV+7IC2Cvo9tiJby+shE8lq7dxeRKIrnbcc3RFxLer3Axg3mzmvNPvcKA==
+  dependencies:
+    lodash-es "^4.17.11"
+    protvista-zoomable "^2.0.0"
+
 protvista-track@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/protvista-track/-/protvista-track-2.0.0.tgz#540aaf7e0d9294a465e326bdc66315b8732687f7"
