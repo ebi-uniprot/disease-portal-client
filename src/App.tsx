@@ -14,7 +14,7 @@ class App extends Component {
   render() {
     return (
       <FranklinSite>
-        <BrowserRouter>
+        <BrowserRouter basename={process.env.PUBLIC_URL}>
           <div className="wrapper">
             <Header
               className="main-header"
