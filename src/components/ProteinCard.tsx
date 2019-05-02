@@ -76,6 +76,11 @@ const ProteinCard: FunctionComponent<{ data: ProteinData }> = ({ data }) => (
     links={generateProteinLinks(data)}
     key={data.proteinId}
   >
+    <p>
+      <a href={`//www.uniprot.org/uniprot/${data.accession}`} target="_blank">
+        {data.accession}
+      </a>
+    </p>
     <p>{data.description}</p>
     {data.geneCoordinates && (
       <div>
