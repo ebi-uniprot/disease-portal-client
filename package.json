@@ -12,6 +12,7 @@
     "d3": "^5.9.2",
     "franklin-sites": "^0.0.3-dev.31",
     "interaction-viewer": "^2.0.4",
+    "protvista-datatable": "^2.1.0-alpha.0",
     "protvista-manager": "^2.0.4",
     "protvista-navigation": "^2.0.0",
     "protvista-sequence": "^2.1.0-alpha.0",
