@@ -7,8 +7,10 @@ import DiseaseCardContainer from "./components/DiseaseCardContainer";
 import ProteinCardContainer from "./components/ProteinCardContainer";
 import PathwayCardContainer from "./components/PathwayCardContainer";
 import VariantCardContainer from "./components/VariantCardContainer";
+import DrugsCardContainer from "./components/DrugsCardContainer";
 import SearchContainer from "./components/SearchContainer";
 import { Context } from "./types/context";
+import InteractionCardContainer from "./components/InteractionCardContainer";
 
 class App extends Component {
   render() {
@@ -39,6 +41,14 @@ class App extends Component {
                 <Route
                   path={`/${Context.VARIANT}/:id`}
                   component={VariantCardContainer}
+                />
+                <Route
+                  path={`/${Context.INTERACTION}/:id`}
+                  component={InteractionCardContainer}
+                />
+                <Route
+                  path={`/${Context.DRUGS}/:id`}
+                  component={DrugsCardContainer}
                 />
               </Switch>
             </div>

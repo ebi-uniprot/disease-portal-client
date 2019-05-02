@@ -27,10 +27,10 @@ const generateDiseaseLinks = (diseaseItem: DiseaseData) => {
   }
   if (diseaseItem.drugs && diseaseItem.drugs.length > 0) {
     diseaseLinks.push({
-      name: `${diseaseItem.drugs.length} drugs${
+      name: `${diseaseItem.drugs.length} drug${
         diseaseItem.drugs.length > 1 ? "s" : ""
       }`,
-      link: "",
+      link: `/${Context.DRUGS}/${diseaseItem.diseaseId}`,
       color: color.DRUGS
     });
   }
