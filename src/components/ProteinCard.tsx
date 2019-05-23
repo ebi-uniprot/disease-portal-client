@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, Fragment } from "react";
+import { v1 } from "uuid";
 import { Card } from "franklin-sites";
 import color from "../config.json";
 import { Context } from "../types/context";
@@ -19,9 +20,9 @@ export type ProteinData = {
       ensemblTranslationId: string;
     }
   ];
+  diseases?: { diseaseName: string; note: string }[];
   xrefs?: string[];
   interactions?: string[];
-  diseases?: string[];
   variants?: string[];
 };
 
@@ -70,48 +71,74 @@ const generateProteinLinks = (proteinItem: ProteinData) => {
   return proteinLinks;
 };
 
-const ProteinCard: FunctionComponent<{ data: ProteinData }> = ({ data }) => (
-  <Card
-    title={data.proteinName}
-    links={generateProteinLinks(data)}
-    key={data.proteinId}
-  >
-    <p>
-      <a href={`//www.uniprot.org/uniprot/${data.accession}`} target="_blank">
-        {data.accession}
-      </a>
-    </p>
-    <p>{data.description}</p>
-    {data.geneCoordinates && (
-      <div>
-        <h4>Gene information</h4>
-        {data.geneCoordinates.map(coordinate => (
-          <p key={coordinate.start + coordinate.end}>
-            {coordinate.chromosome}:{formatLargeNumber(coordinate.start)}-
-            {formatLargeNumber(coordinate.end)}{" "}
+const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
+  data,
+  id
+}) => {
+  const diseaseNotes =
+    data.diseases &&
+    data.diseases.filter(disease => disease.diseaseName === id);
+  return (
+    <Card
+      title={
+        <Fragment>
+          {data.proteinName}{" "}
+          <small>
             <a
-              href={`//www.ensembl.org/id/${coordinate.ensemblGeneId}`}
+              href={`//www.uniprot.org/uniprot/${data.accession}`}
               target="_blank"
             >
-              {coordinate.ensemblGeneId}
-            </a>{" "}
-            <a
-              href={`//www.ensembl.org/id/${coordinate.ensemblTranscriptId}`}
-              target="_blank"
-            >
-              {coordinate.ensemblTranscriptId}
-            </a>{" "}
-            <a
-              href={`//www.ensembl.org/id/${coordinate.ensemblTranslationId}`}
-              target="_blank"
-            >
-              {coordinate.ensemblTranslationId}
+              {data.accession}
             </a>
-          </p>
-        ))}
-      </div>
-    )}
-  </Card>
-);
+          </small>
+        </Fragment>
+      }
+      links={generateProteinLinks(data)}
+      key={data.proteinId}
+    >
+      <p>{data.description}</p>
+      {data.geneCoordinates && (
+        <div>
+          <h4>Gene information</h4>
+          {data.geneCoordinates.map(coordinate => (
+            <p key={v1()}>
+              {coordinate.chromosome}:{formatLargeNumber(coordinate.start)}-
+              {formatLargeNumber(coordinate.end)}{" "}
+              <a
+                href={`//www.ensembl.org/id/${coordinate.ensemblGeneId}`}
+                target="_blank"
+              >
+                {coordinate.ensemblGeneId}
+              </a>{" "}
+              <a
+                href={`//www.ensembl.org/id/${coordinate.ensemblTranscriptId}`}
+                target="_blank"
+              >
+                {coordinate.ensemblTranscriptId}
+              </a>{" "}
+              <a
+                href={`//www.ensembl.org/id/${coordinate.ensemblTranslationId}`}
+                target="_blank"
+              >
+                {coordinate.ensemblTranslationId}
+              </a>
+            </p>
+          ))}
+        </div>
+      )}
+      {diseaseNotes && (
+        <Fragment>
+          <h4>Disease notes</h4>
+          {diseaseNotes.map(note => (
+            <Fragment key={v1()}>
+              <h5>{note.diseaseName}</h5>
+              <p>{note.note}</p>
+            </Fragment>
+          ))}
+        </Fragment>
+      )}
+    </Card>
+  );
+};
 
 export default ProteinCard;

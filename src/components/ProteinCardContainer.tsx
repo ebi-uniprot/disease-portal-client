@@ -22,7 +22,7 @@ const ProteinCardContainer: FunctionComponent<RouteComponentProps<any>> = ({
         </h2>
       </div>
       {data.results.map((item: ProteinData) => (
-        <ProteinCard data={item} key={v1()} />
+        <ProteinCard data={item} id={id} key={v1()} />
       ))}
     </Fragment>
   );
