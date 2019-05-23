@@ -96,6 +96,18 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
       links={generateProteinLinks(data)}
       key={data.proteinId}
     >
+      {diseaseNotes && (
+        <Fragment>
+          <h4>Disease notes</h4>
+          {diseaseNotes.map(note => (
+            <Fragment key={v1()}>
+              <h5>{note.diseaseName}</h5>
+              <p>{note.note}</p>
+            </Fragment>
+          ))}
+        </Fragment>
+      )}
+      <h4>Function</h4>
       <p>{data.description}</p>
       {data.geneCoordinates && (
         <div>
@@ -125,17 +137,6 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
             </p>
           ))}
         </div>
-      )}
-      {diseaseNotes && (
-        <Fragment>
-          <h4>Disease notes</h4>
-          {diseaseNotes.map(note => (
-            <Fragment key={v1()}>
-              <h5>{note.diseaseName}</h5>
-              <p>{note.note}</p>
-            </Fragment>
-          ))}
-        </Fragment>
       )}
     </Card>
   );
