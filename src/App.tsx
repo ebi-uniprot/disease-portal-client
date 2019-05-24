@@ -11,6 +11,7 @@ import DrugsCardContainer from "./components/DrugsCardContainer";
 import SearchContainer from "./components/SearchContainer";
 import { Context } from "./types/context";
 import InteractionCardContainer from "./components/InteractionCardContainer";
+import DiseaseVariantCardContainer from "./components/DiseaseVariantCardContainer";
 
 class App extends Component {
   render() {
@@ -49,6 +50,10 @@ class App extends Component {
                 <Route
                   path={`/${Context.DRUGS}/:id`}
                   component={DrugsCardContainer}
+                />
+                <Route
+                  path={`/${Context.DISEASEVAR}/:id`}
+                  component={DiseaseVariantCardContainer}
                 />
               </Switch>
             </div>

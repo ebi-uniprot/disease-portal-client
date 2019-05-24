@@ -39,7 +39,7 @@ const generateDiseaseLinks = (diseaseItem: DiseaseData) => {
       name: `${diseaseItem.variants.length} variant${
         diseaseItem.variants.length > 1 ? "s" : ""
       }`,
-      link: "",
+      link: `/${Context.DISEASEVAR}/${diseaseItem.diseaseId}`,
       color: color.VARIANT
     });
   }

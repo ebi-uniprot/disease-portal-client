@@ -5,5 +5,6 @@ export enum Context {
   VARIANT = "variants",
   INTERACTION = "interactions",
   PATHWAY = "pathways",
-  DRUGS = "drugs"
+  DRUGS = "drugs",
+  DISEASEVAR = "diseasevar"
 }
