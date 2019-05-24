@@ -16,6 +16,8 @@ const DrugsCardContainer: FunctionComponent<RouteComponentProps<any>> = ({
     return null;
   }
 
+  console.log(data);
+
   return (
     <Fragment>
       <div className="page-header">
