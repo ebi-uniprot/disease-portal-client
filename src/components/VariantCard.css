@@ -1,0 +1,33 @@
+protvista-manager {
+  display: grid;
+  grid-template-columns: 7fr 2fr;
+  grid-template-areas: "navigation ." "sequence ." "variation filter" "datatable datatable";
+}
+
+protvista-navigation {
+  grid-area: navigation;
+}
+
+protvista-sequence {
+  grid-area: sequence;
+}
+
+protvista-filter {
+  grid-area: filter;
+  height: 430px;
+  overflow-y: auto;
+}
+
+protvista-datatable {
+  margin-top: 1rem;
+  grid-area: datatable;
+}
+
+protvista-variation {
+  grid-area: variation;
+}
+
+protvista-datatable {
+  --protvista-datable__header-background: #a31d5f;
+  --protvista-datable__header-text: #ffffff;
+}
