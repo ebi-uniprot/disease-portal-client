@@ -21,7 +21,7 @@ export type ProteinData = {
     }
   ];
   diseases?: { diseaseName: string; note: string }[];
-  xrefs?: string[];
+  pathways?: string[];
   interactions?: string[];
   variants?: string[];
 };
@@ -38,16 +38,16 @@ const generateProteinLinks = (proteinItem: ProteinData) => {
         proteinItem.interactions.length > 1 ? "s" : ""
       }`,
       link: `/${Context.INTERACTION}/${proteinItem.accession}`,
-      color: color.INTERACTION
+      color: color.INTERACTION,
     });
   }
-  if (proteinItem.xrefs && proteinItem.xrefs.length > 0) {
+  if (proteinItem.pathways && proteinItem.pathways.length > 0) {
     proteinLinks.push({
-      name: `${proteinItem.xrefs.length} pathway${
-        proteinItem.xrefs.length > 1 ? "s" : ""
+      name: `${proteinItem.pathways.length} pathway${
+        proteinItem.pathways.length > 1 ? "s" : ""
       }`,
       link: `/${Context.PATHWAY}/${proteinItem.accession}`,
-      color: color.PATHWAY
+      color: color.PATHWAY,
     });
   }
   if (proteinItem.variants && proteinItem.variants.length > 0) {
@@ -56,7 +56,7 @@ const generateProteinLinks = (proteinItem: ProteinData) => {
         proteinItem.variants.length > 1 ? "s" : ""
       }`,
       link: `/${Context.VARIANT}/${proteinItem.accession}`,
-      color: color.VARIANT
+      color: color.VARIANT,
     });
   }
   if (proteinItem.diseases && proteinItem.diseases.length > 0) {
@@ -65,7 +65,7 @@ const generateProteinLinks = (proteinItem: ProteinData) => {
         proteinItem.diseases.length > 1 ? "s" : ""
       }`,
       link: `/${Context.DISEASE}/${proteinItem.accession}`,
-      color: color.DISEASE
+      color: color.DISEASE,
     });
   }
   return proteinLinks;
@@ -73,7 +73,7 @@ const generateProteinLinks = (proteinItem: ProteinData) => {
 
 const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
   data,
-  id
+  id,
 }) => {
   const diseaseNotes =
     data.diseases &&

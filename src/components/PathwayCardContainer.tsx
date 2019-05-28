@@ -5,7 +5,7 @@ import useApi from "./UseApi";
 import PathwayCard, { PathwayData } from "./PathwayCard";
 
 const PathwayCardContainer: FunctionComponent<RouteComponentProps<any>> = ({
-  match
+  match,
 }) => {
   const { id } = match.params;
   const { data } = useApi(
@@ -21,9 +21,11 @@ const PathwayCardContainer: FunctionComponent<RouteComponentProps<any>> = ({
           {data.results.length} pathways for {id}
         </h2>
       </div>
-      {data.results.map((item: PathwayData) => (
-        <PathwayCard data={item} key={v1()} />
-      ))}
+      {data.results
+        .filter((item: PathwayData) => item.dbType === "Reactome")
+        .map((item: PathwayData) => (
+          <PathwayCard data={item} key={v1()} />
+        ))}
     </Fragment>
   );
 };
