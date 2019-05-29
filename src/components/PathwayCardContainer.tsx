@@ -24,7 +24,7 @@ const PathwayCardContainer: FunctionComponent<RouteComponentProps<any>> = ({
     <Fragment>
       <div className="page-header">
         <h2>
-          {data.results.length} pathways for {id}
+          {pathwayCardNodes.length} pathways for {id}
         </h2>
       </div>
       {pathwayCardNodes}
