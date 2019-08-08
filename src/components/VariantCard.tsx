@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useEffect, useState, useRef } from "react";
+import { html } from "lit-html";
 import ProtvistaVariation from "protvista-variation";
 import ProtvistaManager from "protvista-manager";
 import ProtvistaSequence from "protvista-sequence";
@@ -9,6 +10,15 @@ import { v1 } from "uuid";
 import { Card } from "franklin-sites";
 import "./VariantCard.css";
 
+type Evidence = {
+  source: {
+    name: string;
+    id: string;
+    url?: string;
+    alternativeUrl?: string;
+  };
+};
+
 export type VariantData = {
   wildType: string;
   alternativeSequence: string;
@@ -17,7 +27,7 @@ export type VariantData = {
   end: number;
   sourceType: string;
   description: string;
-  association: { name: string }[];
+  association: { name: string; evidences?: Evidence[] }[];
 };
 
 export type VariationData = {
@@ -89,18 +99,34 @@ const columns = {
   change: {
     label: "Change",
     resolver: (d: VariantData) => {
-      return `${d.wildType}->${d.alternativeSequence}`;
+      return `
+        ${d.wildType}->${d.alternativeSequence}
+      `;
     }
   },
-  // description: {
-  //   label: "Description",
-  //   resolver: (d: VariantData) => d.description
-  // },
   association: {
     label: "Disease association",
     resolver: (d: VariantData) =>
       d.association
-        ? d.association.map(association => `${association.name} / `)
+        ? d.association.map(
+            association =>
+              html`
+                <p>
+                  <strong>${association.name}</strong>${association.evidences &&
+                    association.evidences.map(ev =>
+                      ev.source.url
+                        ? html`
+                            <a href=${ev.source.url} target="_blank"
+                              >${ev.source.name}:${ev.source.id}</a
+                            >
+                          `
+                        : html`
+                            ${ev.source.name}:${ev.source.id}
+                          `
+                    )}
+                </p>
+              `
+          )
         : " - "
   }
 };
