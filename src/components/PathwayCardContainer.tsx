@@ -1,11 +1,11 @@
-import React, { Fragment, FunctionComponent } from "react";
+import React, { Fragment, FunctionComponent, ReactElement } from "react";
 import { withRouter, RouteComponentProps } from "react-router";
 import { v1 } from "uuid";
 import useApi from "./UseApi";
 import PathwayCard, { PathwayData } from "./PathwayCard";
 
 const PathwayCardContainer: FunctionComponent<RouteComponentProps<any>> = ({
-  match
+  match,
 }) => {
   const { id } = match.params;
   const { data } = useApi(
@@ -14,16 +14,20 @@ const PathwayCardContainer: FunctionComponent<RouteComponentProps<any>> = ({
   if (!data) {
     return null;
   }
+  let pathwayCardNodes: ReactElement[] = [];
+  data.results.forEach((item: PathwayData) => {
+    if (item.dbType === "Reactome") {
+      pathwayCardNodes.push(<PathwayCard data={item} key={v1()} />);
+    }
+  });
   return (
     <Fragment>
       <div className="page-header">
         <h2>
-          {data.results.length} pathways for {id}
+          {pathwayCardNodes.length} pathways for {id}
         </h2>
       </div>
-      {data.results.map((item: PathwayData) => (
-        <PathwayCard data={item} key={v1()} />
-      ))}
+      {pathwayCardNodes}
     </Fragment>
   );
 };
