@@ -3,15 +3,15 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { FranklinSite, Header } from "franklin-sites";
 import "./App.css";
 import logo from "./svg/uniprot-rgb.svg";
-import DiseaseCardContainer from "./components/DiseaseCardContainer";
-import ProteinCardContainer from "./components/ProteinCardContainer";
-import PathwayCardContainer from "./components/PathwayCardContainer";
-import VariantCardContainer from "./components/VariantCardContainer";
-import DrugsCardContainer from "./components/DrugsCardContainer";
+import DiseaseCardContainer from "./components/DiseasesForProteinCardContainer";
+import ProteinCardContainer from "./components/ProteinsForDiseaseCardContainer";
+import PathwayCardContainer from "./components/PathwaysForProteinCardContainer";
+import VariantCardContainer from "./components/VariantsForProteinCardContainer";
+import DrugsCardContainer from "./components/DrugsForDiseaseCardContainer";
 import SearchContainer from "./components/SearchContainer";
 import { Context } from "./types/context";
-import InteractionCardContainer from "./components/InteractionCardContainer";
-import DiseaseVariantCardContainer from "./components/DiseaseVariantCardContainer";
+import InteractionCardContainer from "./components/InteractionsForProteinCardContainer";
+import DiseaseVariantCardContainer from "./components/VariantsForDiseaseCardContainer";
 
 class App extends Component {
   render() {

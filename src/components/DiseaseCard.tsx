@@ -53,6 +53,7 @@ const DiseaseCard: FunctionComponent<{ data: DiseaseData }> = ({ data }) => (
     key={data.diseaseId}
   >
     {data.description}
+    {/* ADD CHILDREN HERE */}
   </Card>
 );
 

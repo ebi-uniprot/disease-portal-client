@@ -9,7 +9,7 @@ const ProteinCardContainer: FunctionComponent<RouteComponentProps<any>> = ({
 }) => {
   const { id } = match.params;
   const { data } = useApi(
-    `//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice//disease/${id}/proteins`
+    `//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice/disease/${id}/proteins`
   );
   if (!data) {
     return null;
