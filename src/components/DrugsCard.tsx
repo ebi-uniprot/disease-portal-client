@@ -12,6 +12,31 @@ export type DrugsData = {
   clinicalTrialPhase: number;
   evidences: string[];
   mechanismOfAction: string;
+  diseases?: string[];
+  proteins?: string[];
+};
+
+const generateDrugsLinks = (proteinItem: DrugsData) => {
+  const drugsLinks = [];
+  if (proteinItem.diseases && proteinItem.diseases.length > 0) {
+    drugsLinks.push({
+      name: `${proteinItem.diseases.length} disease${
+        proteinItem.diseases.length > 1 ? "s" : ""
+      }`,
+      link: `/${Context.DISEASE}/${proteinItem.name}`,
+      color: color.DISEASE
+    });
+  }
+  if (proteinItem.proteins && proteinItem.proteins.length > 0) {
+    drugsLinks.push({
+      name: `${proteinItem.proteins.length} proteins${
+        proteinItem.proteins.length > 1 ? "s" : ""
+      }`,
+      link: `/${Context.PROTEIN}/${proteinItem.name}`,
+      color: color.PROTEIN
+    });
+  }
+  return drugsLinks;
 };
 
 const DrugsCard: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
@@ -46,7 +71,7 @@ const DrugsCard: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
     {
       title: "Evidences",
       content: data.evidences.map(evidence => (
-        <a href={evidence} target="_blank">
+        <a href={evidence} target="_blank" key={evidence}>
           {evidence}
         </a>
       ))
@@ -54,7 +79,7 @@ const DrugsCard: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
   ];
 
   return (
-    <Card title={data.name} key={data.name}>
+    <Card title={data.name} key={data.name} links={generateDrugsLinks(data)}>
       <InfoList infoData={infoData} />
     </Card>
   );

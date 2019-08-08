@@ -20,6 +20,7 @@ export type ProteinData = {
       ensemblTranslationId: string;
     }
   ];
+  drugs?: string[];
   diseases?: { diseaseName: string; note: string }[];
   pathways?: string[];
   interactions?: string[];
@@ -38,7 +39,7 @@ const generateProteinLinks = (proteinItem: ProteinData) => {
         proteinItem.interactions.length > 1 ? "s" : ""
       }`,
       link: `/${Context.INTERACTION}/${proteinItem.accession}`,
-      color: color.INTERACTION,
+      color: color.INTERACTION
     });
   }
   if (proteinItem.pathways && proteinItem.pathways.length > 0) {
@@ -47,7 +48,7 @@ const generateProteinLinks = (proteinItem: ProteinData) => {
         proteinItem.pathways.length > 1 ? "s" : ""
       }`,
       link: `/${Context.PATHWAY}/${proteinItem.accession}`,
-      color: color.PATHWAY,
+      color: color.PATHWAY
     });
   }
   if (proteinItem.variants && proteinItem.variants.length > 0) {
@@ -56,7 +57,7 @@ const generateProteinLinks = (proteinItem: ProteinData) => {
         proteinItem.variants.length > 1 ? "s" : ""
       }`,
       link: `/${Context.VARIANT}/${proteinItem.accession}`,
-      color: color.VARIANT,
+      color: color.VARIANT
     });
   }
   if (proteinItem.diseases && proteinItem.diseases.length > 0) {
@@ -65,7 +66,16 @@ const generateProteinLinks = (proteinItem: ProteinData) => {
         proteinItem.diseases.length > 1 ? "s" : ""
       }`,
       link: `/${Context.DISEASE}/${proteinItem.accession}`,
-      color: color.DISEASE,
+      color: color.DISEASE
+    });
+  }
+  if (proteinItem.drugs && proteinItem.drugs.length > 0) {
+    proteinLinks.push({
+      name: `${proteinItem.drugs.length} drugs${
+        proteinItem.drugs.length > 1 ? "s" : ""
+      }`,
+      link: `/${Context.DRUGS}/${proteinItem.accession}/${Context.PROTEIN}`,
+      color: color.DRUGS
     });
   }
   return proteinLinks;
@@ -73,7 +83,7 @@ const generateProteinLinks = (proteinItem: ProteinData) => {
 
 const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
   data,
-  id,
+  id
 }) => {
   const diseaseNotes =
     data.diseases &&

@@ -30,7 +30,7 @@ const generateDiseaseLinks = (diseaseItem: DiseaseData) => {
       name: `${diseaseItem.drugs.length} drug${
         diseaseItem.drugs.length > 1 ? "s" : ""
       }`,
-      link: `/${Context.DRUGS}/${diseaseItem.diseaseId}`,
+      link: `/${Context.DRUGS}/${diseaseItem.diseaseId}/${Context.DISEASE}`,
       color: color.DRUGS
     });
   }

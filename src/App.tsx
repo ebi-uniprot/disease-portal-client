@@ -7,11 +7,12 @@ import DiseaseCardContainer from "./components/DiseasesForProteinCardContainer";
 import ProteinCardContainer from "./components/ProteinsForDiseaseCardContainer";
 import PathwayCardContainer from "./components/PathwaysForProteinCardContainer";
 import VariantCardContainer from "./components/VariantsForProteinCardContainer";
-import DrugsCardContainer from "./components/DrugsForDiseaseCardContainer";
+import DrugsForDiseaseCardContainer from "./components/DrugsForDiseaseCardContainer";
 import SearchContainer from "./components/SearchContainer";
 import { Context } from "./types/context";
 import InteractionCardContainer from "./components/InteractionsForProteinCardContainer";
 import DiseaseVariantCardContainer from "./components/VariantsForDiseaseCardContainer";
+import DrugsForProteinCardContainer from "./components/DrugsForProteinCardContainer";
 
 class App extends Component {
   render() {
@@ -48,8 +49,12 @@ class App extends Component {
                   component={InteractionCardContainer}
                 />
                 <Route
-                  path={`/${Context.DRUGS}/:id`}
-                  component={DrugsCardContainer}
+                  path={`/${Context.DRUGS}/:id/${Context.DISEASE}`}
+                  component={DrugsForDiseaseCardContainer}
+                />
+                <Route
+                  path={`/${Context.DRUGS}/:id/${Context.PROTEIN}`}
+                  component={DrugsForProteinCardContainer}
                 />
                 <Route
                   path={`/${Context.DISEASEVAR}/:id`}
