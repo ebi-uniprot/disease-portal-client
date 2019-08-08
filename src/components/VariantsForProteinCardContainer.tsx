@@ -3,9 +3,9 @@ import { withRouter, RouteComponentProps } from "react-router";
 import useApi from "./UseApi";
 import VariantCard, { VariantData } from "./VariantCard";
 
-const VariantCardContainer: FunctionComponent<RouteComponentProps<any>> = ({
-  match
-}) => {
+const VariantsForProteinCardContainer: FunctionComponent<
+  RouteComponentProps<any>
+> = ({ match }) => {
   const { id } = match.params;
   const { data } = useApi(
     `https://www.ebi.ac.uk/proteins/api/variation/${id}?format=json`
@@ -33,4 +33,4 @@ const VariantCardContainer: FunctionComponent<RouteComponentProps<any>> = ({
   );
 };
 
-export default withRouter(VariantCardContainer);
+export default withRouter(VariantsForProteinCardContainer);

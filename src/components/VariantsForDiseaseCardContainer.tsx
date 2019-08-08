@@ -13,7 +13,7 @@ const groupBy = (items: any[], key: string) =>
     {}
   );
 
-const DiseaseVariantCardContainer: FunctionComponent<
+const VariantsForDiseaseCardContainer: FunctionComponent<
   RouteComponentProps<any>
 > = ({ match }) => {
   const { id } = match.params;
@@ -43,4 +43,4 @@ const DiseaseVariantCardContainer: FunctionComponent<
   );
 };
 
-export default DiseaseVariantCardContainer;
+export default VariantsForDiseaseCardContainer;

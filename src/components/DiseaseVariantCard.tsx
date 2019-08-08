@@ -1,7 +1,7 @@
 import React, { FunctionComponent, Fragment } from "react";
 import { Card, InfoList } from "franklin-sites";
 import { Context } from "../types/context";
-import color from "../config.json";
+import { colors } from "../config";
 
 type DiseaseVariant = {
   altSeq: string;
@@ -22,7 +22,7 @@ const generateDiseaseLinks = (accession: string) => {
     {
       name: `All ${accession} variants`,
       link: `/${Context.VARIANT}/${accession}`,
-      color: color.PROTEIN
+      color: colors.PROTEIN
     }
   ];
   return diseaseLinks;

@@ -6,9 +6,9 @@ import { loadWebComponent } from "./VariantCard";
 import useApi from "./UseApi";
 import { Card, InfoList } from "franklin-sites";
 
-const ProteinCardContainer: FunctionComponent<RouteComponentProps<any>> = ({
-  match
-}) => {
+const InteractionsForProteinCardContainer: FunctionComponent<
+  RouteComponentProps<any>
+> = ({ match }) => {
   const { id } = match.params;
   const { data } = useApi(
     `//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice/protein/${id}/interactions`
@@ -32,4 +32,4 @@ const ProteinCardContainer: FunctionComponent<RouteComponentProps<any>> = ({
   );
 };
 
-export default withRouter(ProteinCardContainer);
+export default withRouter(InteractionsForProteinCardContainer);

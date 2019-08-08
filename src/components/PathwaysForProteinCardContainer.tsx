@@ -4,9 +4,9 @@ import { v1 } from "uuid";
 import useApi from "./UseApi";
 import PathwayCard, { PathwayData } from "./PathwayCard";
 
-const PathwayCardContainer: FunctionComponent<RouteComponentProps<any>> = ({
-  match,
-}) => {
+const PathwaysForProteinCardContainer: FunctionComponent<
+  RouteComponentProps<any>
+> = ({ match }) => {
   const { id } = match.params;
   const { data } = useApi(
     `//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice/protein/${id}/xrefs`
@@ -32,4 +32,4 @@ const PathwayCardContainer: FunctionComponent<RouteComponentProps<any>> = ({
   );
 };
 
-export default withRouter(PathwayCardContainer);
+export default withRouter(PathwaysForProteinCardContainer);

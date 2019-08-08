@@ -1,8 +1,0 @@
-{
-  "PROTEIN": "blue",
-  "DISEASE": "red",
-  "VARIANT": "orange",
-  "PATHWAY": "green",
-  "DRUGS": "yellow",
-  "INTERACTION": "pink"
-}

@@ -4,9 +4,9 @@ import { v1 } from "uuid";
 import useApi from "./UseApi";
 import DiseaseCard, { DiseaseData } from "./DiseaseCard";
 
-const DiseaseCardContainer: FunctionComponent<RouteComponentProps<any>> = ({
-  match
-}) => {
+const DiseasesForProteinCardContainer: FunctionComponent<
+  RouteComponentProps<any>
+> = ({ match }) => {
   const { id } = match.params;
   const { data } = useApi(
     `//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice/protein/${id}/diseases`
@@ -28,4 +28,4 @@ const DiseaseCardContainer: FunctionComponent<RouteComponentProps<any>> = ({
   );
 };
 
-export default DiseaseCardContainer;
+export default DiseasesForProteinCardContainer;

@@ -1,8 +1,8 @@
 import React, { FunctionComponent, Fragment } from "react";
 import { v1 } from "uuid";
 import { Card } from "franklin-sites";
-import color from "../config.json";
 import { Context } from "../types/context";
+import { generateLink } from "./utils";
 
 export type ProteinData = {
   proteinId: string;
@@ -34,49 +34,54 @@ export const formatLargeNumber = (x: number) => {
 const generateProteinLinks = (proteinItem: ProteinData) => {
   const proteinLinks = [];
   if (proteinItem.interactions && proteinItem.interactions.length > 0) {
-    proteinLinks.push({
-      name: `${proteinItem.interactions.length} interaction${
-        proteinItem.interactions.length > 1 ? "s" : ""
-      }`,
-      link: `/${Context.INTERACTION}/${proteinItem.accession}`,
-      color: color.INTERACTION
-    });
+    proteinLinks.push(
+      generateLink(
+        Context.PROTEIN,
+        Context.INTERACTION,
+        proteinItem.accession,
+        proteinItem.interactions
+      )
+    );
   }
   if (proteinItem.pathways && proteinItem.pathways.length > 0) {
-    proteinLinks.push({
-      name: `${proteinItem.pathways.length} pathway${
-        proteinItem.pathways.length > 1 ? "s" : ""
-      }`,
-      link: `/${Context.PATHWAY}/${proteinItem.accession}`,
-      color: color.PATHWAY
-    });
+    proteinLinks.push(
+      generateLink(
+        Context.PROTEIN,
+        Context.PATHWAY,
+        proteinItem.accession,
+        proteinItem.pathways
+      )
+    );
   }
   if (proteinItem.variants && proteinItem.variants.length > 0) {
-    proteinLinks.push({
-      name: `${proteinItem.variants.length} variant${
-        proteinItem.variants.length > 1 ? "s" : ""
-      }`,
-      link: `/${Context.VARIANT}/${proteinItem.accession}`,
-      color: color.VARIANT
-    });
+    proteinLinks.push(
+      generateLink(
+        Context.PROTEIN,
+        Context.VARIANT,
+        proteinItem.accession,
+        proteinItem.variants
+      )
+    );
   }
   if (proteinItem.diseases && proteinItem.diseases.length > 0) {
-    proteinLinks.push({
-      name: `${proteinItem.diseases.length} disease${
-        proteinItem.diseases.length > 1 ? "s" : ""
-      }`,
-      link: `/${Context.DISEASE}/${proteinItem.accession}`,
-      color: color.DISEASE
-    });
+    proteinLinks.push(
+      generateLink(
+        Context.PROTEIN,
+        Context.DISEASE,
+        proteinItem.accession,
+        proteinItem.diseases
+      )
+    );
   }
   if (proteinItem.drugs && proteinItem.drugs.length > 0) {
-    proteinLinks.push({
-      name: `${proteinItem.drugs.length} drugs${
-        proteinItem.drugs.length > 1 ? "s" : ""
-      }`,
-      link: `/${Context.DRUGS}/${proteinItem.accession}/${Context.PROTEIN}`,
-      color: color.DRUGS
-    });
+    proteinLinks.push(
+      generateLink(
+        Context.PROTEIN,
+        Context.DRUG,
+        proteinItem.accession,
+        proteinItem.drugs
+      )
+    );
   }
   return proteinLinks;
 };

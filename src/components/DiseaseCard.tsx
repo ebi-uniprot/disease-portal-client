@@ -1,7 +1,7 @@
 import React, { Fragment, FunctionComponent } from "react";
 import { Card } from "franklin-sites";
-import color from "../config.json";
 import { Context } from "../types/context";
+import { generateLink } from "./utils";
 
 export type DiseaseData = {
   diseaseId: string;
@@ -17,31 +17,34 @@ export type DiseaseData = {
 const generateDiseaseLinks = (diseaseItem: DiseaseData) => {
   const diseaseLinks = [];
   if (diseaseItem.proteins && diseaseItem.proteins.length > 0) {
-    diseaseLinks.push({
-      name: `${diseaseItem.proteins.length} protein${
-        diseaseItem.proteins.length > 1 ? "(s)" : ""
-      }`,
-      link: `/${Context.PROTEIN}/${diseaseItem.diseaseId}`,
-      color: color.PROTEIN
-    });
+    diseaseLinks.push(
+      generateLink(
+        Context.DISEASE,
+        Context.PROTEIN,
+        diseaseItem.diseaseId,
+        diseaseItem.proteins
+      )
+    );
   }
   if (diseaseItem.drugs && diseaseItem.drugs.length > 0) {
-    diseaseLinks.push({
-      name: `${diseaseItem.drugs.length} drug${
-        diseaseItem.drugs.length > 1 ? "s" : ""
-      }`,
-      link: `/${Context.DRUGS}/${diseaseItem.diseaseId}/${Context.DISEASE}`,
-      color: color.DRUGS
-    });
+    diseaseLinks.push(
+      generateLink(
+        Context.DISEASE,
+        Context.DRUG,
+        diseaseItem.diseaseId,
+        diseaseItem.drugs
+      )
+    );
   }
   if (diseaseItem.variants && diseaseItem.variants.length > 0) {
-    diseaseLinks.push({
-      name: `${diseaseItem.variants.length} variant${
-        diseaseItem.variants.length > 1 ? "s" : ""
-      }`,
-      link: `/${Context.DISEASEVAR}/${diseaseItem.diseaseId}`,
-      color: color.VARIANT
-    });
+    diseaseLinks.push(
+      generateLink(
+        Context.DISEASE,
+        Context.VARIANT,
+        diseaseItem.diseaseId,
+        diseaseItem.variants
+      )
+    );
   }
   return diseaseLinks;
 };
