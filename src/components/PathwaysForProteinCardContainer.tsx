@@ -3,31 +3,34 @@ import { withRouter, RouteComponentProps } from "react-router";
 import { v1 } from "uuid";
 import useApi from "./UseApi";
 import PathwayCard, { PathwayData } from "./PathwayCard";
+import PageTemplate from "../PageTemplate";
+import { Context } from "../types/context";
 
 const PathwaysForProteinCardContainer: FunctionComponent<
   RouteComponentProps<any>
 > = ({ match }) => {
   const { id } = match.params;
-  const { data } = useApi(
+  const { data, isLoading } = useApi(
     `//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice/protein/${id}/xrefs`
   );
-  if (!data) {
-    return null;
-  }
   let pathwayCardNodes: ReactElement[] = [];
-  data.results.forEach((item: PathwayData) => {
-    if (item.dbType === "Reactome") {
-      pathwayCardNodes.push(<PathwayCard data={item} key={v1()} />);
-    }
-  });
+  if (data) {
+    data.results.forEach((item: PathwayData) => {
+      if (item.dbType === "Reactome") {
+        pathwayCardNodes.push(<PathwayCard data={item} key={v1()} />);
+      }
+    });
+  }
   return (
     <Fragment>
-      <div className="page-header">
-        <h2>
-          {pathwayCardNodes.length} pathways for {id}
-        </h2>
-      </div>
-      {pathwayCardNodes}
+      <PageTemplate
+        context={Context.PATHWAY}
+        id={id}
+        length={pathwayCardNodes.length}
+        isLoading={isLoading}
+      >
+        {pathwayCardNodes}
+      </PageTemplate>
     </Fragment>
   );
 };

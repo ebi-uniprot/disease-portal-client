@@ -3,6 +3,8 @@ import { RouteComponentProps } from "react-router";
 import { v1 } from "uuid";
 import useApi from "./UseApi";
 import DiseaseVariantCard from "./DiseaseVariantCard";
+import PageTemplate from "../PageTemplate";
+import { Context } from "../types/context";
 
 const groupBy = (items: any[], key: string) =>
   items.reduce(
@@ -17,28 +19,32 @@ const VariantsForDiseaseCardContainer: FunctionComponent<
   RouteComponentProps<any>
 > = ({ match }) => {
   const { id } = match.params;
-  const { data } = useApi(
+  const { data, isLoading } = useApi(
     `//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice/disease/${id}/variants`
   );
-  if (!data) {
-    return null;
+
+  let groupedData: { items: any[]; key: string } | null = null;
+  if (data) {
+    groupedData = groupBy(data.results, "proteinAccession");
   }
-  const groupedData = groupBy(data.results, "proteinAccession");
 
   return (
     <Fragment>
-      <div className="page-header">
-        <h2>
-          {data.results.length} variants(s) for {id}
-        </h2>
-      </div>
-      {Object.keys(groupedData).map(item => (
-        <DiseaseVariantCard
-          accession={item}
-          data={groupedData[item]}
-          key={v1()}
-        />
-      ))}
+      <PageTemplate
+        context={Context.VARIANT}
+        id={id}
+        length={data && data.results.length}
+        isLoading={isLoading}
+      >
+        {groupedData &&
+          Object.keys(groupedData).map(item => (
+            <DiseaseVariantCard
+              accession={item}
+              data={groupedData[item]}
+              key={v1()}
+            />
+          ))}
+      </PageTemplate>
     </Fragment>
   );
 };

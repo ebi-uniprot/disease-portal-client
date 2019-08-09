@@ -73,9 +73,11 @@ const DrugsCard: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
     {
       title: "Evidences",
       content: data.evidences.map(evidence => (
-        <a href={evidence} target="_blank" key={evidence}>
-          {evidence}
-        </a>
+        <div key={evidence}>
+          <a href={evidence} target="_blank">
+            {evidence}
+          </a>
+        </div>
       ))
     }
   ];

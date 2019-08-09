@@ -5,12 +5,14 @@ import InteractionViewer from "interaction-viewer";
 import { loadWebComponent } from "./VariantCard";
 import useApi from "./UseApi";
 import { Card, InfoList } from "franklin-sites";
+import PageTemplate from "../PageTemplate";
+import { Context } from "../types/context";
 
 const InteractionsForProteinCardContainer: FunctionComponent<
   RouteComponentProps<any>
 > = ({ match }) => {
   const { id } = match.params;
-  const { data } = useApi(
+  const { data, isLoading } = useApi(
     `//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice/protein/${id}/interactions`
   );
   if (!data) {
@@ -20,14 +22,16 @@ const InteractionsForProteinCardContainer: FunctionComponent<
 
   return (
     <Fragment>
-      <div className="page-header">
-        <h2>
-          {data.results.length} interactions(s) for {id}
-        </h2>
-      </div>
-      <Card title="Interactions">
-        <interaction-viewer accession={id} />
-      </Card>
+      <PageTemplate
+        context={Context.INTERACTION}
+        id={id}
+        length={data.results.length}
+        isLoading={isLoading}
+      >
+        <Card title="Interactions">
+          <interaction-viewer accession={id} />
+        </Card>
+      </PageTemplate>
     </Fragment>
   );
 };
