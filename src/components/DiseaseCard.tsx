@@ -2,6 +2,7 @@ import React, { Fragment, FunctionComponent } from "react";
 import { Card } from "franklin-sites";
 import { Context } from "../types/context";
 import { generateLink } from "./utils";
+import { Link } from "react-router-dom";
 
 export type DiseaseData = {
   diseaseId: string;
@@ -11,6 +12,7 @@ export type DiseaseData = {
   proteins?: string[];
   variants?: string[];
   drugs?: string[];
+  children?: { diseaseId: string; diseaseName: string }[];
   publications?: { type: string; id: string }[];
 };
 
@@ -56,6 +58,17 @@ const DiseaseCard: FunctionComponent<{ data: DiseaseData }> = ({ data }) => (
     key={data.diseaseId}
   >
     {data.description}
+    <hr />
+    <ul className="no-bullet">
+      {data.children &&
+        data.children.map(child => (
+          <li key={child.diseaseId}>
+            <Link to={`/${Context.DISEASE}/${child.diseaseId}`}>
+              {child.diseaseName}
+            </Link>
+          </li>
+        ))}
+    </ul>
     {/* ADD CHILDREN HERE */}
   </Card>
 );

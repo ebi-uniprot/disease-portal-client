@@ -8,7 +8,7 @@ import ProteinsForDiseaseCardContainer from "./components/ProteinsForDiseaseCard
 import PathwaysForProteinCardContainer from "./components/PathwaysForProteinCardContainer";
 import VariantsForProteinCardContainer from "./components/VariantsForProteinCardContainer";
 import DrugsForDiseaseCardContainer from "./components/DrugsForDiseaseCardContainer";
-import SearchContainer from "./components/SearchContainer";
+import DiseaseContainer from "./components/DiseaseContainer";
 import { Context } from "./types/context";
 import InteractionCardContainer from "./components/InteractionsForProteinCardContainer";
 import VariantsForDiseaseCardContainer from "./components/VariantsForDiseaseCardContainer";
@@ -26,8 +26,11 @@ class App extends Component {
             />
             <div className="main-content">
               <Switch>
-                <Route path={"/"} exact={true} component={SearchContainer} />
-                <Route path={"/search/:term"} component={SearchContainer} />
+                <Route path={"/"} exact={true} component={DiseaseContainer} />
+                <Route
+                  path={`/${Context.DISEASE}/:id`}
+                  component={DiseaseContainer}
+                />
                 <Route
                   path={`/${Context.DISEASE}/:id/${Context.PROTEIN}`}
                   component={DiseasesForProteinCardContainer}

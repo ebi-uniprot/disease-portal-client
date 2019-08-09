@@ -3,7 +3,7 @@ import { withRouter, RouteComponentProps } from "react-router";
 import useApi from "./UseApi";
 import DiseaseCard, { DiseaseData } from "./DiseaseCard";
 
-const SearchContainer: FunctionComponent<RouteComponentProps<any>> = ({
+const DiseaseContainer: FunctionComponent<RouteComponentProps<any>> = ({
   match
 }) => {
   const { id = "Alzheimer disease" } = match.params;
@@ -23,4 +23,4 @@ const SearchContainer: FunctionComponent<RouteComponentProps<any>> = ({
   );
 };
 
-export default withRouter(SearchContainer);
+export default withRouter(DiseaseContainer);
