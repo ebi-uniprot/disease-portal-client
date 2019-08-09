@@ -24,7 +24,7 @@ const PageTemplate: FC<{
     <Fragment>
       <StickyContainer>
         <Sticky>
-          {({ style }) => (
+          {({ style }: { style: any }) => (
             <div className="page-header" style={style}>
               <h2 style={{ borderBottom: `1px solid ${colors[context]}` }}>
                 {length} {context.toLowerCase()}

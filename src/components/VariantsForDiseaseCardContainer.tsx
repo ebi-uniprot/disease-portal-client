@@ -6,14 +6,18 @@ import DiseaseVariantCard from "./DiseaseVariantCard";
 import PageTemplate from "../PageTemplate";
 import { Context } from "../types/context";
 
-const groupBy = (items: any[], key: string) =>
-  items.reduce(
+const groupBy = (items: any[], key: string) => {
+  if (!items) {
+    return null;
+  }
+  return items.reduce(
     (result, item) => ({
       ...result,
       [item[key]]: [...(result[item[key]] || []), item]
     }),
     {}
   );
+};
 
 const VariantsForDiseaseCardContainer: FunctionComponent<
   RouteComponentProps<any>
@@ -23,10 +27,7 @@ const VariantsForDiseaseCardContainer: FunctionComponent<
     `//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice/disease/${id}/variants`
   );
 
-  let groupedData: { items: any[]; key: string } | null = null;
-  if (data) {
-    groupedData = groupBy(data.results, "proteinAccession");
-  }
+  const groupedData = groupBy(data.results, "proteinAccession");
 
   return (
     <Fragment>
@@ -40,7 +41,7 @@ const VariantsForDiseaseCardContainer: FunctionComponent<
           Object.keys(groupedData).map(item => (
             <DiseaseVariantCard
               accession={item}
-              data={groupedData[item]}
+              data={groupedData && groupedData[item]}
               key={v1()}
             />
           ))}
