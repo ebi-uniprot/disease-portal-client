@@ -1,8 +1,8 @@
 import React, { FunctionComponent, Fragment } from "react";
 import { v1 } from "uuid";
 import { Card } from "franklin-sites";
-import { Context } from "../types/context";
-import { generateLink } from "./utils";
+import { Context } from "../../types/context";
+import { generateLink } from "../utils";
 
 export type ProteinData = {
   proteinId: string;

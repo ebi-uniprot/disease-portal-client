@@ -4,7 +4,7 @@ import { v1 } from "uuid";
 import useApi from "./UseApi";
 import PageTemplate from "../PageTemplate";
 import { Context } from "../types/context";
-import DiseaseCard, { DiseaseData } from "./DiseaseCard";
+import DiseaseCard, { DiseaseData } from "./cards/DiseaseCard";
 
 const DiseasesForDrugsCardContainer: FunctionComponent<
   RouteComponentProps<any>

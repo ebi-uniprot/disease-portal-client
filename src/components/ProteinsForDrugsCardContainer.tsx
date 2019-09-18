@@ -4,7 +4,7 @@ import { v1 } from "uuid";
 import useApi from "./UseApi";
 import PageTemplate from "../PageTemplate";
 import { Context } from "../types/context";
-import ProteinCard, { ProteinData } from "./ProteinCard";
+import ProteinCard, { ProteinData } from "./cards/ProteinCard";
 
 const ProteinsForDrugsCardContainer: FunctionComponent<
   RouteComponentProps<any>

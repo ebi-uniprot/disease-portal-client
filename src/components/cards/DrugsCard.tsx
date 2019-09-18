@@ -1,7 +1,7 @@
 import React, { Fragment, FunctionComponent } from "react";
 import { Card, InfoList } from "franklin-sites";
-import { Context } from "../types/context";
-import { generateLink } from "./utils";
+import { Context } from "../../types/context";
+import { generateLink } from "../utils";
 
 export type DrugsData = {
   name: string;

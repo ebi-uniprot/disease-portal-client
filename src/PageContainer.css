@@ -1,0 +1,10 @@
+.page-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1rem;
+}
+
+.page-container__column {
+  height: 85vh;
+  overflow-y: auto;
+}

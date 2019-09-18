@@ -1,7 +1,7 @@
 import React, { FunctionComponent, Fragment } from "react";
 import { Card, InfoList } from "franklin-sites";
-import { Context } from "../types/context";
-import { colors } from "../config";
+import { Context } from "../../types/context";
+import { colors } from "../../config";
 
 type DiseaseVariant = {
   altSeq: string;
