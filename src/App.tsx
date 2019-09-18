@@ -28,10 +28,14 @@ class App extends Component {
             />
             <div className="main-content">
               <Switch>
-                <Route path={"/"} exact={true} component={DiseaseContainer} />
+                <Route
+                  path={"/"}
+                  exact={true}
+                  render={() => <DiseaseContainer id="Alzheimer disease" />}
+                />
                 <Route
                   path={`/${Context.DISEASE}/:id`}
-                  component={DiseaseContainer}
+                  render={() => <DiseaseContainer id="Alzheimer disease" />}
                   exact={true}
                 />
                 <Route

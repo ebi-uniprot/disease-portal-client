@@ -2,7 +2,7 @@ import React, { Fragment, FunctionComponent } from "react";
 import { withRouter, RouteComponentProps } from "react-router";
 import { v1 } from "uuid";
 import InteractionViewer from "interaction-viewer";
-import { loadWebComponent } from "./VariantCard";
+import { loadWebComponent } from "./cards/VariantCard";
 import useApi from "./UseApi";
 import { Card, InfoList } from "franklin-sites";
 import PageTemplate from "../PageTemplate";

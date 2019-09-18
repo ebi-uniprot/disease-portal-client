@@ -2,7 +2,7 @@ import React, { Fragment, FunctionComponent } from "react";
 import { RouteComponentProps } from "react-router";
 import { v1 } from "uuid";
 import useApi from "./UseApi";
-import DiseaseVariantCard from "./DiseaseVariantCard";
+import DiseaseVariantCard from "./cards/DiseaseVariantCard";
 import PageTemplate from "../PageTemplate";
 import { Context } from "../types/context";
 

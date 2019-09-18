@@ -1,7 +1,7 @@
 import React, { Fragment, FunctionComponent } from "react";
 import { withRouter, RouteComponentProps } from "react-router";
 import useApi from "./UseApi";
-import VariantCard, { VariantData } from "./VariantCard";
+import VariantCard, { VariantData } from "./cards/VariantCard";
 import PageTemplate from "../PageTemplate";
 import { Context } from "../types/context";
 

@@ -1,7 +1,7 @@
 import React, { Fragment, FunctionComponent } from "react";
 import { Card } from "franklin-sites";
-import { Context } from "../types/context";
-import { generateLink } from "./utils";
+import { Context } from "../../types/context";
+import { generateLink } from "../utils";
 import { Link } from "react-router-dom";
 
 export type DiseaseData = {
@@ -51,26 +51,28 @@ const generateDiseaseLinks = (diseaseItem: DiseaseData) => {
   return diseaseLinks;
 };
 
-const DiseaseCard: FunctionComponent<{ data: DiseaseData }> = ({ data }) => (
-  <Card
-    title={data.diseaseName}
-    links={generateDiseaseLinks(data)}
-    key={data.diseaseId}
-  >
-    {data.description}
-    <hr />
-    <ul className="no-bullet">
-      {data.children &&
-        data.children.map(child => (
-          <li key={child.diseaseId}>
-            <Link to={`/${Context.DISEASE}/${child.diseaseId}`}>
-              {child.diseaseName}
-            </Link>
-          </li>
-        ))}
-    </ul>
-    {/* ADD CHILDREN HERE */}
-  </Card>
-);
+const DiseaseCard: FunctionComponent<{ data: DiseaseData }> = ({ data }) => {
+  return (
+    <Card
+      title={data.diseaseName}
+      links={generateDiseaseLinks(data)}
+      key={data.diseaseId}
+    >
+      {data.description}
+      <hr />
+      <ul className="no-bullet">
+        {data.children &&
+          data.children.map(child => (
+            <li key={child.diseaseId}>
+              <Link to={`/${Context.DISEASE}/${child.diseaseId}`}>
+                {child.diseaseName}
+              </Link>
+            </li>
+          ))}
+      </ul>
+      {/* ADD CHILDREN HERE */}
+    </Card>
+  );
+};
 
 export default DiseaseCard;

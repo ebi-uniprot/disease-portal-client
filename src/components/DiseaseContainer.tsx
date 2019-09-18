@@ -1,12 +1,9 @@
 import React, { Fragment, FunctionComponent, FC } from "react";
 import { withRouter, RouteComponentProps } from "react-router";
 import useApi from "./UseApi";
-import DiseaseCard, { DiseaseData } from "./DiseaseCard";
+import DiseaseCard, { DiseaseData } from "./cards/DiseaseCard";
 
-const DiseaseContainer: FunctionComponent<RouteComponentProps<any>> = ({
-  match
-}) => {
-  const { id = "Alzheimer disease" } = match.params;
+const DiseaseContainer: FunctionComponent<{ id: string }> = ({ id }) => {
   const { data } = useApi(
     `//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice/diseases/${id}`
   );
@@ -23,4 +20,4 @@ const DiseaseContainer: FunctionComponent<RouteComponentProps<any>> = ({
   );
 };
 
-export default withRouter(DiseaseContainer);
+export default DiseaseContainer;
