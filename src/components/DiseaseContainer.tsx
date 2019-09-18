@@ -2,6 +2,7 @@ import React, { Fragment, FunctionComponent, FC } from "react";
 import { withRouter, RouteComponentProps } from "react-router";
 import useApi from "./UseApi";
 import DiseaseCard, { DiseaseData } from "./cards/DiseaseCard";
+import "../PageContainer.css";
 
 const DiseaseContainer: FunctionComponent<{ id: string }> = ({ id }) => {
   const { data } = useApi(
