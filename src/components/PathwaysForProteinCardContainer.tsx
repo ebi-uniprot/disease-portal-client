@@ -5,6 +5,8 @@ import useApi from "./UseApi";
 import PathwayCard, { PathwayData } from "./cards/PathwayCard";
 import PageTemplate from "../PageTemplate";
 import { Context } from "../types/context";
+import PageContainer from "../PageContainer";
+import ProteinContainer from "./ProteinContainer";
 
 const PathwaysForProteinCardContainer: FunctionComponent<
   RouteComponentProps<any>
@@ -23,14 +25,19 @@ const PathwaysForProteinCardContainer: FunctionComponent<
   }
   return (
     <Fragment>
-      <PageTemplate
-        context={Context.PATHWAY}
-        id={id}
-        length={pathwayCardNodes.length}
-        isLoading={isLoading}
-      >
-        {pathwayCardNodes}
-      </PageTemplate>
+      <PageContainer
+        leftColumn={<ProteinContainer id={id} />}
+        rightColumn={
+          <PageTemplate
+            context={Context.PATHWAY}
+            id={id}
+            length={pathwayCardNodes.length}
+            isLoading={isLoading}
+          >
+            {pathwayCardNodes}
+          </PageTemplate>
+        }
+      />
     </Fragment>
   );
 };

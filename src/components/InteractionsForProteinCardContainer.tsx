@@ -7,6 +7,8 @@ import useApi from "./UseApi";
 import { Card, InfoList } from "franklin-sites";
 import PageTemplate from "../PageTemplate";
 import { Context } from "../types/context";
+import PageContainer from "../PageContainer";
+import ProteinContainer from "./ProteinContainer";
 
 const InteractionsForProteinCardContainer: FunctionComponent<
   RouteComponentProps<any>
@@ -22,16 +24,21 @@ const InteractionsForProteinCardContainer: FunctionComponent<
 
   return (
     <Fragment>
-      <PageTemplate
-        context={Context.INTERACTION}
-        id={id}
-        length={data.results.length}
-        isLoading={isLoading}
-      >
-        <Card title="Interactions">
-          <interaction-viewer accession={id} />
-        </Card>
-      </PageTemplate>
+      <PageContainer
+        leftColumn={<ProteinContainer id={id} />}
+        rightColumn={
+          <PageTemplate
+            context={Context.INTERACTION}
+            id={id}
+            length={data.results.length}
+            isLoading={isLoading}
+          >
+            <Card title="Interactions">
+              <interaction-viewer accession={id} />
+            </Card>
+          </PageTemplate>
+        }
+      />
     </Fragment>
   );
 };

@@ -5,6 +5,8 @@ import useApi from "./UseApi";
 import DiseaseVariantCard from "./cards/DiseaseVariantCard";
 import PageTemplate from "../PageTemplate";
 import { Context } from "../types/context";
+import PageContainer from "../PageContainer";
+import DiseaseContainer from "./DiseaseContainer";
 
 const groupBy = (items: any[], key: string) => {
   if (!items) {
@@ -27,25 +29,33 @@ const VariantsForDiseaseCardContainer: FunctionComponent<
     `//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice/disease/${id}/variants`
   );
 
-  const groupedData = groupBy(data.results, "proteinAccession");
+  if (!data) {
+    return null;
+  }
 
+  const groupedData = groupBy(data.results, "proteinAccession");
   return (
     <Fragment>
-      <PageTemplate
-        context={Context.VARIANT}
-        id={id}
-        length={data && data.results.length}
-        isLoading={isLoading}
-      >
-        {groupedData &&
-          Object.keys(groupedData).map(item => (
-            <DiseaseVariantCard
-              accession={item}
-              data={groupedData && groupedData[item]}
-              key={v1()}
-            />
-          ))}
-      </PageTemplate>
+      <PageContainer
+        leftColumn={<DiseaseContainer id={id} />}
+        rightColumn={
+          <PageTemplate
+            context={Context.VARIANT}
+            id={id}
+            length={data && data.results.length}
+            isLoading={isLoading}
+          >
+            {groupedData &&
+              Object.keys(groupedData).map(item => (
+                <DiseaseVariantCard
+                  accession={item}
+                  data={groupedData && groupedData[item]}
+                  key={v1()}
+                />
+              ))}
+          </PageTemplate>
+        }
+      />
     </Fragment>
   );
 };

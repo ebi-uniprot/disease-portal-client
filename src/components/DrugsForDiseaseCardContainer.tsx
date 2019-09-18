@@ -6,6 +6,8 @@ import { Card, InfoList } from "franklin-sites";
 import DrugsCard, { DrugsData } from "./cards/DrugsCard";
 import PageTemplate from "../PageTemplate";
 import { Context } from "../types/context";
+import PageContainer from "../PageContainer";
+import DiseaseContainer from "./DiseaseContainer";
 
 const DrugsForDiseaseCardContainer: FunctionComponent<
   RouteComponentProps<any>
@@ -15,19 +17,24 @@ const DrugsForDiseaseCardContainer: FunctionComponent<
     `//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice/disease/${id}/drugs`
   );
   return (
-    <Fragment>
-      <PageTemplate
-        context={Context.DRUG}
-        id={id}
-        length={data && data.results.length}
-        isLoading={isLoading}
-      >
-        {data &&
-          data.results.map((item: DrugsData) => (
-            <DrugsCard data={item} key={v1()} />
-          ))}
-      </PageTemplate>
-    </Fragment>
+    <PageContainer
+      leftColumn={<DiseaseContainer id={id} />}
+      rightColumn={
+        <Fragment>
+          <PageTemplate
+            context={Context.DRUG}
+            id={id}
+            length={data && data.results.length}
+            isLoading={isLoading}
+          >
+            {data &&
+              data.results.map((item: DrugsData) => (
+                <DrugsCard data={item} key={v1()} />
+              ))}
+          </PageTemplate>
+        </Fragment>
+      }
+    />
   );
 };
 

@@ -4,6 +4,8 @@ import useApi from "./UseApi";
 import VariantCard, { VariantData } from "./cards/VariantCard";
 import PageTemplate from "../PageTemplate";
 import { Context } from "../types/context";
+import PageContainer from "../PageContainer";
+import ProteinContainer from "./ProteinContainer";
 
 const VariantsForProteinCardContainer: FunctionComponent<
   RouteComponentProps<any>
@@ -25,14 +27,19 @@ const VariantsForProteinCardContainer: FunctionComponent<
 
   return (
     <Fragment>
-      <PageTemplate
-        context={Context.VARIANT}
-        id={id}
-        length={filteredData && filteredData.features.length}
-        isLoading={isLoading}
-      >
-        {filteredData && <VariantCard data={filteredData} />}
-      </PageTemplate>
+      <PageContainer
+        leftColumn={<ProteinContainer id={id} />}
+        rightColumn={
+          <PageTemplate
+            context={Context.VARIANT}
+            id={id}
+            length={filteredData && filteredData.features.length}
+            isLoading={isLoading}
+          >
+            {filteredData && <VariantCard data={filteredData} />}
+          </PageTemplate>
+        }
+      />
     </Fragment>
   );
 };

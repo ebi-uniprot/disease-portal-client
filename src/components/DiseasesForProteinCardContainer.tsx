@@ -5,6 +5,8 @@ import useApi from "./UseApi";
 import DiseaseCard, { DiseaseData } from "./cards/DiseaseCard";
 import PageTemplate from "../PageTemplate";
 import { Context } from "../types/context";
+import PageContainer from "../PageContainer";
+import ProteinContainer from "./ProteinContainer";
 
 const DiseasesForProteinCardContainer: FunctionComponent<
   RouteComponentProps<any>
@@ -15,17 +17,22 @@ const DiseasesForProteinCardContainer: FunctionComponent<
   );
   return (
     <Fragment>
-      <PageTemplate
-        context={Context.DISEASE}
-        id={id}
-        length={data && data.results.length}
-        isLoading={isLoading}
-      >
-        {data &&
-          data.results.map((item: DiseaseData) => (
-            <DiseaseCard data={item} key={v1()} />
-          ))}
-      </PageTemplate>
+      <PageContainer
+        leftColumn={<ProteinContainer id={id} />}
+        rightColumn={
+          <PageTemplate
+            context={Context.DISEASE}
+            id={id}
+            length={data && data.results.length}
+            isLoading={isLoading}
+          >
+            {data &&
+              data.results.map((item: DiseaseData) => (
+                <DiseaseCard data={item} key={v1()} />
+              ))}
+          </PageTemplate>
+        }
+      />
     </Fragment>
   );
 };
