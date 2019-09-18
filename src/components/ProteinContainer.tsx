@@ -9,7 +9,14 @@ const ProteinContainer: FunctionComponent<{ id: string }> = ({ id }) => {
   if (!data) {
     return null;
   }
-  return <ProteinCard data={data.result} id={id} />;
+  return (
+    <Fragment>
+      <div className="page-header">
+        <h2>Protein</h2>
+      </div>
+      <ProteinCard data={data.result} id={id} />;
+    </Fragment>
+  );
 };
 
 export default ProteinContainer;
