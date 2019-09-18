@@ -13,6 +13,8 @@ import { Context } from "./types/context";
 import InteractionCardContainer from "./components/InteractionsForProteinCardContainer";
 import VariantsForDiseaseCardContainer from "./components/VariantsForDiseaseCardContainer";
 import DrugsForProteinCardContainer from "./components/DrugsForProteinCardContainer";
+import DiseasesForDrugsCardContainer from "./components/DiseasesForDrugsCardContainer";
+import ProteinsForDrugsCardContainer from "./components/ProteinsForDrugsCardContainer";
 
 class App extends Component {
   render() {
@@ -30,6 +32,7 @@ class App extends Component {
                 <Route
                   path={`/${Context.DISEASE}/:id`}
                   component={DiseaseContainer}
+                  exact={true}
                 />
                 <Route
                   path={`/${Context.DISEASE}/:id/${Context.PROTEIN}`}
@@ -62,6 +65,14 @@ class App extends Component {
                 <Route
                   path={`/${Context.VARIANT}/:id/${Context.DISEASE}`}
                   component={VariantsForDiseaseCardContainer}
+                />
+                <Route
+                  path={`/${Context.DISEASE}/:id/${Context.DRUG}`}
+                  component={DiseasesForDrugsCardContainer}
+                />
+                <Route
+                  path={`/${Context.PROTEIN}/:id/${Context.DRUG}`}
+                  component={ProteinsForDrugsCardContainer}
                 />
               </Switch>
             </div>
