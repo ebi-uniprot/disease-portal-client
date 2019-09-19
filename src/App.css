@@ -31,3 +31,18 @@ body,
   grid-area: footer;
   text-align: center;
 }
+
+.label {
+  font-size: 0.8rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 0.8rem;
+}
+
+.label__reviewed {
+  color: white;
+  background-color: #c39b00;
+}
+.label__manual {
+  color: black;
+  background-color: #c0c0c0;
+}

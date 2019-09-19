@@ -8,6 +8,7 @@ export type ProteinData = {
   proteinId: string;
   proteinName: string;
   accession: string;
+  isExternallyMapped: boolean;
   gene: string;
   description: string;
   geneCoordinates?: [
@@ -113,6 +114,11 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
     >
       {diseaseNotes && (
         <Fragment>
+          {!data.isExternallyMapped ? (
+            <span className="label label__reviewed">UniProt curated</span>
+          ) : (
+            <span className="label label__manual">Imported</span>
+          )}
           <h4>Disease notes</h4>
           {diseaseNotes.map(note => (
             <Fragment key={v1()}>

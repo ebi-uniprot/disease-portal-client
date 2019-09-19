@@ -1,5 +1,4 @@
-import React, { Fragment, FC, Children, ReactNode } from "react";
-import { StickyContainer, Sticky } from "react-sticky";
+import React, { Fragment, FC, ReactNode } from "react";
 import { Context } from "./types/context";
 import { colors } from "./config";
 import spinner from "./svg/spinner.svg";
@@ -22,19 +21,13 @@ const PageTemplate: FC<{
 
   return (
     <Fragment>
-      <StickyContainer>
-        <Sticky>
-          {({ style }: { style: any }) => (
-            <div className="page-header" style={style}>
-              <h2 style={{ borderBottom: `1px solid ${colors[context]}` }}>
-                {length} {context.toLowerCase()}
-                {length > 1 && "s"} for {id}
-              </h2>
-            </div>
-          )}
-        </Sticky>
-        {children}
-      </StickyContainer>
+      <div className="page-header">
+        <h2 style={{ borderBottom: `1px solid ${colors[context]}` }}>
+          {length} {context.toLowerCase()}
+          {length > 1 && "s"} for {id}
+        </h2>
+      </div>
+      {children}
     </Fragment>
   );
 };

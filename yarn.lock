@@ -5359,10 +5359,10 @@ inquirer@^6.1.0:
     strip-ansi "^5.1.0"
     through "^2.3.6"
 
-interaction-viewer@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/interaction-viewer/-/interaction-viewer-2.0.4.tgz#d4063663caa7e743c93aa5fc601e4fb64c5fcedc"
-  integrity sha512-uhT5+uodAYBlD3F5RdrgFSRTkuiccqByEMt+cMwIbwzPsoxhTgFD+jB5HZBh2AjP2ue8tTfFA8NqzS8gQdIOiQ==
+interaction-viewer@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/interaction-viewer/-/interaction-viewer-2.2.2.tgz#ecb7dc6a47d1acd1f9f6df79b9fdcdaecfee1c0d"
+  integrity sha512-/po7uI+zWlrzxaHW8CILkmaoAy4PDKHVR5vgmiqHvvTN/j5Q4ByxvIOTVepydDr/leHWxWuv4h0hQbyKtjFd5g==
   dependencies:
     lodash-es "^4.17.11"
     whatwg-fetch "^3.0.0"

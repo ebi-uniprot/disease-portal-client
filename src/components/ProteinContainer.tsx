@@ -6,6 +6,7 @@ const ProteinContainer: FunctionComponent<{ id: string }> = ({ id }) => {
   const { data } = useApi(
     `//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice/proteins/${id}`
   );
+  console.log(data);
   if (!data) {
     return null;
   }
