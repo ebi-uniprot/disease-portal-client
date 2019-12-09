@@ -1,8 +1,10 @@
-import React, { Fragment, FunctionComponent } from "react";
+import React, { Fragment, FunctionComponent, FC } from "react";
 import { Card } from "franklin-sites";
 import { Context } from "../../types/context";
 import { generateLink } from "../utils";
 import { Link } from "react-router-dom";
+import TreeLeaf from "../../svg/tree-leaf.svg";
+import TreeLeafEnd from "../../svg/tree-leaf-end.svg";
 
 export type DiseaseData = {
   diseaseId: string;
@@ -12,7 +14,7 @@ export type DiseaseData = {
   proteins?: string[];
   variants?: string[];
   drugs?: string[];
-  children?: { diseaseId: string; diseaseName: string }[];
+  children?: DiseaseData[];
   publications?: { type: string; id: string }[];
 };
 
@@ -51,6 +53,36 @@ const generateDiseaseLinks = (diseaseItem: DiseaseData) => {
   return diseaseLinks;
 };
 
+const DiseaseChildren: FC<{ data: DiseaseData[]; depth?: number }> = ({
+  data,
+  depth = 0
+}) => {
+  const filtered = data.filter(
+    disease =>
+      (disease.children && disease.children.length > 0) ||
+      (disease.proteins && disease.proteins.length > 0)
+  );
+  return (
+    <Fragment>
+      {filtered.map((disease, i) => (
+        <div key={disease.diseaseId} style={{ marginLeft: `${depth}rem` }}>
+          <Link to={`/${Context.DISEASE}/${disease.diseaseId}`}>
+            <img
+              src={i < filtered.length - 1 ? TreeLeaf : TreeLeafEnd}
+              width={25}
+              height={25}
+            />
+            {disease.diseaseName}
+          </Link>
+          {disease.children && (
+            <DiseaseChildren data={disease.children} depth={depth + 1} />
+          )}
+        </div>
+      ))}
+    </Fragment>
+  );
+};
+
 const DiseaseCard: FunctionComponent<{ data: DiseaseData }> = ({ data }) => {
   return (
     <Card
@@ -60,17 +92,7 @@ const DiseaseCard: FunctionComponent<{ data: DiseaseData }> = ({ data }) => {
     >
       {data.description}
       <hr />
-      <ul className="no-bullet">
-        {data.children &&
-          data.children.map(child => (
-            <li key={child.diseaseId}>
-              <Link to={`/${Context.DISEASE}/${child.diseaseId}`}>
-                {child.diseaseName}
-              </Link>
-            </li>
-          ))}
-      </ul>
-      {/* ADD CHILDREN HERE */}
+      {data.children && <DiseaseChildren data={data.children} />}
     </Card>
   );
 };

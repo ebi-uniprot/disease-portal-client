@@ -1,6 +1,6 @@
 import React, { Fragment, FunctionComponent, FC } from "react";
 import useApi from "./UseApi";
-import DiseaseCard, { DiseaseData } from "./cards/DiseaseCard";
+import DiseaseCard from "./cards/DiseaseCard";
 
 const DiseaseContainer: FunctionComponent<{ id: string }> = ({ id }) => {
   const { data } = useApi(

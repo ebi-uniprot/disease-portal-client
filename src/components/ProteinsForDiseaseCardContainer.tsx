@@ -1,4 +1,5 @@
 import React, { Fragment, FunctionComponent } from "react";
+import axios from "axios";
 import { withRouter, RouteComponentProps } from "react-router";
 import { v1 } from "uuid";
 import useApi from "./UseApi";
@@ -8,13 +9,33 @@ import { Context } from "../types/context";
 import DiseaseContainer from "./DiseaseContainer";
 import PageContainer from "../PageContainer";
 
-const ProteinsForDiseaseCardContainer: FunctionComponent<
-  RouteComponentProps<any>
-> = ({ match }) => {
+const ProteinsForDiseaseCardContainer: FunctionComponent<RouteComponentProps<
+  any
+>> = ({ match }) => {
   const { id } = match.params;
   const { data, isLoading } = useApi(
     `//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice/disease/${id}/proteins`
   );
+
+  const downloadProteins = (proteinIds: string[]) => {
+    const url = `//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice/proteins/${proteinIds.join(
+      ","
+    )}/download`;
+    axios({
+      url: url,
+      method: "GET",
+      responseType: "blob" // important
+    }).then(response => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "ad-prototype.csv");
+      document.body.appendChild(link);
+      link.click();
+    });
+    console.log(url);
+  };
+
   return (
     <Fragment>
       <PageContainer
@@ -26,6 +47,22 @@ const ProteinsForDiseaseCardContainer: FunctionComponent<
             length={data && data.results.length}
             isLoading={isLoading}
           >
+            {data && data.results.length <= 300 && (
+              <button
+                className="button align-right"
+                type="button"
+                onClick={() =>
+                  downloadProteins(
+                    data.results.map(
+                      (protein: ProteinData) => protein.accession
+                    )
+                  )
+                }
+              >
+                Download
+              </button>
+            )}
+
             {data &&
               data.results.map((item: ProteinData) => (
                 <ProteinCard data={item} id={id} key={v1()} />

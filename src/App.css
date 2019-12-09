@@ -46,3 +46,7 @@ body,
   color: black;
   background-color: #c0c0c0;
 }
+
+.disabled-text {
+  color: #a7a7a7;
+}
