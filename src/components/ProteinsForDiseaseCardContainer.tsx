@@ -8,19 +8,16 @@ import PageTemplate from "../PageTemplate";
 import { Context } from "../types/context";
 import DiseaseContainer from "./DiseaseContainer";
 import PageContainer from "../PageContainer";
+import { baseUrl } from "../config";
 
 const ProteinsForDiseaseCardContainer: FunctionComponent<RouteComponentProps<
   any
 >> = ({ match }) => {
   const { id } = match.params;
-  const { data, isLoading } = useApi(
-    `//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice/disease/${id}/proteins`
-  );
+  const { data, isLoading } = useApi(`${baseUrl}/disease/${id}/proteins`);
 
   const downloadProteins = (proteinIds: string[]) => {
-    const url = `//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice/proteins/${proteinIds.join(
-      ","
-    )}/download`;
+    const url = `${baseUrl}/proteins/${proteinIds.join(",")}/download`;
     axios({
       url: url,
       method: "GET",

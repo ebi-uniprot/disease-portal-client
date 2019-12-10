@@ -7,14 +7,13 @@ import PageTemplate from "../PageTemplate";
 import { Context } from "../types/context";
 import PageContainer from "../PageContainer";
 import ProteinContainer from "./ProteinContainer";
+import { baseUrl } from "../config";
 
-const DiseasesForProteinCardContainer: FunctionComponent<
-  RouteComponentProps<any>
-> = ({ match }) => {
+const DiseasesForProteinCardContainer: FunctionComponent<RouteComponentProps<
+  any
+>> = ({ match }) => {
   const { id } = match.params;
-  const { data, isLoading } = useApi(
-    `//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice/protein/${id}/diseases`
-  );
+  const { data, isLoading } = useApi(`${baseUrl}/protein/${id}/diseases`);
   return (
     <Fragment>
       <PageContainer

@@ -9,3 +9,5 @@ export const colors: { [key in keyof typeof Context]: string } = {
   INTERACTION: "pink",
   SEARCH: ""
 };
+
+export const baseUrl = "//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice";

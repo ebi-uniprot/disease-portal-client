@@ -18,35 +18,57 @@ export type DiseaseData = {
   publications?: { type: string; id: string }[];
 };
 
+const getAllItems = (
+  diseaseItem: DiseaseData,
+  keyName: keyof DiseaseData,
+  totalItems = new Set()
+) => {
+  const items = diseaseItem[keyName] as any[];
+  if (items) {
+    items.forEach((item: any) => totalItems.add(item));
+  }
+  if (diseaseItem.children) {
+    diseaseItem.children.forEach(childDisease => {
+      getAllItems(childDisease, keyName, totalItems);
+    });
+  }
+  return Array.from(totalItems);
+};
+
 const generateDiseaseLinks = (diseaseItem: DiseaseData) => {
   const diseaseLinks = [];
-  if (diseaseItem.proteins && diseaseItem.proteins.length > 0) {
+
+  const allProts = getAllItems(diseaseItem, "proteins");
+  const allDrugs = getAllItems(diseaseItem, "drugs");
+  const allVariants = getAllItems(diseaseItem, "variants");
+
+  if (allProts && allProts.length > 0) {
     diseaseLinks.push(
       generateLink(
         Context.DISEASE,
         Context.PROTEIN,
         diseaseItem.diseaseId,
-        diseaseItem.proteins
+        allProts
       )
     );
   }
-  if (diseaseItem.drugs && diseaseItem.drugs.length > 0) {
+  if (allDrugs && allDrugs.length > 0) {
     diseaseLinks.push(
       generateLink(
         Context.DISEASE,
         Context.DRUG,
         diseaseItem.diseaseId,
-        diseaseItem.drugs
+        allDrugs
       )
     );
   }
-  if (diseaseItem.variants && diseaseItem.variants.length > 0) {
+  if (allVariants && allVariants.length > 0) {
     diseaseLinks.push(
       generateLink(
         Context.DISEASE,
         Context.VARIANT,
         diseaseItem.diseaseId,
-        diseaseItem.variants
+        allVariants
       )
     );
   }

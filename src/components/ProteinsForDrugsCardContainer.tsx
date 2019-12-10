@@ -5,14 +5,13 @@ import useApi from "./UseApi";
 import PageTemplate from "../PageTemplate";
 import { Context } from "../types/context";
 import ProteinCard, { ProteinData } from "./cards/ProteinCard";
+import { baseUrl } from "../config";
 
-const ProteinsForDrugsCardContainer: FunctionComponent<
-  RouteComponentProps<any>
-> = ({ match }) => {
+const ProteinsForDrugsCardContainer: FunctionComponent<RouteComponentProps<
+  any
+>> = ({ match }) => {
   const { id } = match.params;
-  const { data, isLoading } = useApi(
-    `//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice/drug/${id}/proteins`
-  );
+  const { data, isLoading } = useApi(`${baseUrl}/drug/${id}/proteins`);
   return (
     <Fragment>
       <PageTemplate

@@ -5,14 +5,13 @@ import useApi from "./UseApi";
 import PageTemplate from "../PageTemplate";
 import { Context } from "../types/context";
 import DiseaseCard, { DiseaseData } from "./cards/DiseaseCard";
+import { baseUrl } from "../config";
 
-const DiseasesForDrugsCardContainer: FunctionComponent<
-  RouteComponentProps<any>
-> = ({ match }) => {
+const DiseasesForDrugsCardContainer: FunctionComponent<RouteComponentProps<
+  any
+>> = ({ match }) => {
   const { id } = match.params;
-  const { data, isLoading } = useApi(
-    `//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice/drug/${id}/diseases`
-  );
+  const { data, isLoading } = useApi(`${baseUrl}/drug/${id}/diseases`);
   return (
     <Fragment>
       <PageTemplate

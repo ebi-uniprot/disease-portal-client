@@ -9,14 +9,13 @@ import PageTemplate from "../PageTemplate";
 import { Context } from "../types/context";
 import PageContainer from "../PageContainer";
 import ProteinContainer from "./ProteinContainer";
+import { baseUrl } from "../config";
 
-const InteractionsForProteinCardContainer: FunctionComponent<
-  RouteComponentProps<any>
-> = ({ match }) => {
+const InteractionsForProteinCardContainer: FunctionComponent<RouteComponentProps<
+  any
+>> = ({ match }) => {
   const { id } = match.params;
-  const { data, isLoading } = useApi(
-    `//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice/protein/${id}/interactions`
-  );
+  const { data, isLoading } = useApi(`${baseUrl}/protein/${id}/interactions`);
   if (!data) {
     return null;
   }

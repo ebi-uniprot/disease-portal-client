@@ -7,6 +7,7 @@ import PageTemplate from "../PageTemplate";
 import { Context } from "../types/context";
 import PageContainer from "../PageContainer";
 import DiseaseContainer from "./DiseaseContainer";
+import { baseUrl } from "../config";
 
 const groupBy = (items: any[], key: string) => {
   if (!items) {
@@ -21,13 +22,11 @@ const groupBy = (items: any[], key: string) => {
   );
 };
 
-const VariantsForDiseaseCardContainer: FunctionComponent<
-  RouteComponentProps<any>
-> = ({ match }) => {
+const VariantsForDiseaseCardContainer: FunctionComponent<RouteComponentProps<
+  any
+>> = ({ match }) => {
   const { id } = match.params;
-  const { data, isLoading } = useApi(
-    `//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice/disease/${id}/variants`
-  );
+  const { data, isLoading } = useApi(`${baseUrl}/disease/${id}/variants`);
 
   if (!data) {
     return null;
