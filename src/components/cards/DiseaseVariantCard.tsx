@@ -1,7 +1,11 @@
-import React, { FunctionComponent, Fragment } from "react";
+import React, { FunctionComponent, Fragment, useEffect } from "react";
+import ProtvistaDatatable from "protvista-datatable";
 import { Card, InfoList } from "franklin-sites";
+import { loadWebComponent, ProtvistaDatatableType } from "./VariantCard";
+import { Link } from "react-router-dom";
 import { Context } from "../../types/context";
-import { colors } from "../../config";
+
+loadWebComponent("protvista-datatable", ProtvistaDatatable);
 
 type DiseaseVariant = {
   altSeq: string;
@@ -17,54 +21,52 @@ type DiseaseVariant = {
   report: string;
 };
 
-const generateDiseaseLinks = (accession: string) => {
-  const diseaseLinks = [
-    {
-      name: `All ${accession} variants`,
-      link: `/${Context.VARIANT}/${accession}`,
-      color: colors.PROTEIN
-    }
-  ];
-  return diseaseLinks;
-};
-
-const getDataAsInfoList = (variant: DiseaseVariant) => {
-  return [
-    {
-      title: "Position",
-      content: variant.featureLocation.startId
-    },
-    {
-      title: "Variation",
-      content: `${variant.origSeq} -> ${variant.altSeq}`
-    },
-    {
-      title: "Status",
-      content: variant.featureStatus
-    },
-    {
-      title: "Report",
-      content: variant.report
-    }
-  ];
+const columns = {
+  position: {
+    label: "Position",
+    resolver: (variant: DiseaseVariant) => variant.featureLocation.startId
+  },
+  variation: {
+    label: "Variation",
+    resolver: (variant: DiseaseVariant) =>
+      `${variant.origSeq} -> ${variant.altSeq}`
+  },
+  id: {
+    label: "Feature ID",
+    resolver: (variant: DiseaseVariant) => variant.featureId
+  },
+  status: {
+    label: "Status",
+    resolver: (variant: DiseaseVariant) => variant.featureStatus
+  },
+  report: {
+    label: "Report",
+    resolver: (variant: DiseaseVariant) => variant.report
+  }
 };
 
 const DiseaseVariantCard: FunctionComponent<{
   data: DiseaseVariant[];
   accession: string;
 }> = ({ data, accession }) => {
+  useEffect(() => {
+    const protvistaDatatable = document.querySelector<ProtvistaDatatableType>(
+      `[data-uuid='${accession}_table']`
+    );
+    if (protvistaDatatable) {
+      protvistaDatatable.columns = columns;
+      protvistaDatatable.data = data;
+    }
+  }, [data]);
+
   return (
-    <Card
-      title={accession}
-      links={generateDiseaseLinks(accession)}
-      key={accession}
-    >
-      {data.map(variant => (
-        <Fragment key={variant.featureId}>
-          <h5>{variant.featureId}</h5>
-          <InfoList infoData={getDataAsInfoList(variant)} />
-        </Fragment>
-      ))}
+    <Card title={`For protein ${accession}`} key={accession}>
+      <protvista-datatable height="20" data-uuid={`${accession}_table`} />
+      <div>
+        <Link to={`/${Context.VARIANT}/${accession}/${Context.PROTEIN}`}>
+          See all variants for {accession}
+        </Link>
+      </div>
     </Card>
   );
 };

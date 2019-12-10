@@ -1,6 +1,6 @@
 import { Context } from "./types/context";
 
-export const colors: { [key in keyof typeof Context]: string } = {
+export const colorsOld: { [key in keyof typeof Context]: string } = {
   PROTEIN: "blue",
   DISEASE: "red",
   VARIANT: "orange",
@@ -9,5 +9,14 @@ export const colors: { [key in keyof typeof Context]: string } = {
   INTERACTION: "pink",
   SEARCH: ""
 };
+
+export const colors = new Map([
+  [Context.PROTEIN, "blue"],
+  [Context.DISEASE, "red"],
+  [Context.VARIANT, "orange"],
+  [Context.PATHWAY, "green"],
+  [Context.DRUG, "yellow"],
+  [Context.INTERACTION, "pink"]
+]);
 
 export const baseUrl = "//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice";

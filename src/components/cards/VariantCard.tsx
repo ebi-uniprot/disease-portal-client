@@ -63,7 +63,7 @@ interface ChangeEvent extends Event {
   detail?: { type: string; value: string[] };
 }
 
-interface ProtvistaDatatable extends Element {
+export interface ProtvistaDatatableType extends Element {
   columns: any;
   data: any[];
 }
@@ -73,6 +73,13 @@ export const loadWebComponent = (name: string, className: Function) => {
     window.customElements.define(name, className);
   }
 };
+
+loadWebComponent("protvista-sequence", ProtvistaSequence);
+loadWebComponent("protvista-manager", ProtvistaManager);
+loadWebComponent("protvista-navigation", ProtvistaNavigation);
+loadWebComponent("protvista-variation", ProtvistaVariation);
+loadWebComponent("protvista-datatable", ProtvistaDatatable);
+loadWebComponent("protvista-filter", ProtvistaFilter);
 
 const processVariantData = (variantData: VariantData[]) =>
   variantData.map(variant => {
@@ -198,7 +205,7 @@ const VariantCard: FunctionComponent<{ data: VariationData }> = ({ data }) => {
     const protvistaVariation = document.querySelector<ProtvistaVariation>(
       `[data-uuid='${id}_var']`
     );
-    const protvistaDatatable = document.querySelector<ProtvistaDatatable>(
+    const protvistaDatatable = document.querySelector<ProtvistaDatatableType>(
       `[data-uuid='${id}_table']`
     );
 
@@ -218,12 +225,6 @@ const VariantCard: FunctionComponent<{ data: VariationData }> = ({ data }) => {
     }
   }, [activeFilters]);
 
-  loadWebComponent("protvista-sequence", ProtvistaSequence);
-  loadWebComponent("protvista-manager", ProtvistaManager);
-  loadWebComponent("protvista-navigation", ProtvistaNavigation);
-  loadWebComponent("protvista-variation", ProtvistaVariation);
-  loadWebComponent("protvista-datatable", ProtvistaDatatable);
-  loadWebComponent("protvista-filter", ProtvistaFilter);
   return (
     <Card title="Variants">
       <div className="protvista-grid">

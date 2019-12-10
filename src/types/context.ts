@@ -2,8 +2,8 @@ export enum Context {
   SEARCH = "SEARCH",
   DISEASE = "DISEASE",
   PROTEIN = "PROTEIN",
-  VARIANT = "VARIANT",
+  VARIANT = "Sequence variant",
   INTERACTION = "INTERACTION",
   PATHWAY = "PATHWAY",
-  DRUG = "DRUG"
+  DRUG = "Drug candidate"
 }

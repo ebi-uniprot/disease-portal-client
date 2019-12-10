@@ -5,7 +5,6 @@ import { baseUrl } from "../config";
 
 const ProteinContainer: FunctionComponent<{ id: string }> = ({ id }) => {
   const { data } = useApi(`${baseUrl}/proteins/${id}`);
-  console.log(data);
   if (!data) {
     return null;
   }

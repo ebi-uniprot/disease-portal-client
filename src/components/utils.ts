@@ -12,6 +12,6 @@ export const generateLink = (
       toItems.length > 1 ? "s" : ""
     }`,
     link: `/${toContext}/${fromId}/${fromContext}`,
-    color: colors[toContext]
+    color: colors.get(toContext)
   };
 };
