@@ -115,9 +115,13 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
       {diseaseNotes && (
         <Fragment>
           {!data.isExternallyMapped ? (
-            <span className="label label__reviewed">UniProt curated</span>
+            <span className="label label__reviewed">
+              Disease association source: UniProt
+            </span>
           ) : (
-            <span className="label label__manual">Imported</span>
+            <span className="label label__manual">
+              Disease association source: Imported
+            </span>
           )}
           <h4>Disease notes</h4>
           {diseaseNotes.map(note => (

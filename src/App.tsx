@@ -31,13 +31,18 @@ class App extends Component {
                 <Route
                   path={"/"}
                   exact={true}
-                  render={() => <DiseaseContainer id="Alzheimer disease" />}
+                  render={(props: any) => {
+                    return (
+                      <ProteinsForDiseaseCardContainer
+                        identifier="Alzheimer disease"
+                        {...props}
+                      />
+                    );
+                  }}
                 />
                 <Route
                   path={`/${Context.DISEASE}/:id`}
-                  render={(props: any) => (
-                    <DiseaseContainer id={props.match.params.id} />
-                  )}
+                  component={ProteinsForDiseaseCardContainer}
                   exact={true}
                 />
                 <Route

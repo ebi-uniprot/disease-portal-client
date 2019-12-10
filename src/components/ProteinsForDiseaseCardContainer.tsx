@@ -12,8 +12,14 @@ import { baseUrl } from "../config";
 
 const ProteinsForDiseaseCardContainer: FunctionComponent<RouteComponentProps<
   any
->> = ({ match }) => {
-  const { id } = match.params;
+> & { identifier?: string }> = ({ match, identifier }) => {
+  let id: string;
+  if (identifier) {
+    id = identifier;
+  } else {
+    id = match.params.id;
+  }
+
   const { data, isLoading } = useApi(`${baseUrl}/disease/${id}/proteins`);
 
   const downloadProteins = (proteinIds: string[]) => {

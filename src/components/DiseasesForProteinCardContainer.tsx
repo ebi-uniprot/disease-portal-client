@@ -1,5 +1,5 @@
 import React, { Fragment, FunctionComponent } from "react";
-import { withRouter, RouteComponentProps } from "react-router";
+import { RouteComponentProps } from "react-router";
 import { v1 } from "uuid";
 import useApi from "./UseApi";
 import DiseaseCard, { DiseaseData } from "./cards/DiseaseCard";
