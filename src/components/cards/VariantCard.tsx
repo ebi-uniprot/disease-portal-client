@@ -155,9 +155,9 @@ const getFilters = (data: VariantData[]) => {
 
   return Array.from(diseases).map(diseaseName => {
     return {
-      name: diseaseName,
+      name: diseaseName as string,
       type: { name: "diseases", text: "Disease" },
-      options: { labels: [diseaseName], colors: ["#A31D5F"] }
+      options: { labels: [diseaseName as string], colors: ["#A31D5F"] }
     };
   });
 };
