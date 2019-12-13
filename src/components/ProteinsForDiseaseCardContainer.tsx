@@ -39,6 +39,14 @@ const ProteinsForDiseaseCardContainer: FunctionComponent<RouteComponentProps<
     console.log(url);
   };
 
+  if (!data) {
+    return null;
+  }
+
+  const sortedData = data.results.sort(
+    (a: ProteinData, b: ProteinData) => b.isExternallyMapped && -1
+  );
+
   return (
     <Fragment>
       <PageContainer
@@ -66,8 +74,8 @@ const ProteinsForDiseaseCardContainer: FunctionComponent<RouteComponentProps<
               </button>
             )}
 
-            {data &&
-              data.results.map((item: ProteinData) => (
+            {sortedData &&
+              sortedData.map((item: ProteinData) => (
                 <ProteinCard data={item} id={id} key={v1()} />
               ))}
           </PageTemplate>

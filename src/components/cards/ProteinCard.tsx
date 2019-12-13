@@ -123,7 +123,7 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
               Disease association source: Imported
             </span>
           )}
-          <h4>Disease notes</h4>
+          {diseaseNotes.length > 0 && <h4>Disease notes</h4>}
           {diseaseNotes.map(note => (
             <Fragment key={v1()}>
               <h5>{note.diseaseName}</h5>

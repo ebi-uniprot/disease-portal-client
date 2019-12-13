@@ -5,7 +5,7 @@ import ProtvistaManager from "protvista-manager";
 import ProtvistaSequence from "protvista-sequence";
 import ProtvistaNavigation from "protvista-navigation";
 import ProtvistaDatatable from "protvista-datatable";
-import ProtvistaFilter from "protvista-filter";
+import ProtvistaFilter, { ProtvistaCheckbox } from "protvista-filter";
 import { v1 } from "uuid";
 import { Card } from "franklin-sites";
 import "./VariantCard.css";
@@ -80,6 +80,7 @@ loadWebComponent("protvista-navigation", ProtvistaNavigation);
 loadWebComponent("protvista-variation", ProtvistaVariation);
 loadWebComponent("protvista-datatable", ProtvistaDatatable);
 loadWebComponent("protvista-filter", ProtvistaFilter);
+loadWebComponent("protvista-checkbox", ProtvistaCheckbox);
 
 const processVariantData = (variantData: VariantData[]) =>
   variantData.map(variant => {
@@ -226,30 +227,30 @@ const VariantCard: FunctionComponent<{ data: VariationData }> = ({ data }) => {
   }, [activeFilters]);
 
   return (
-    <Card title="Variants">
-      <div className="protvista-grid">
-        <protvista-manager
-          attributes="displaystart displayend highlight"
-          data-uuid={`${id}_manager`}
-        >
-          <protvista-navigation
-            data-uuid={`${id}_nav`}
-            length={data.sequence.length}
-          />
-          <protvista-sequence
-            data-uuid={`${id}_seq`}
-            sequence={data.sequence}
-            length={data.sequence.length}
-          />
-          <protvista-filter data-uuid={`${id}_filter`} />
-          <protvista-variation
-            data-uuid={`${id}_var`}
-            length={data.sequence.length}
-          />
-          <protvista-datatable height="20" data-uuid={`${id}_table`} />
-        </protvista-manager>
-      </div>
-    </Card>
+    data.sequence && (
+      <Card title="Variants">
+        <div className="protvista-grid">
+          <protvista-manager
+            attributes="displaystart displayend highlight"
+            data-uuid={`${id}_manager`}
+          >
+            <protvista-navigation
+              data-uuid={`${id}_nav`}
+              length={data.sequence.length}
+            />
+
+            <protvista-filter data-uuid={`${id}_filter`} />
+            <protvista-variation
+              data-uuid={`${id}_var`}
+              length={data.sequence.length}
+              displaystart={1}
+              displayend={data.sequence.length}
+            />
+            <protvista-datatable height="20" data-uuid={`${id}_table`} />
+          </protvista-manager>
+        </div>
+      </Card>
+    )
   );
 };
 
