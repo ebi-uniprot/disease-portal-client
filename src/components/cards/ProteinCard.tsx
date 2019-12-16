@@ -1,4 +1,4 @@
-import React, { FunctionComponent, Fragment } from "react";
+import React, { FunctionComponent, Fragment, useState } from "react";
 import { v1 } from "uuid";
 import { Card } from "franklin-sites";
 import { Context } from "../../types/context";
@@ -91,14 +91,17 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
   data,
   id
 }) => {
+  const [showWholeFunction, setShowWholeFunction] = useState(false);
+
   const diseaseNotes =
     data.diseases &&
     data.diseases.filter(disease => disease.diseaseName === id);
+
   return (
     <Card
       title={
         <Fragment>
-          {data.proteinName}{" "}
+          {data.gene} - {data.proteinName}{" "}
           <small>
             <a
               href={`//www.uniprot.org/uniprot/${data.accession}`}
@@ -112,28 +115,17 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
       links={generateProteinLinks(data)}
       key={data.proteinId}
     >
-      {diseaseNotes && (
-        <Fragment>
-          {!data.isExternallyMapped ? (
-            <span className="label label__reviewed">
-              Disease association source: UniProt
-            </span>
-          ) : (
-            <span className="label label__manual">
-              Disease association source: Imported
-            </span>
-          )}
-          {diseaseNotes.length > 0 && <h4>Disease notes</h4>}
-          {diseaseNotes.map(note => (
-            <Fragment key={v1()}>
-              <h5>{note.diseaseName}</h5>
-              <p>{note.note}</p>
-            </Fragment>
-          ))}
-        </Fragment>
-      )}
       <h4>Function</h4>
-      <p>{data.description}</p>
+      <p>
+        {!showWholeFunction && data.description.length > 200 ? (
+          <Fragment>
+            <span>{data.description.substring(0, 197)}... </span>
+            <a onClick={() => setShowWholeFunction(true)}>more</a>
+          </Fragment>
+        ) : (
+          data.description
+        )}
+      </p>
       {data.geneCoordinates && (
         <div>
           <h4>Gene information</h4>
@@ -162,6 +154,26 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
             </p>
           ))}
         </div>
+      )}
+      {diseaseNotes && (
+        <Fragment>
+          {diseaseNotes.length > 0 && <h4>Disease notes</h4>}
+          {diseaseNotes.map(note => (
+            <Fragment key={v1()}>
+              <h5>{note.diseaseName}</h5>
+              <p>{note.note}</p>
+            </Fragment>
+          ))}
+        </Fragment>
+      )}
+      {!data.isExternallyMapped ? (
+        <span className="label label__reviewed">
+          Disease association source: UniProt
+        </span>
+      ) : (
+        <span className="label label__manual">
+          Disease association source: Imported
+        </span>
       )}
     </Card>
   );
