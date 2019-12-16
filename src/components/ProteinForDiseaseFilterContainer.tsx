@@ -40,7 +40,7 @@ const ProteinForDiseaseFilterContainer: FC<{ data: any; id: string }> = ({
 
   return (
     <div>
-      Only proteins with ({filteredData.length}
+      <strong>Only proteins with ({filteredData.length}</strong>
       ):
       {Object.keys(Filters).map(filterKey => (
         <label
