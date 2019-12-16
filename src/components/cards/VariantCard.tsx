@@ -112,6 +112,12 @@ const columns = {
       `;
     }
   },
+  description: {
+    label: "Description",
+    resolver: (d: VariantData) => {
+      return d.description;
+    }
+  },
   association: {
     label: "Disease association",
     resolver: (d: VariantData) =>
