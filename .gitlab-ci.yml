@@ -1,0 +1,16 @@
+stages:
+  - test
+  - build
+
+image: node
+
+before_script:
+  - npm install -g yarn
+  - yarn --version
+  - yarn
+
+test:
+  - yarn test
+
+build:
+  - yarn build
