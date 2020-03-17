@@ -7,11 +7,11 @@ image: node
 default:
   before_script:
     - echo $PWD
-    - ls
-    - ls node_modules
     - which yarn
     - yarn --version
     - yarn
+    - ls
+    - ls node_modules
 
 test:
   stage: test
