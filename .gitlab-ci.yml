@@ -10,7 +10,9 @@ before_script:
   - yarn
 
 test:
-  - yarn test
+  script:
+    - yarn test
 
 build:
-  - yarn build
+  script:
+    - yarn build
