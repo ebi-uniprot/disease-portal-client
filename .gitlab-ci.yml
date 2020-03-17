@@ -5,7 +5,7 @@ stages:
 image: node
 
 before_script:
-  - yarn global add create-react-app
+  - yarn
 
 test:
   script:
