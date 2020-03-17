@@ -20,3 +20,7 @@ build:
   stage: build
   script:
     - yarn build
+  artifacts:
+    name: disease-portal-client-artifact
+    paths:
+    - build/
