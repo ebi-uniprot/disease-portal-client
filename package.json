@@ -2,7 +2,7 @@
   "name": "disease-portal-client",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://ebi-uniprot.github.io/disease-portal-client",
+  "homepage": "",
   "dependencies": {
     "@types/jest": "^24.0.11",
     "@types/node": "^11.11.0",
@@ -30,6 +30,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build:local": "env-cmd -f .env.local yarn build",
+    "build:development": "env-cmd -f .env.development yarn build",
+    "build:production": "env-cmd -f .env.production yarn build",
     "test": "react-scripts test",
     "deploy": "gh-pages -d build",
     "eject": "react-scripts eject"
