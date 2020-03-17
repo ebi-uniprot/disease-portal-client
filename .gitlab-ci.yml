@@ -4,13 +4,14 @@ stages:
 
 image: node
 
-before_script:
-  - yarn
-
 test:
+  before_script:
+    - yarn
   script:
     - yarn test
 
 build:
+  before_script:
+    - yarn
   script:
     - yarn build
