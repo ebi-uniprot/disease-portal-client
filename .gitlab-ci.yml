@@ -4,14 +4,19 @@ stages:
 
 image: node
 
-test:
+default:
   before_script:
+    - echo $PWD
+    - ls
+    - ls node_modules
+    - which yarn
+    - yarn --version
     - yarn
+
+test:
   script:
     - yarn test
 
 build:
-  before_script:
-    - yarn
   script:
     - yarn build
