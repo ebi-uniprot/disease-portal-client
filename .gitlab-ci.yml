@@ -6,12 +6,10 @@ image: node
 
 default:
   before_script:
-    - echo $PWD
-    - which yarn
+    - node --version
+    - npm --version
     - yarn --version
     - yarn
-    - ls
-    - ls node_modules
 
 test:
   stage: test
