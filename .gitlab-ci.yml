@@ -1,5 +1,5 @@
 stages:
-  - test
+  # - test
   - build_static_assets
   - build_docker_image
   - deploy
@@ -32,8 +32,14 @@ build_docker_image:
   image: docker
   services:
     - docker:dind
-
   script:
+    - env
+    - echo ${CONTAINER_IMAGE}
+    - echo ${CI_REGISTRY_IMAGE}
+    - echo ${CI_COMMIT_SHORT_SHA}
+    - echo ${CI_COMMIT_REF_SLUG}
+    - echo ${EMBASSY_KUBECONFIG}
+    - echo ${KUBECONFIG}
     - ls
     - docker build -t disease-portal-client-nginx-image .
     - docker image ls
