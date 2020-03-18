@@ -30,6 +30,9 @@ build_static_assets:
 build_docker_image:
   stage: build_docker_image
   image: docker
+  services:
+    - docker:dind
+
   script:
     - ls
     - docker build -t disease-portal-client-nginx-image .
