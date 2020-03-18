@@ -1,6 +1,7 @@
 stages:
   - test
-  - build
+  - build_static_assets
+  - build_docker_image
   - deploy
 
 .js:
@@ -17,15 +18,19 @@ test:
   script:
     - yarn test
 
-build:
+build_static_assets:
   extends: .js
-  stage: build
+  stage: build_static_assets
   script:
-    - yarn build
+    - yarn build:local
   artifacts:
-    name: disease-portal-client-artifact
     paths:
       - build/
-# deploy:
-#   stage: deploy
-#   image: nginx
+
+build_docker_image:
+  stage: build_docker_image
+  image: docker
+  script:
+    - ls
+    - docker build -t disease-portal-client-nginx-image .
+    - docker image ls
