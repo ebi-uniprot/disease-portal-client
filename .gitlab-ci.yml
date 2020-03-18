@@ -29,15 +29,21 @@ build_static_assets:
 
 build_docker_image:
   stage: build_docker_image
-  image: docker
+  image: docker:latest
   services:
     - docker:dind
   before_script:
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
   script:
-    - env
+    - docker --version
     - docker build -t disease-portal-client-nginx-image . --no-cache
     - docker image ls
     - docker push ${CONTAINER_IMAGE}
     - docker rmi ${CONTAINER_IMAGE}
     - docker logout "$CI_REGISTRY"
+
+deploy:
+  stage: deploy
+  image: alpine
+  script:
+    - kubectl apply -f k8s_deploy.yml
