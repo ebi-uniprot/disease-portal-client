@@ -36,12 +36,8 @@ build_docker_image:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - env
-    - echo ${CONTAINER_IMAGE}
-    - echo ${CI_REGISTRY_IMAGE}
-    - echo ${CI_COMMIT_SHORT_SHA}
-    - echo ${CI_COMMIT_REF_SLUG}
-    - echo ${EMBASSY_KUBECONFIG}
-    - echo ${KUBECONFIG}
-    - ls
-    - docker build -t disease-portal-client-nginx-image .
+    - docker build -t disease-portal-client-nginx-image . --no-cache
     - docker image ls
+    - docker push ${CONTAINER_IMAGE}
+    - docker rmi ${CONTAINER_IMAGE}
+    - docker logout "$CI_REGISTRY"
