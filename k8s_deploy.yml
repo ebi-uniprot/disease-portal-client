@@ -1,0 +1,17 @@
+apiVersion: apps/v1alpha1
+kind: Deployment
+metadata:
+  name: disease-portal-client
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: disease-portal-client
+    spec:
+      containers:
+        - name: disease-portal-client
+          image: dockerhub.ebi.ac.uk/uniprot/disease-portal/disease-portal-client
+          ports:
+            - containerPort: 80
+          imagePullPolicy: Always
