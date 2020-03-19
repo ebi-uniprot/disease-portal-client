@@ -29,12 +29,14 @@ build_static_assets:
 
 build_docker_image:
   stage: build_docker_image
-  image: docker:latest
   services:
     - docker:dind
+  image: docker:latest
   before_script:
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
   script:
+    - env
+    - echo ${CONTAINER_IMAGE}
     - docker --version
     - docker build -t disease-portal-client-nginx-image . --no-cache
     - docker image ls
