@@ -30,6 +30,8 @@ build_static_assets:
 build_docker_image:
   stage: build_docker_image
   image: docker:latest
+  tags:
+    - dind
   services:
     - docker:dind
   before_script:
