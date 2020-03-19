@@ -43,7 +43,7 @@ build_docker_image:
   script:
     - env
     - echo ${CONTAINER_IMAGE}
-    - docker build -t disease-portal-client-nginx-image . --no-cache
+    - docker build -t ${CONTAINER_IMAGE} --no-cache .
     - docker image ls
     - docker push ${CONTAINER_IMAGE}
     - docker rmi ${CONTAINER_IMAGE}
