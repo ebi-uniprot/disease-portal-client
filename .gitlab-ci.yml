@@ -63,3 +63,4 @@ deploy:
     - kubectl get ns
     - kubectl config set-context --current --namespace=dlrice
     - kubectl config view
+    - kubectl config view --minify | grep namespace:
