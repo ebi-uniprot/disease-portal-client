@@ -51,7 +51,10 @@ build_docker_image:
 deploy:
   stage: deploy
   image: alpine
-  environment: test
+  environment:
+    name: test
+    kubernetes:
+      namespace: dlrice
   before_script:
     - env
   script:
