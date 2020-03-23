@@ -51,7 +51,7 @@ build_docker_image:
 deploy:
   stage: deploy
   image: alpine
-  environment: webProductionTest
+  environment: test
   before_script:
     - env
   script:
