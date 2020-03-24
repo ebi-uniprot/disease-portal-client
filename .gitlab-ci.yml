@@ -51,8 +51,6 @@ build_docker_image:
 deploy:
   stage: deploy
   image: alpine
-  before_script:
-    - env
   script:
     - apk add --no-cache curl git
     - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
@@ -61,13 +59,8 @@ deploy:
     - git clone https://k8s-config-token:${K8S_CONFIG_TOKEN}@gitlab.ebi.ac.uk/dlrice/k8s-config
     - mkdir ~/.kube
     - cp k8s-config/config ~/.kube/
-    - kubectl config view
-    - kubectl config get-contexts
     - kubectl config use-context uniprot-admin-hx-wp-webadmin-02
     - 'printf "$(kubectl create secret docker-registry gitlab-registry --docker-server=$CI_REGISTRY --docker-username=$CI_DEPLOY_USER --docker-password=$CI_DEPLOY_PASSWORD --docker-email=$GITLAB_USER_EMAIL -o yaml --dry-run)" | kubectl apply -f -'
     - kubectl get secrets gitlab-registry -o yaml
-    - kubectl get ns
     - kubectl config set-context --current --namespace=dlrice
-    - kubectl config view
-    - "kubectl config view --minify | grep namespace:"
     - kubectl apply -f k8s_deploy.yml
