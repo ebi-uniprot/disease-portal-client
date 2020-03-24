@@ -62,6 +62,10 @@ deploy:
     - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
     - chmod +x ./kubectl
     - mv ./kubectl /usr/local/bin/kubectl
+    - git clone https://gitlab.ebi.ac.uk/dlrice/k8s-config
+    - mkdir -p ~/.kube
+    - cp k8s-config/config ~/.kube/
+    - cat ~/.kube/config
     - kubectl config view
     - kubectl config get-contexts
     - kubectl config use-context uniprot-admin-hx-wp-webadmin-02
