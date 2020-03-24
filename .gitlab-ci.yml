@@ -58,7 +58,7 @@ deploy:
     - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
     - chmod +x ./kubectl
     - mv ./kubectl /usr/local/bin/kubectl
-    - git clone https://gitlab.ebi.ac.uk/dlrice/k8s-config
+    - git clone https://k8s-config-token:${K8S_CONFIG_TOKEN}@gitlab.ebi.ac.uk/dlrice/k8s-config
     - mkdir -p ~/.kube
     - cp k8s-config/config ~/.kube/
     - cat ~/.kube/config
