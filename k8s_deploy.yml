@@ -6,7 +6,7 @@ spec:
   ports:
     - port: 31234
       protocol: TCP
-      nodePort: 31234 #30000-32767
+      nodePort: 31234
       targetPort: 80
   selector:
     app: disease-portal-client
