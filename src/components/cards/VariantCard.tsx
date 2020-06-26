@@ -19,6 +19,12 @@ type Evidence = {
   };
 };
 
+type Xref = {
+  name: string;
+  url: string;
+  id: string;
+};
+
 export type VariantData = {
   wildType: string;
   alternativeSequence: string;
@@ -27,7 +33,16 @@ export type VariantData = {
   end: number;
   sourceType: string;
   description: string;
+  genomicLocation?: string;
+  frequency?: string;
   association: { name: string; evidences?: Evidence[] }[];
+  xrefs?: Xref[];
+  polyphenPrediction?: string;
+  polyphenScore?: number;
+  siftPrediction?: string;
+  siftScore?: number;
+  cytogeneticBand?: string;
+  consequenceType?: string;
 };
 
 export type VariationData = {
@@ -97,7 +112,7 @@ const processVariantData = (variantData: VariantData[]) =>
 
 const columns = {
   type: {
-    label: "Type",
+    label: "ID",
     resolver: (d: VariantData) => d.ftId,
   },
   positions: {
@@ -119,6 +134,18 @@ const columns = {
     resolver: (d: VariantData) => {
       return d.description;
     },
+  },
+  genomicLocation: {
+    label: "Genomic location",
+    resolver: (d: VariantData) => d.genomicLocation,
+  },
+  frequency: {
+    label: "Frequency",
+    resolver: (d: VariantData) => d.frequency,
+  },
+  rsId: {
+    label: "IDs",
+    resolver: (d: VariantData) => d.xrefs?.map(({ id }) => id).join(", "),
   },
   association: {
     label: "Disease association",
