@@ -28,7 +28,7 @@ const getAllItems = (
     items.forEach((item: any) => totalItems.add(item));
   }
   if (diseaseItem.children) {
-    diseaseItem.children.forEach(childDisease => {
+    diseaseItem.children.forEach((childDisease) => {
       getAllItems(childDisease, keyName, totalItems);
     });
   }
@@ -77,10 +77,10 @@ const generateDiseaseLinks = (diseaseItem: DiseaseData) => {
 
 const DiseaseChildren: FC<{ data: DiseaseData[]; depth?: number }> = ({
   data,
-  depth = 0
+  depth = 0,
 }) => {
   const filtered = data.filter(
-    disease =>
+    (disease) =>
       (disease.children && disease.children.length > 0) ||
       (disease.proteins && disease.proteins.length > 0)
   );
@@ -90,6 +90,7 @@ const DiseaseChildren: FC<{ data: DiseaseData[]; depth?: number }> = ({
         <div key={disease.diseaseId} style={{ marginLeft: `${depth}rem` }}>
           <Link to={`/${Context.DISEASE}/${disease.diseaseId}`}>
             <img
+              alt="plus/minus"
               src={i < filtered.length - 1 ? TreeLeaf : TreeLeafEnd}
               width={25}
               height={25}

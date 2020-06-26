@@ -1,4 +1,4 @@
-import React, { Fragment, FunctionComponent, useState } from "react";
+import React, { Fragment, FunctionComponent } from "react";
 import axios from "axios";
 import { withRouter, RouteComponentProps } from "react-router";
 import useApi from "./UseApi";
@@ -10,9 +10,9 @@ import PageContainer from "../PageContainer";
 import { baseUrl } from "../config";
 import ProteinForDiseaseFilterContainer from "./ProteinForDiseaseFilterContainer";
 
-const ProteinsForDiseaseCardContainer: FunctionComponent<RouteComponentProps<
-  any
-> & { identifier?: string }> = ({ match, identifier }) => {
+const ProteinsForDiseaseCardContainer: FunctionComponent<
+  RouteComponentProps<any> & { identifier?: string }
+> = ({ match, identifier }) => {
   let id: string;
   if (identifier) {
     id = identifier;
@@ -20,15 +20,17 @@ const ProteinsForDiseaseCardContainer: FunctionComponent<RouteComponentProps<
     id = match.params.id;
   }
 
-  const { data, isLoading } = useApi(`${baseUrl}/disease/${id}/proteins`);
+  const { data, isLoading } = useApi<{ results: ProteinData[] }>(
+    `${baseUrl}/disease/${id}/proteins`
+  );
 
   const downloadProteins = (proteinIds: string[]) => {
     const url = `${baseUrl}/proteins/${proteinIds.join(",")}/download`;
     axios({
       url: url,
       method: "GET",
-      responseType: "blob" // important
-    }).then(response => {
+      responseType: "blob", // important
+    }).then((response) => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
@@ -43,7 +45,7 @@ const ProteinsForDiseaseCardContainer: FunctionComponent<RouteComponentProps<
   }
 
   const sortedData = data.results.sort(
-    (a: ProteinData, b: ProteinData) => b.isExternallyMapped && -1
+    (a: ProteinData, b: ProteinData) => (b.isExternallyMapped ? 1 : 0) && -1
   );
 
   return (

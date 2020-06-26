@@ -7,7 +7,7 @@ import "./PageTemplate.css";
 const PageTemplate: FC<{
   context: Context;
   id: string;
-  length: number;
+  length?: number;
   isLoading: boolean;
   children: ReactNode;
 }> = ({ context, id, length, children, isLoading }) => {

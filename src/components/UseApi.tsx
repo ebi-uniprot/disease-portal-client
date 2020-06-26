@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const UseApi = (url: string) => {
-  const [data, setData] = useState();
+function UseApi<T>(url: string) {
+  const [data, setData] = useState<T>();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
@@ -25,6 +25,6 @@ const UseApi = (url: string) => {
   }, [url]);
 
   return { data, isLoading, isError };
-};
+}
 
 export default UseApi;

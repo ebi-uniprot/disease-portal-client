@@ -13,7 +13,9 @@ const PathwaysForProteinCardContainer: FunctionComponent<RouteComponentProps<
   any
 >> = ({ match }) => {
   const { id } = match.params;
-  const { data, isLoading } = useApi(`${baseUrl}/protein/${id}/xrefs`);
+  const { data, isLoading } = useApi<{ results: PathwayData[] }>(
+    `${baseUrl}/protein/${id}/xrefs`
+  );
   let pathwayCardNodes: ReactElement[] = [];
   if (data) {
     data.results.forEach((item: PathwayData) => {

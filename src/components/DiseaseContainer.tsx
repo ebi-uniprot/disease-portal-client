@@ -1,19 +1,20 @@
-import React, { Fragment, FunctionComponent, FC } from "react";
+import React, { Fragment, FunctionComponent } from "react";
 import useApi from "./UseApi";
-import DiseaseCard from "./cards/DiseaseCard";
+import DiseaseCard, { DiseaseData } from "./cards/DiseaseCard";
 import { baseUrl } from "../config";
 
 const DiseaseContainer: FunctionComponent<{ id: string }> = ({ id }) => {
-  const { data } = useApi(`${baseUrl}/diseases/${id}`);
+  const { data } = useApi<{ result: DiseaseData }>(`${baseUrl}/diseases/${id}`);
   if (!data) {
     return null;
   }
+  const { result } = data;
   return (
     <Fragment>
       <div className="page-header">
         <h2>Disease</h2>
       </div>
-      <DiseaseCard data={data.result} />
+      {result && <DiseaseCard data={result} />}
     </Fragment>
   );
 };

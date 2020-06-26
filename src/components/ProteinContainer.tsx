@@ -1,10 +1,12 @@
-import React, { Fragment, FunctionComponent, FC } from "react";
+import React, { Fragment, FunctionComponent } from "react";
 import useApi from "./UseApi";
-import ProteinCard from "./cards/ProteinCard";
+import ProteinCard, { ProteinData } from "./cards/ProteinCard";
 import { baseUrl } from "../config";
 
 const ProteinContainer: FunctionComponent<{ id: string }> = ({ id }) => {
-  const { data } = useApi(`${baseUrl}/proteins/${id}`);
+  const { data } = useApi<{ results: ProteinData }>(
+    `${baseUrl}/proteins/${id}`
+  );
   if (!data) {
     return null;
   }
@@ -13,7 +15,7 @@ const ProteinContainer: FunctionComponent<{ id: string }> = ({ id }) => {
       <div className="page-header">
         <h2>Protein</h2>
       </div>
-      <ProteinCard data={data.result} id={id} />;
+      <ProteinCard data={data?.results} id={id} />;
     </Fragment>
   );
 };

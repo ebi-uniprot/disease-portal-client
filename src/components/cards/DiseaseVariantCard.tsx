@@ -1,13 +1,13 @@
-import React, { FunctionComponent, Fragment, useEffect } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import ProtvistaDatatable from "protvista-datatable";
-import { Card, InfoList } from "franklin-sites";
+import { Card } from "franklin-sites";
 import { loadWebComponent, ProtvistaDatatableType } from "./VariantCard";
 import { Link } from "react-router-dom";
 import { Context } from "../../types/context";
 
 loadWebComponent("protvista-datatable", ProtvistaDatatable);
 
-type DiseaseVariant = {
+export type DiseaseVariant = {
   altSeq: string;
   featureId: string;
   featureLocation: {
@@ -24,25 +24,25 @@ type DiseaseVariant = {
 const columns = {
   position: {
     label: "Position",
-    resolver: (variant: DiseaseVariant) => variant.featureLocation.startId
+    resolver: (variant: DiseaseVariant) => variant.featureLocation.startId,
   },
   variation: {
     label: "Variation",
     resolver: (variant: DiseaseVariant) =>
-      `${variant.origSeq} -> ${variant.altSeq}`
+      `${variant.origSeq} -> ${variant.altSeq}`,
   },
   id: {
     label: "Feature ID",
-    resolver: (variant: DiseaseVariant) => variant.featureId
+    resolver: (variant: DiseaseVariant) => variant.featureId,
   },
   status: {
     label: "Status",
-    resolver: (variant: DiseaseVariant) => variant.featureStatus
+    resolver: (variant: DiseaseVariant) => variant.featureStatus,
   },
   report: {
     label: "Report",
-    resolver: (variant: DiseaseVariant) => variant.report
-  }
+    resolver: (variant: DiseaseVariant) => variant.report,
+  },
 };
 
 const DiseaseVariantCard: FunctionComponent<{
@@ -57,7 +57,7 @@ const DiseaseVariantCard: FunctionComponent<{
       protvistaDatatable.columns = columns;
       protvistaDatatable.data = data;
     }
-  }, [data]);
+  }, [data, accession]);
 
   return (
     <Card title={`For protein ${accession}`} key={accession}>

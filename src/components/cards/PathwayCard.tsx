@@ -1,11 +1,11 @@
-import React, { Fragment, FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { Card } from "franklin-sites";
 
 export enum PathwayDbType {
   REACTOME = "Reactome",
   CHEMBL = "ChEMBL",
   DISGENET = "DisGeNET",
-  OPENTARGETS = "OpenTargets"
+  OPENTARGETS = "OpenTargets",
 }
 
 export type PathwayData = {
@@ -42,16 +42,20 @@ const PathwayCard: FunctionComponent<{ data: PathwayData }> = ({ data }) => {
       const diagram = Reactome.Diagram.create({
         placeHolder: `${data.primaryId}_placeholder`,
         width: 900,
-        height: 500
+        height: 500,
       });
       diagram.loadDiagram(data.primaryId);
     }
-  }, [showPathway]);
+  }, [showPathway, data.primaryId]);
 
   return (
     <Card title={data.description} key={data.primaryId}>
       <p>
-        <a href={getUrl(data.dbType, data.primaryId)} target="_blank">
+        <a
+          href={getUrl(data.dbType, data.primaryId)}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           {data.primaryId}
         </a>
       </p>
