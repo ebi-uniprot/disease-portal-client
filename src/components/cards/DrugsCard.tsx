@@ -1,4 +1,4 @@
-import React, { Fragment, FunctionComponent } from "react";
+import React, { FunctionComponent } from "react";
 import { Card, InfoList } from "franklin-sites";
 import { Context } from "../../types/context";
 import { generateLink } from "../utils";
@@ -46,18 +46,22 @@ const DrugsCard: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
     {
       title: "Clinical trial",
       content: (
-        <a href={data.clinicalTrialLink} target="_blank">
+        <a
+          href={data.clinicalTrialLink}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Phase {data.clinicalTrialPhase}
         </a>
-      )
+      ),
     },
     {
       title: "Type",
-      content: data.moleculeType
+      content: data.moleculeType,
     },
     {
       title: "Mechanism of action",
-      content: data.mechanismOfAction
+      content: data.mechanismOfAction,
     },
     {
       title: "Source",
@@ -65,21 +69,22 @@ const DrugsCard: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
         <a
           href={`//www.ebi.ac.uk/chembl/compound_report_card/${data.sourceId}`}
           target="_blank"
+          rel="noopener noreferrer"
         >
           {data.sourceId}
         </a>
-      )
+      ),
     },
     {
       title: "Evidences",
-      content: data.evidences.map(evidence => (
+      content: data.evidences.map((evidence) => (
         <div key={evidence}>
-          <a href={evidence} target="_blank">
+          <a href={evidence} target="_blank" rel="noopener noreferrer">
             {evidence}
           </a>
         </div>
-      ))
-    }
+      )),
+    },
   ];
 
   return (

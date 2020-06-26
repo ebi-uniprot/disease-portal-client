@@ -2,7 +2,7 @@ import React, { Fragment, FunctionComponent } from "react";
 import { RouteComponentProps } from "react-router";
 import { v1 } from "uuid";
 import useApi from "./UseApi";
-import DiseaseVariantCard from "./cards/DiseaseVariantCard";
+import DiseaseVariantCard, { DiseaseVariant } from "./cards/DiseaseVariantCard";
 import PageTemplate from "../PageTemplate";
 import { Context } from "../types/context";
 import PageContainer from "../PageContainer";
@@ -16,7 +16,7 @@ const groupBy = (items: any[], key: string) => {
   return items.reduce(
     (result, item) => ({
       ...result,
-      [item[key]]: [...(result[item[key]] || []), item]
+      [item[key]]: [...(result[item[key]] || []), item],
     }),
     {}
   );
@@ -26,7 +26,9 @@ const VariantsForDiseaseCardContainer: FunctionComponent<RouteComponentProps<
   any
 >> = ({ match }) => {
   const { id } = match.params;
-  const { data, isLoading } = useApi(`${baseUrl}/disease/${id}/variants`);
+  const { data, isLoading } = useApi<{ results: DiseaseVariant[] }>(
+    `${baseUrl}/disease/${id}/variants`
+  );
 
   if (!data) {
     return null;
@@ -41,11 +43,11 @@ const VariantsForDiseaseCardContainer: FunctionComponent<RouteComponentProps<
           <PageTemplate
             context={Context.VARIANT}
             id={id}
-            length={data && data.results.length}
+            length={data?.results && data.results.length}
             isLoading={isLoading}
           >
             {groupedData &&
-              Object.keys(groupedData).map(item => (
+              Object.keys(groupedData).map((item) => (
                 <DiseaseVariantCard
                   accession={item}
                   data={groupedData && groupedData[item]}

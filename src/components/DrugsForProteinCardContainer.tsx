@@ -13,7 +13,9 @@ const DrugsForProteinCardContainer: FunctionComponent<RouteComponentProps<
   any
 >> = ({ match }) => {
   const { id } = match.params;
-  const { data, isLoading } = useApi(`${baseUrl}/protein/${id}/drugs`);
+  const { data, isLoading } = useApi<{ results: DrugsData[] }>(
+    `${baseUrl}/protein/${id}/drugs`
+  );
 
   return (
     <Fragment>
@@ -23,7 +25,7 @@ const DrugsForProteinCardContainer: FunctionComponent<RouteComponentProps<
           <PageTemplate
             context={Context.DRUG}
             id={id}
-            length={data && data.results.length}
+            length={data?.results && data.results.length}
             isLoading={isLoading}
           >
             {data &&

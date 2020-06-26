@@ -89,13 +89,13 @@ const generateProteinLinks = (proteinItem: ProteinData) => {
 
 const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
   data,
-  id
+  id,
 }) => {
   const [showWholeFunction, setShowWholeFunction] = useState(false);
 
   const diseaseNotes =
     data.diseases &&
-    data.diseases.filter(disease => disease.diseaseName === id);
+    data.diseases.filter((disease) => disease.diseaseName === id);
 
   return (
     <Card
@@ -106,6 +106,7 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
             <a
               href={`//www.uniprot.org/uniprot/${data.accession}`}
               target="_blank"
+              rel="noopener noreferrer"
             >
               {data.accession}
             </a>
@@ -120,7 +121,7 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
         {!showWholeFunction && data.description.length > 200 ? (
           <Fragment>
             <span>{data.description.substring(0, 197)}... </span>
-            <a onClick={() => setShowWholeFunction(true)}>more</a>
+            <button onClick={() => setShowWholeFunction(true)}>more</button>
           </Fragment>
         ) : (
           data.description
@@ -129,25 +130,28 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
       {data.geneCoordinates && (
         <div>
           <h4>Gene information</h4>
-          {data.geneCoordinates.map(coordinate => (
+          {data.geneCoordinates.map((coordinate) => (
             <p key={v1()}>
               {coordinate.chromosome}:{formatLargeNumber(coordinate.start)}-
               {formatLargeNumber(coordinate.end)}{" "}
               <a
                 href={`//www.ensembl.org/id/${coordinate.ensemblGeneId}`}
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 {coordinate.ensemblGeneId}
               </a>{" "}
               <a
                 href={`//www.ensembl.org/id/${coordinate.ensemblTranscriptId}`}
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 {coordinate.ensemblTranscriptId}
               </a>{" "}
               <a
                 href={`//www.ensembl.org/id/${coordinate.ensemblTranslationId}`}
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 {coordinate.ensemblTranslationId}
               </a>
@@ -158,7 +162,7 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
       {diseaseNotes && (
         <Fragment>
           {diseaseNotes.length > 0 && <h4>Disease notes</h4>}
-          {diseaseNotes.map(note => (
+          {diseaseNotes.map((note) => (
             <Fragment key={v1()}>
               <h5>{note.diseaseName}</h5>
               <p>{note.note}</p>

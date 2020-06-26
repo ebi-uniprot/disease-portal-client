@@ -1,11 +1,11 @@
-import React, { FunctionComponent, useEffect, useState, useRef } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { html } from "lit-html";
 import ProtvistaVariation from "protvista-variation";
 import ProtvistaManager from "protvista-manager";
 import ProtvistaSequence from "protvista-sequence";
 import ProtvistaNavigation from "protvista-navigation";
 import ProtvistaDatatable from "protvista-datatable";
-import ProtvistaFilter, { ProtvistaCheckbox } from "protvista-filter";
+import ProtvistaFilter from "protvista-filter";
 import { v1 } from "uuid";
 import { Card } from "franklin-sites";
 import "./VariantCard.css";
@@ -19,6 +19,12 @@ type Evidence = {
   };
 };
 
+type Xref = {
+  name: string;
+  url: string;
+  id: string;
+};
+
 export type VariantData = {
   wildType: string;
   alternativeSequence: string;
@@ -27,7 +33,16 @@ export type VariantData = {
   end: number;
   sourceType: string;
   description: string;
+  genomicLocation?: string;
+  frequency?: string;
   association: { name: string; evidences?: Evidence[] }[];
+  xrefs?: Xref[];
+  polyphenPrediction?: string;
+  polyphenScore?: number;
+  siftPrediction?: string;
+  siftScore?: number;
+  cytogeneticBand?: string;
+  consequenceType?: string;
 };
 
 export type VariationData = {
@@ -68,7 +83,10 @@ export interface ProtvistaDatatableType extends Element {
   data: any[];
 }
 
-export const loadWebComponent = (name: string, className: Function) => {
+export const loadWebComponent = (
+  name: string,
+  className: CustomElementConstructor
+) => {
   if (!window.customElements.get(name)) {
     window.customElements.define(name, className);
   }
@@ -80,29 +98,28 @@ loadWebComponent("protvista-navigation", ProtvistaNavigation);
 loadWebComponent("protvista-variation", ProtvistaVariation);
 loadWebComponent("protvista-datatable", ProtvistaDatatable);
 loadWebComponent("protvista-filter", ProtvistaFilter);
-loadWebComponent("protvista-checkbox", ProtvistaCheckbox);
 
 const processVariantData = (variantData: VariantData[]) =>
-  variantData.map(variant => {
+  variantData.map((variant) => {
     return {
       accession: variant.ftId,
       variant: variant.alternativeSequence,
       start: variant.begin,
       end: variant.end,
-      association: variant.association
+      association: variant.association,
     };
   });
 
 const columns = {
   type: {
-    label: "Type",
-    resolver: (d: VariantData) => d.ftId
+    label: "ID",
+    resolver: (d: VariantData) => d.ftId,
   },
   positions: {
     label: "Positions",
     resolver: (d: VariantData) => {
       return d.begin === d.end ? d.begin : `${d.begin}-${d.end}`;
-    }
+    },
   },
   change: {
     label: "Change",
@@ -110,47 +127,57 @@ const columns = {
       return `
         ${d.wildType}->${d.alternativeSequence}
       `;
-    }
+    },
   },
   description: {
     label: "Description",
     resolver: (d: VariantData) => {
       return d.description;
-    }
+    },
+  },
+  genomicLocation: {
+    label: "Genomic location",
+    resolver: (d: VariantData) => d.genomicLocation,
+  },
+  frequency: {
+    label: "Frequency",
+    resolver: (d: VariantData) => d.frequency,
+  },
+  rsId: {
+    label: "IDs",
+    resolver: (d: VariantData) => d.xrefs?.map(({ id }) => id).join(", "),
   },
   association: {
     label: "Disease association",
     resolver: (d: VariantData) =>
       d.association
         ? d.association.map(
-            association =>
+            (association) =>
               html`
                 <p>
                   <strong>${association.name}</strong>${association.evidences &&
-                    association.evidences.map(ev =>
-                      ev.source.url
-                        ? html`
-                            <a href=${ev.source.url} target="_blank"
-                              >${ev.source.name}:${ev.source.id}</a
-                            >
-                          `
-                        : html`
-                            ${ev.source.name}:${ev.source.id}
-                          `
-                    )}
+                  association.evidences.map((ev) =>
+                    ev.source.url
+                      ? html`
+                          <a href=${ev.source.url} target="_blank"
+                            >${ev.source.name}:${ev.source.id}</a
+                          >
+                        `
+                      : html` ${ev.source.name}:${ev.source.id} `
+                  )}
                 </p>
               `
           )
-        : " - "
-  }
+        : " - ",
+  },
 };
 
 const getDiseaseListForFeatures = (features: VariantData[]) => {
   const diseaseSet = new Set();
   features.forEach(
-    variant =>
+    (variant) =>
       variant.association &&
-      variant.association.forEach(association =>
+      variant.association.forEach((association) =>
         diseaseSet.add(association.name)
       )
   );
@@ -160,11 +187,11 @@ const getDiseaseListForFeatures = (features: VariantData[]) => {
 const getFilters = (data: VariantData[]) => {
   const diseases = getDiseaseListForFeatures(data);
 
-  return Array.from(diseases).map(diseaseName => {
+  return Array.from(diseases).map((diseaseName) => {
     return {
       name: diseaseName as string,
       type: { name: "diseases", text: "Disease" },
-      options: { labels: [diseaseName as string], colors: ["#A31D5F"] }
+      options: { labels: [diseaseName as string], colors: ["#A31D5F"] },
     };
   });
 };
@@ -177,7 +204,7 @@ const VariantCard: FunctionComponent<{ data: VariationData }> = ({ data }) => {
 
   const _handleEvent = (e: ChangeEvent) => {
     if (e.detail && e.detail.type === "activefilters") {
-      setActiveFilters(e.detail.value.map(d => d.substring(9)));
+      setActiveFilters(e.detail.value.map((d) => d.substring(9)));
     }
   };
 
@@ -188,16 +215,16 @@ const VariantCard: FunctionComponent<{ data: VariationData }> = ({ data }) => {
     if (protvistaManager) {
       protvistaManager.addEventListener("change", _handleEvent);
     }
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     let filteredData;
     if (activeFilters.length > 0) {
-      filteredData = data.features.filter(feature => {
+      filteredData = data.features.filter((feature) => {
         if (!feature.association) {
-          return;
+          return null;
         }
-        return feature.association.some(diseaseName =>
+        return feature.association.some((diseaseName) =>
           activeFilters.includes(diseaseName.name)
         );
       });
@@ -223,14 +250,14 @@ const VariantCard: FunctionComponent<{ data: VariationData }> = ({ data }) => {
     if (protvistaVariation) {
       protvistaVariation.data = {
         sequence: data.sequence,
-        variants: processVariantData(filteredData)
+        variants: processVariantData(filteredData),
       };
     }
     if (protvistaDatatable) {
       protvistaDatatable.columns = columns;
       protvistaDatatable.data = filteredData;
     }
-  }, [activeFilters]);
+  }, [activeFilters, id, data.features, data.sequence, diseases]);
 
   if (!data.sequence) {
     return null;

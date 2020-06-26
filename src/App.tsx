@@ -8,7 +8,6 @@ import ProteinsForDiseaseCardContainer from "./components/ProteinsForDiseaseCard
 import PathwaysForProteinCardContainer from "./components/PathwaysForProteinCardContainer";
 import VariantsForProteinCardContainer from "./components/VariantsForProteinCardContainer";
 import DrugsForDiseaseCardContainer from "./components/DrugsForDiseaseCardContainer";
-import DiseaseContainer from "./components/DiseaseContainer";
 import { Context } from "./types/context";
 import InteractionCardContainer from "./components/InteractionsForProteinCardContainer";
 import VariantsForDiseaseCardContainer from "./components/VariantsForDiseaseCardContainer";
