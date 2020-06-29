@@ -1,7 +1,7 @@
 import React, { Fragment, FC, ReactNode } from "react";
-import { Context } from "./types/context";
-import { colors } from "./config";
-import spinner from "./svg/spinner.svg";
+import { Context } from "../types/context";
+import { colors } from "../config";
+import spinner from "../svg/spinner.svg";
 import "./PageTemplate.css";
 
 const PageTemplate: FC<{

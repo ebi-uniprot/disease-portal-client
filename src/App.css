@@ -50,3 +50,9 @@ body,
 .disabled-text {
   color: #a7a7a7;
 }
+
+.filter-row {
+  background-color: white;
+  position: sticky;
+  top: 0;
+}

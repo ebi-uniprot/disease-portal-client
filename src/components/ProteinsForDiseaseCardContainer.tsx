@@ -1,14 +1,15 @@
 import React, { Fragment, FunctionComponent } from "react";
-import axios from "axios";
+// import axios from "axios";
 import { withRouter, RouteComponentProps } from "react-router";
 import useApi from "./UseApi";
 import { ProteinData } from "./cards/ProteinCard";
-import PageTemplate from "../PageTemplate";
-import { Context } from "../types/context";
+// import PageTemplate from "../layout/PageTemplate";
+// import { Context } from "../types/context";
 import DiseaseContainer from "./DiseaseContainer";
-import PageContainer from "../PageContainer";
+// import PageContainer from "../layout/PageContainer";
 import { baseUrl } from "../config";
 import ProteinForDiseaseFilterContainer from "./ProteinForDiseaseFilterContainer";
+import ThreePartGrid from "../layout/ThreePartGrid";
 
 const ProteinsForDiseaseCardContainer: FunctionComponent<
   RouteComponentProps<any> & { identifier?: string }
@@ -20,25 +21,25 @@ const ProteinsForDiseaseCardContainer: FunctionComponent<
     id = match.params.id;
   }
 
-  const { data, isLoading } = useApi<{ results: ProteinData[] }>(
+  const { data } = useApi<{ results: ProteinData[] }>(
     `${baseUrl}/disease/${id}/proteins`
   );
 
-  const downloadProteins = (proteinIds: string[]) => {
-    const url = `${baseUrl}/proteins/${proteinIds.join(",")}/download`;
-    axios({
-      url: url,
-      method: "GET",
-      responseType: "blob", // important
-    }).then((response) => {
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "ad-prototype.csv");
-      document.body.appendChild(link);
-      link.click();
-    });
-  };
+  // const downloadProteins = (proteinIds: string[]) => {
+  //   const url = `${baseUrl}/proteins/${proteinIds.join(",")}/download`;
+  //   axios({
+  //     url: url,
+  //     method: "GET",
+  //     responseType: "blob", // important
+  //   }).then((response) => {
+  //     const url = window.URL.createObjectURL(new Blob([response.data]));
+  //     const link = document.createElement("a");
+  //     link.href = url;
+  //     link.setAttribute("download", "ad-prototype.csv");
+  //     document.body.appendChild(link);
+  //     link.click();
+  //   });
+  // };
 
   if (!data) {
     return null;
@@ -50,8 +51,14 @@ const ProteinsForDiseaseCardContainer: FunctionComponent<
 
   return (
     <Fragment>
-      <PageContainer
-        leftColumn={<DiseaseContainer id={id} />}
+      <ThreePartGrid
+        top={<DiseaseContainer id={id} />}
+        left={<ProteinForDiseaseFilterContainer data={sortedData} id={id} />}
+        right={<span>Right</span>}
+      />
+
+      {/* <PageContainer
+        leftColumn={}
         rightColumn={
           <PageTemplate
             context={Context.PROTEIN}
@@ -74,10 +81,9 @@ const ProteinsForDiseaseCardContainer: FunctionComponent<
                 Download
               </button>
             )}
-            <ProteinForDiseaseFilterContainer data={sortedData} id={id} />
           </PageTemplate>
         }
-      />
+      /> */}
     </Fragment>
   );
 };

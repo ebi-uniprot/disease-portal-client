@@ -4,9 +4,9 @@ import InteractionViewer from "interaction-viewer";
 import { loadWebComponent } from "./cards/VariantCard";
 import useApi from "./UseApi";
 import { Card } from "franklin-sites";
-import PageTemplate from "../PageTemplate";
+import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
-import PageContainer from "../PageContainer";
+import PageContainer from "../layout/PageContainer";
 import ProteinContainer from "./ProteinContainer";
 import { baseUrl } from "../config";
 

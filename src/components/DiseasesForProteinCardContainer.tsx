@@ -3,9 +3,9 @@ import { RouteComponentProps } from "react-router";
 import { v1 } from "uuid";
 import useApi from "./UseApi";
 import DiseaseCard, { DiseaseData } from "./cards/DiseaseCard";
-import PageTemplate from "../PageTemplate";
+import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
-import PageContainer from "../PageContainer";
+import PageContainer from "../layout/PageContainer";
 import ProteinContainer from "./ProteinContainer";
 import { baseUrl } from "../config";
 

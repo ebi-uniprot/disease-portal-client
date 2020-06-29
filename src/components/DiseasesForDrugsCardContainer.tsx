@@ -2,7 +2,7 @@ import React, { Fragment, FunctionComponent } from "react";
 import { withRouter, RouteComponentProps } from "react-router";
 import { v1 } from "uuid";
 import useApi from "./UseApi";
-import PageTemplate from "../PageTemplate";
+import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
 import DiseaseCard, { DiseaseData } from "./cards/DiseaseCard";
 import { baseUrl } from "../config";

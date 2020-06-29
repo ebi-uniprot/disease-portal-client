@@ -2,9 +2,9 @@ import React, { Fragment, FunctionComponent } from "react";
 import { withRouter, RouteComponentProps } from "react-router";
 import useApi from "./UseApi";
 import VariantCard, { VariantData, VariationData } from "./cards/VariantCard";
-import PageTemplate from "../PageTemplate";
+import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
-import PageContainer from "../PageContainer";
+import PageContainer from "../layout/PageContainer";
 import ProteinContainer from "./ProteinContainer";
 
 const VariantsForProteinCardContainer: FunctionComponent<RouteComponentProps<

@@ -9,14 +9,7 @@ const DiseaseContainer: FunctionComponent<{ id: string }> = ({ id }) => {
     return null;
   }
   const { result } = data;
-  return (
-    <Fragment>
-      <div className="page-header">
-        <h2>Disease</h2>
-      </div>
-      {result && <DiseaseCard data={result} />}
-    </Fragment>
-  );
+  return <Fragment>{result && <DiseaseCard data={result} />}</Fragment>;
 };
 
 export default DiseaseContainer;

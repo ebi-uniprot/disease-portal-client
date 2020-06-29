@@ -6,63 +6,65 @@ enum Filters {
   INT = "interactions",
   PAT = "pathways",
   DRU = "drugs",
-  SEQ = "variants"
+  SEQ = "variants",
 }
 
 const ProteinForDiseaseFilterContainer: FC<{ data: any; id: string }> = ({
   data,
-  id
+  id,
 }) => {
   const [selectedFilters, setSelectedFilters] = useState({
     [Filters.INT]: false,
     [Filters.PAT]: false,
     [Filters.DRU]: false,
-    [Filters.SEQ]: false
+    [Filters.SEQ]: false,
   });
 
   const handleFilterClick = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedFilters({
       ...selectedFilters,
-      [e.target.name]: e.target.checked
+      [e.target.name]: e.target.checked,
     });
   };
 
   const appliedFilters = Object.keys(selectedFilters).filter(
-    f => selectedFilters[(f as unknown) as Filters]
+    (f) => selectedFilters[(f as unknown) as Filters]
   );
 
   const filteredData = data.filter((protein: ProteinData) =>
-    appliedFilters.every(filter => {
+    appliedFilters.every((filter) => {
       const items = protein[(filter as unknown) as Filters];
       return items && items.length > 0;
     })
   );
 
   return (
-    <div>
-      <strong>Only proteins with ({filteredData.length}</strong>
-      ):
-      {Object.keys(Filters).map(filterKey => (
-        <label
-          key={filterKey}
-          style={{ display: "inline-block", marginLeft: "1rem" }}
-        >
-          <input
-            type="checkbox"
-            onChange={e => handleFilterClick(e)}
-            checked={
-              selectedFilters[Filters[filterKey as keyof typeof Filters]]
-            }
-            name={Filters[filterKey as keyof typeof Filters]}
-          />{" "}
-          {Filters[filterKey as keyof typeof Filters]}
-        </label>
-      ))}
+    <section>
+      <section className="filter-row">
+        <strong>Only proteins with ({filteredData.length}</strong>
+        ):
+        {Object.keys(Filters).map((filterKey) => (
+          <label
+            key={filterKey}
+            style={{ display: "inline-block", marginLeft: "1rem" }}
+          >
+            <input
+              type="checkbox"
+              onChange={(e) => handleFilterClick(e)}
+              checked={
+                selectedFilters[Filters[filterKey as keyof typeof Filters]]
+              }
+              name={Filters[filterKey as keyof typeof Filters]}
+            />{" "}
+            {Filters[filterKey as keyof typeof Filters]}
+          </label>
+        ))}
+      </section>
       {filteredData &&
         filteredData.map((item: ProteinData) => (
           <ProteinCard data={item} id={id} key={v1()} />
         ))}
-    </div>
+    </section>
   );
 };
 
