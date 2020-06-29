@@ -7,13 +7,10 @@ import DiseasesForProteinCardContainer from "./components/DiseasesForProteinCard
 import ProteinsForDiseaseCardContainer from "./components/ProteinsForDiseaseCardContainer";
 import PathwaysForProteinCardContainer from "./components/PathwaysForProteinCardContainer";
 import VariantsForProteinCardContainer from "./components/VariantsForProteinCardContainer";
-import DrugsForDiseaseCardContainer from "./components/DrugsForDiseaseCardContainer";
-import { Context } from "./types/context";
-import InteractionCardContainer from "./components/InteractionsForProteinCardContainer";
-import VariantsForDiseaseCardContainer from "./components/VariantsForDiseaseCardContainer";
 import DrugsForProteinCardContainer from "./components/DrugsForProteinCardContainer";
-import DiseasesForDrugsCardContainer from "./components/DiseasesForDrugsCardContainer";
-import ProteinsForDrugsCardContainer from "./components/ProteinsForDrugsCardContainer";
+import LayoutTemplate from "./layout/LayoutTemplate";
+import DiseaseContainer from "./components/DiseaseContainer";
+import InteractionsForProteinCardContainer from "./components/InteractionsForProteinCardContainer";
 
 class App extends Component {
   render() {
@@ -21,49 +18,53 @@ class App extends Component {
       <FranklinSite>
         <BrowserRouter basename={process.env.PUBLIC_URL}>
           <div className="wrapper">
-            <Header
-              className="main-header"
-              logo={<img src={logo} alt="logo" width={120} height={50} />}
-            />
             <div className="main-content">
-              <Switch>
-                <Route
-                  path={"/"}
-                  exact={true}
-                  render={(props: any) => {
-                    return (
-                      <ProteinsForDiseaseCardContainer
-                        identifier="Alzheimer disease"
-                        {...props}
-                      />
-                    );
-                  }}
-                />
-                <Route
-                  path={`/${Context.DISEASE}/:id`}
-                  component={ProteinsForDiseaseCardContainer}
-                  exact={true}
-                />
-                <Route
-                  path={`/${Context.DISEASE}/:id/${Context.PROTEIN}`}
-                  component={DiseasesForProteinCardContainer}
-                />
-                <Route
-                  path={`/${Context.PROTEIN}/:id/${Context.DISEASE}`}
-                  component={ProteinsForDiseaseCardContainer}
-                />
-                <Route
-                  path={`/${Context.PATHWAY}/:id/${Context.PROTEIN}`}
-                  component={PathwaysForProteinCardContainer}
-                />
-                <Route
-                  path={`/${Context.VARIANT}/:id/${Context.PROTEIN}`}
-                  component={VariantsForProteinCardContainer}
-                />
-                <Route
-                  path={`/${Context.INTERACTION}/:id`}
-                  component={InteractionCardContainer}
-                />
+              <LayoutTemplate
+                header={
+                  <Header
+                    className="main-header"
+                    logo={<img src={logo} alt="logo" width={120} height={50} />}
+                  />
+                }
+                top={
+                  <Route path={"/disease/:id"} component={DiseaseContainer} />
+                }
+                left={
+                  <Switch>
+                    <Route
+                      path={"/disease/:diseaseid/proteins"}
+                      component={ProteinsForDiseaseCardContainer}
+                    />
+                  </Switch>
+                }
+                right={
+                  <Switch>
+                    <Route
+                      path={"/disease/:id/proteins/:proteinid/interaction"}
+                      component={InteractionsForProteinCardContainer}
+                    />
+                    <Route
+                      path={"/disease/:id/proteins/:proteinid/variants"}
+                      component={VariantsForProteinCardContainer}
+                    />
+                    <Route
+                      path={"/disease/:id/proteins/:proteinid/diseases"}
+                      component={DiseasesForProteinCardContainer}
+                    />
+                    <Route
+                      path={"/disease/:id/proteins/:proteinid/pathways"}
+                      component={PathwaysForProteinCardContainer}
+                    />
+                    <Route
+                      path={"/disease/:id/proteins/:proteinid/drugs"}
+                      component={DrugsForProteinCardContainer}
+                    />
+                  </Switch>
+                }
+                footer={<small>&copy; 2019 UniProt Consortium</small>}
+              />
+
+              {/* <Switch>
                 <Route
                   path={`/${Context.DRUG}/:id/${Context.DISEASE}`}
                   component={DrugsForDiseaseCardContainer}
@@ -84,10 +85,7 @@ class App extends Component {
                   path={`/${Context.PROTEIN}/:id/${Context.DRUG}`}
                   component={ProteinsForDrugsCardContainer}
                 />
-              </Switch>
-            </div>
-            <div className="main-footer">
-              <small>&copy; 2019 UniProt Consortium</small>
+              </Switch> */}
             </div>
           </div>
         </BrowserRouter>

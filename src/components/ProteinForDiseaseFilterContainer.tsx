@@ -1,6 +1,7 @@
 import React, { useState, FC } from "react";
 import { v1 } from "uuid";
-import ProteinCard, { ProteinData } from "./cards/ProteinCard";
+import { ProteinData } from "./cards/ProteinCard";
+import ProteinCardCompact from "./cards/ProteinCardCompact";
 
 enum Filters {
   INT = "interactions",
@@ -9,10 +10,10 @@ enum Filters {
   SEQ = "variants",
 }
 
-const ProteinForDiseaseFilterContainer: FC<{ data: any; id: string }> = ({
-  data,
-  id,
-}) => {
+const ProteinForDiseaseFilterContainer: FC<{
+  data: any;
+  diseaseId: string;
+}> = ({ data, diseaseId }) => {
   const [selectedFilters, setSelectedFilters] = useState({
     [Filters.INT]: false,
     [Filters.PAT]: false,
@@ -62,7 +63,7 @@ const ProteinForDiseaseFilterContainer: FC<{ data: any; id: string }> = ({
       </section>
       {filteredData &&
         filteredData.map((item: ProteinData) => (
-          <ProteinCard data={item} id={id} key={v1()} />
+          <ProteinCardCompact data={item} diseaseId={diseaseId} key={v1()} />
         ))}
     </section>
   );

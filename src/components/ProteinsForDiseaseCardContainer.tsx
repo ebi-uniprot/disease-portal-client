@@ -1,28 +1,17 @@
 import React, { Fragment, FunctionComponent } from "react";
-// import axios from "axios";
-import { withRouter, RouteComponentProps } from "react-router";
+import { withRouter, RouteComponentProps, useParams } from "react-router";
 import useApi from "./UseApi";
 import { ProteinData } from "./cards/ProteinCard";
-// import PageTemplate from "../layout/PageTemplate";
-// import { Context } from "../types/context";
-import DiseaseContainer from "./DiseaseContainer";
-// import PageContainer from "../layout/PageContainer";
 import { baseUrl } from "../config";
 import ProteinForDiseaseFilterContainer from "./ProteinForDiseaseFilterContainer";
-import ThreePartGrid from "../layout/ThreePartGrid";
 
-const ProteinsForDiseaseCardContainer: FunctionComponent<
-  RouteComponentProps<any> & { identifier?: string }
-> = ({ match, identifier }) => {
-  let id: string;
-  if (identifier) {
-    id = identifier;
-  } else {
-    id = match.params.id;
-  }
+const ProteinsForDiseaseCardContainer: FunctionComponent<RouteComponentProps<
+  any
+>> = () => {
+  const { diseaseid } = useParams();
 
   const { data } = useApi<{ results: ProteinData[] }>(
-    `${baseUrl}/disease/${id}/proteins`
+    `${baseUrl}/disease/${diseaseid}/proteins`
   );
 
   // const downloadProteins = (proteinIds: string[]) => {
@@ -51,12 +40,6 @@ const ProteinsForDiseaseCardContainer: FunctionComponent<
 
   return (
     <Fragment>
-      <ThreePartGrid
-        top={<DiseaseContainer id={id} />}
-        left={<ProteinForDiseaseFilterContainer data={sortedData} id={id} />}
-        right={<span>Right</span>}
-      />
-
       {/* <PageContainer
         leftColumn={}
         rightColumn={
@@ -84,6 +67,11 @@ const ProteinsForDiseaseCardContainer: FunctionComponent<
           </PageTemplate>
         }
       /> */}
+
+      <ProteinForDiseaseFilterContainer
+        data={sortedData}
+        diseaseId={diseaseid}
+      />
     </Fragment>
   );
 };

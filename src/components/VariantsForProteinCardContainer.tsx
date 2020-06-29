@@ -1,18 +1,16 @@
-import React, { Fragment, FunctionComponent } from "react";
-import { withRouter, RouteComponentProps } from "react-router";
+import React, { FunctionComponent } from "react";
+import { withRouter, RouteComponentProps, useParams } from "react-router";
 import useApi from "./UseApi";
 import VariantCard, { VariantData, VariationData } from "./cards/VariantCard";
 import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
-import PageContainer from "../layout/PageContainer";
-import ProteinContainer from "./ProteinContainer";
 
 const VariantsForProteinCardContainer: FunctionComponent<RouteComponentProps<
   any
->> = ({ match }) => {
-  const { id } = match.params;
+>> = () => {
+  const { proteinid } = useParams();
   const { data, isLoading } = useApi<VariationData>(
-    `https://www.ebi.ac.uk/proteins/api/variation/${id}?format=json`
+    `https://www.ebi.ac.uk/proteins/api/variation/${proteinid}?format=json`
   );
   let filteredData;
   if (data) {
@@ -26,21 +24,14 @@ const VariantsForProteinCardContainer: FunctionComponent<RouteComponentProps<
   }
 
   return (
-    <Fragment>
-      <PageContainer
-        leftColumn={<ProteinContainer id={id} />}
-        rightColumn={
-          <PageTemplate
-            context={Context.VARIANT}
-            id={id}
-            length={filteredData && filteredData.features.length}
-            isLoading={isLoading}
-          >
-            {filteredData && <VariantCard data={filteredData} />}
-          </PageTemplate>
-        }
-      />
-    </Fragment>
+    <PageTemplate
+      context={Context.VARIANT}
+      id={proteinid}
+      length={filteredData && filteredData.features.length}
+      isLoading={isLoading}
+    >
+      {filteredData && <VariantCard data={filteredData} />}
+    </PageTemplate>
   );
 };
 

@@ -1,20 +1,18 @@
 import React, { Fragment, FunctionComponent, ReactElement } from "react";
-import { withRouter, RouteComponentProps } from "react-router";
+import { withRouter, RouteComponentProps, useParams } from "react-router";
 import { v1 } from "uuid";
 import useApi from "./UseApi";
 import PathwayCard, { PathwayData } from "./cards/PathwayCard";
 import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
-import PageContainer from "../layout/PageContainer";
-import ProteinContainer from "./ProteinContainer";
 import { baseUrl } from "../config";
 
 const PathwaysForProteinCardContainer: FunctionComponent<RouteComponentProps<
   any
->> = ({ match }) => {
-  const { id } = match.params;
+>> = () => {
+  const { proteinid } = useParams();
   const { data, isLoading } = useApi<{ results: PathwayData[] }>(
-    `${baseUrl}/protein/${id}/xrefs`
+    `${baseUrl}/protein/${proteinid}/xrefs`
   );
   let pathwayCardNodes: ReactElement[] = [];
   if (data) {
@@ -26,19 +24,14 @@ const PathwaysForProteinCardContainer: FunctionComponent<RouteComponentProps<
   }
   return (
     <Fragment>
-      <PageContainer
-        leftColumn={<ProteinContainer id={id} />}
-        rightColumn={
-          <PageTemplate
-            context={Context.PATHWAY}
-            id={id}
-            length={pathwayCardNodes.length}
-            isLoading={isLoading}
-          >
-            {pathwayCardNodes}
-          </PageTemplate>
-        }
-      />
+      <PageTemplate
+        context={Context.PATHWAY}
+        id={proteinid}
+        length={pathwayCardNodes.length}
+        isLoading={isLoading}
+      >
+        {pathwayCardNodes}
+      </PageTemplate>
     </Fragment>
   );
 };

@@ -1,0 +1,34 @@
+.layout-template {
+  display: grid;
+  grid-template-rows: 7vh 20vh 70vh 2vh;
+  grid-template-columns: 33.3vw 66.7vw;
+  grid-template-areas:
+    "header header"
+    "top top"
+    "left right"
+    "footer footer";
+}
+
+.layout-template__header {
+  grid-area: header;
+}
+
+.layout-template__top {
+  grid-area: top;
+  overflow-y: auto;
+}
+
+.layout-template__left {
+  grid-area: left;
+  overflow-y: auto;
+}
+
+.layout-template__right {
+  grid-area: right;
+  overflow-y: auto;
+}
+
+.layout-template__footer {
+  grid-area: footer;
+  text-align: center;
+}
