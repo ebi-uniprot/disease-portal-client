@@ -1,5 +1,5 @@
 import React, { Fragment, FunctionComponent } from "react";
-import useApi from "./UseApi";
+import useApi from "./hooks/UseApi";
 import ProteinCard, { ProteinData } from "./cards/ProteinCard";
 import { baseUrl } from "../config";
 

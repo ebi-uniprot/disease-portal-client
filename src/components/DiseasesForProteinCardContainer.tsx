@@ -1,7 +1,7 @@
 import React, { Fragment, FunctionComponent } from "react";
 import { RouteComponentProps, useParams } from "react-router";
 import { v1 } from "uuid";
-import useApi from "./UseApi";
+import useApi from "./hooks/UseApi";
 import DiseaseCard, { DiseaseData } from "./cards/DiseaseCard";
 import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";

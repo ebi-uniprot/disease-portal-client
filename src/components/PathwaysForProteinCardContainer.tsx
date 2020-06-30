@@ -1,7 +1,7 @@
 import React, { Fragment, FunctionComponent, ReactElement } from "react";
 import { withRouter, RouteComponentProps, useParams } from "react-router";
 import { v1 } from "uuid";
-import useApi from "./UseApi";
+import useApi from "./hooks/UseApi";
 import PathwayCard, { PathwayData } from "./cards/PathwayCard";
 import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";

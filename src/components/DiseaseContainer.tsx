@@ -1,8 +1,9 @@
 import React, { Fragment, FunctionComponent } from "react";
 import { RouteComponentProps, withRouter, useParams } from "react-router";
-import useApi from "./UseApi";
-import DiseaseCard, { DiseaseData } from "./cards/DiseaseCard";
+import useApi from "./hooks/UseApi";
+import { DiseaseData } from "./cards/DiseaseCard";
 import { baseUrl } from "../config";
+import DiseaseCardCompact from "./cards/DiseaseCardCompact";
 
 const DiseaseContainer: FunctionComponent<
   { id: string } & RouteComponentProps
@@ -13,7 +14,7 @@ const DiseaseContainer: FunctionComponent<
     return null;
   }
   const { result } = data;
-  return <Fragment>{result && <DiseaseCard data={result} />}</Fragment>;
+  return <Fragment>{result && <DiseaseCardCompact data={result} />}</Fragment>;
 };
 
 export default withRouter(DiseaseContainer);

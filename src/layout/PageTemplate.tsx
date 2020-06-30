@@ -22,10 +22,10 @@ const PageTemplate: FC<{
   return (
     <Fragment>
       <div className="page-header">
-        <h2 style={{ borderBottom: `1px solid ${colors.get(context)}` }}>
+        <h5 style={{ borderBottom: `1px solid ${colors.get(context)}` }}>
           {length} {context.toLowerCase()}
           {length > 1 && "s"} for {id}
-        </h2>
+        </h5>
       </div>
       {children}
     </Fragment>

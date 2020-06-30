@@ -41,25 +41,27 @@ const ProteinForDiseaseFilterContainer: FC<{
 
   return (
     <section>
-      <section className="filter-row">
-        <strong>Only proteins with ({filteredData.length}</strong>
-        ):
-        {Object.keys(Filters).map((filterKey) => (
-          <label
-            key={filterKey}
-            style={{ display: "inline-block", marginLeft: "1rem" }}
-          >
-            <input
-              type="checkbox"
-              onChange={(e) => handleFilterClick(e)}
-              checked={
-                selectedFilters[Filters[filterKey as keyof typeof Filters]]
-              }
-              name={Filters[filterKey as keyof typeof Filters]}
-            />{" "}
-            {Filters[filterKey as keyof typeof Filters]}
-          </label>
-        ))}
+      <section className="page-header">
+        <h5>{filteredData.length} proteins</h5>
+        <section className="filter-row">
+          <strong>Filter:</strong>
+          {Object.keys(Filters).map((filterKey) => (
+            <label
+              key={filterKey}
+              style={{ display: "inline-block", marginLeft: "1rem" }}
+            >
+              <input
+                type="checkbox"
+                onChange={(e) => handleFilterClick(e)}
+                checked={
+                  selectedFilters[Filters[filterKey as keyof typeof Filters]]
+                }
+                name={Filters[filterKey as keyof typeof Filters]}
+              />{" "}
+              {Filters[filterKey as keyof typeof Filters]}
+            </label>
+          ))}
+        </section>
       </section>
       {filteredData &&
         filteredData.map((item: ProteinData) => (

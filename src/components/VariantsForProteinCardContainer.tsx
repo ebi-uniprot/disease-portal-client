@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { withRouter, RouteComponentProps, useParams } from "react-router";
-import useApi from "./UseApi";
+import useApi from "./hooks/UseApi";
 import VariantCard, { VariantData, VariationData } from "./cards/VariantCard";
 import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";

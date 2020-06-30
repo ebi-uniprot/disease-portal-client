@@ -1,6 +1,6 @@
 .layout-template {
   display: grid;
-  grid-template-rows: 7vh 20vh 70vh 2vh;
+  grid-template-rows: 8vh 14vh 75vh 2vh;
   grid-template-columns: 33.3vw 66.7vw;
   grid-template-areas:
     "header header"

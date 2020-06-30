@@ -1,6 +1,6 @@
 import React, { Fragment, FunctionComponent } from "react";
 import { withRouter, RouteComponentProps, useParams } from "react-router";
-import useApi from "./UseApi";
+import useApi from "./hooks/UseApi";
 import { ProteinData } from "./cards/ProteinCard";
 import { baseUrl } from "../config";
 import ProteinForDiseaseFilterContainer from "./ProteinForDiseaseFilterContainer";
