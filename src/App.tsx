@@ -13,6 +13,9 @@ import logo from "./svg/uniprot-rgb.svg";
 
 import "./App.css";
 import ProteinContainer from "./components/ProteinContainer";
+import DrugsForDiseaseCardContainer from "./components/DrugsForDiseaseCardContainer";
+import { ContextObj, Context } from "./types/context";
+import ProteinsForDrugsCardContainer from "./components/ProteinsForDrugsCardContainer";
 
 class App extends Component {
   render() {
@@ -21,7 +24,11 @@ class App extends Component {
         <BrowserRouter basename={process.env.PUBLIC_URL}>
           <Switch>
             <Route exact path="/">
-              <Redirect to="/disease/Alzheimer%20disease/proteins" />
+              <Redirect
+                to={`/${ContextObj[Context.DISEASE].id}/Alzheimer%20disease/${
+                  ContextObj[Context.PROTEIN].id
+                }`}
+              />
             </Route>
             <LayoutTemplate
               header={
@@ -30,38 +37,72 @@ class App extends Component {
                   logo={<img src={logo} alt="logo" width={120} height={50} />}
                 />
               }
-              top={<Route path={"/disease/:id"} component={DiseaseContainer} />}
-              left={
+              top={
                 <Route
-                  path={"/disease/:diseaseid/proteins/:proteinid?"}
-                  component={ProteinsForDiseaseCardContainer}
+                  path={`/${ContextObj[Context.DISEASE].id}/:id`}
+                  component={DiseaseContainer}
                 />
+              }
+              left={
+                <>
+                  <Route
+                    path={`/${ContextObj[Context.DISEASE].id}/:diseaseid/${
+                      ContextObj[Context.PROTEIN].id
+                    }/:proteinid?`}
+                    component={ProteinsForDiseaseCardContainer}
+                  />
+                  <Route
+                    path={`/${ContextObj[Context.DISEASE].id}/:diseaseid/${
+                      ContextObj[Context.DRUG].id
+                    }/:drugid?`}
+                    component={DrugsForDiseaseCardContainer}
+                  />
+                </>
               }
               right={
                 <>
                   <Route
-                    path={"/disease/:id/proteins/:proteinid/protein"}
+                    path={`/${ContextObj[Context.DISEASE].id}/:id/${
+                      ContextObj[Context.PROTEIN].id
+                    }/:proteinid`}
+                    exact
                     component={ProteinContainer}
                   />
                   <Route
-                    path={"/disease/:id/proteins/:proteinid/interaction"}
+                    path={`/${ContextObj[Context.DISEASE].id}/:id/${
+                      ContextObj[Context.PROTEIN].id
+                    }/:proteinid/${ContextObj[Context.INTERACTION].id}`}
                     component={InteractionsForProteinCardContainer}
                   />
                   <Route
-                    path={"/disease/:id/proteins/:proteinid/variant"}
+                    path={`/${ContextObj[Context.DISEASE].id}/:id/${
+                      ContextObj[Context.PROTEIN].id
+                    }/:proteinid/${ContextObj[Context.VARIANT].id}`}
                     component={VariantsForProteinCardContainer}
                   />
                   <Route
-                    path={"/disease/:id/proteins/:proteinid/disease"}
+                    path={`/${ContextObj[Context.DISEASE].id}/:id/${
+                      ContextObj[Context.PROTEIN].id
+                    }/:proteinid/${ContextObj[Context.DISEASE].id}`}
                     component={DiseasesForProteinCardContainer}
                   />
                   <Route
-                    path={"/disease/:id/proteins/:proteinid/pathway"}
+                    path={`/${ContextObj[Context.DISEASE].id}/:id/${
+                      ContextObj[Context.PROTEIN].id
+                    }/:proteinid/${ContextObj[Context.PATHWAY].id}`}
                     component={PathwaysForProteinCardContainer}
                   />
                   <Route
-                    path={"/disease/:id/proteins/:proteinid/drug"}
+                    path={`/${ContextObj[Context.DISEASE].id}/:id/${
+                      ContextObj[Context.PROTEIN].id
+                    }/:proteinid/${ContextObj[Context.DRUG].id}`}
                     component={DrugsForProteinCardContainer}
+                  />
+                  <Route
+                    path={`/${ContextObj[Context.DISEASE].id}/:id/${
+                      ContextObj[Context.DRUG].id
+                    }/:drugid/${ContextObj[Context.PROTEIN].id}`}
+                    component={ProteinsForDrugsCardContainer}
                   />
                 </>
               }

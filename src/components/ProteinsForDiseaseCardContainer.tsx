@@ -4,6 +4,7 @@ import useApi from "./hooks/UseApi";
 import { ProteinData } from "./cards/ProteinCard";
 import { baseUrl } from "../config";
 import ProteinForDiseaseFilterContainer from "./ProteinForDiseaseFilterContainer";
+import { ContextObj, Context } from "../types/context";
 
 const ProteinsForDiseaseCardContainer: FunctionComponent<RouteComponentProps<
   any
@@ -42,7 +43,9 @@ const ProteinsForDiseaseCardContainer: FunctionComponent<RouteComponentProps<
 
   if (!proteinid) {
     history.push(
-      `/disease/${diseaseid}/proteins/${sortedData[0].accession}/protein`
+      `/${ContextObj[Context.DISEASE].id}/${diseaseid}/${
+        ContextObj[Context.PROTEIN].id
+      }/${sortedData[0].accession}`
     );
   }
 

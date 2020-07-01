@@ -1,6 +1,5 @@
 import React, { Fragment, FC, ReactNode } from "react";
-import { Context } from "../types/context";
-import { colors } from "../config";
+import { Context, ContextObj } from "../types/context";
 import spinner from "../svg/spinner.svg";
 import "./PageTemplate.css";
 
@@ -22,7 +21,13 @@ const PageTemplate: FC<{
   return (
     <Fragment>
       <div className="page-header">
-        <h5 style={{ borderBottom: `1px solid ${colors.get(context)}` }}>
+        <h5
+          style={{
+            borderBottom: `1px solid ${
+              ContextObj[context as keyof typeof ContextObj].color
+            }`,
+          }}
+        >
           {length} {context.toLowerCase()}
           {length > 1 && "s"} for {id}
         </h5>

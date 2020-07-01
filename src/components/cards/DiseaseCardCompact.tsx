@@ -1,7 +1,7 @@
 import React, { Fragment, FunctionComponent, FC } from "react";
 import { Card } from "franklin-sites";
 import { Context } from "../../types/context";
-import { generateLink, getProteinLink } from "../utils";
+import { createLink } from "../utils";
 import { Link } from "react-router-dom";
 import TreeLeaf from "../../svg/tree-leaf.svg";
 import TreeLeafEnd from "../../svg/tree-leaf-end.svg";
@@ -36,21 +36,25 @@ const generateDiseaseLinks = (diseaseItem: DiseaseData) => {
     // Get the first protein
     const { accession } = allProts[0];
     diseaseLinks.push(
-      getProteinLink(diseaseId, accession, "protein", allProts.length)
+      createLink(
+        diseaseId,
+        accession,
+        Context.PROTEIN,
+        Context.PROTEIN,
+        allProts.length
+      )
     );
   }
   if (allDrugs && allDrugs.length > 0) {
     // Get the first protein
     const { accession } = allProts[0];
     diseaseLinks.push(
-      getProteinLink(diseaseId, accession, "drug", allProts.length)
-    );
-    diseaseLinks.push(
-      generateLink(
-        Context.DISEASE,
+      createLink(
+        diseaseId,
+        accession,
         Context.DRUG,
-        diseaseItem.diseaseId,
-        allDrugs
+        Context.DRUG,
+        allDrugs.length
       )
     );
   }

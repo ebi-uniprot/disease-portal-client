@@ -30,61 +30,6 @@ export const formatLargeNumber = (x: number) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-// const generateProteinLinks = (proteinItem: ProteinData) => {
-//   const proteinLinks = [];
-//   if (proteinItem.interactions && proteinItem.interactions.length > 0) {
-//     proteinLinks.push(
-//       generateLink(
-//         Context.PROTEIN,
-//         Context.INTERACTION,
-//         proteinItem.accession,
-//         proteinItem.interactions
-//       )
-//     );
-//   }
-//   if (proteinItem.pathways && proteinItem.pathways.length > 0) {
-//     proteinLinks.push(
-//       generateLink(
-//         Context.PROTEIN,
-//         Context.PATHWAY,
-//         proteinItem.accession,
-//         proteinItem.pathways
-//       )
-//     );
-//   }
-//   if (proteinItem.variants && proteinItem.variants.length > 0) {
-//     proteinLinks.push(
-//       generateLink(
-//         Context.PROTEIN,
-//         Context.VARIANT,
-//         proteinItem.accession,
-//         proteinItem.variants
-//       )
-//     );
-//   }
-//   if (proteinItem.diseases && proteinItem.diseases.length > 0) {
-//     proteinLinks.push(
-//       generateLink(
-//         Context.PROTEIN,
-//         Context.DISEASE,
-//         proteinItem.accession,
-//         proteinItem.diseases
-//       )
-//     );
-//   }
-//   if (proteinItem.drugs && proteinItem.drugs.length > 0) {
-//     proteinLinks.push(
-//       generateLink(
-//         Context.PROTEIN,
-//         Context.DRUG,
-//         proteinItem.accession,
-//         proteinItem.drugs
-//       )
-//     );
-//   }
-//   return proteinLinks;
-// };
-
 const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
   data,
   id,

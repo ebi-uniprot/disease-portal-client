@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { Card, InfoList } from "franklin-sites";
 import { Context } from "../../types/context";
-import { generateLink } from "../utils";
+import { createLink } from "../utils";
 
 export type DrugsData = {
   name: string;
@@ -14,31 +14,6 @@ export type DrugsData = {
   mechanismOfAction: string;
   diseases?: string[];
   proteins?: string[];
-};
-
-const generateDrugsLinks = (proteinItem: DrugsData) => {
-  const drugsLinks = [];
-  if (proteinItem.diseases && proteinItem.diseases.length > 0) {
-    drugsLinks.push(
-      generateLink(
-        Context.DRUG,
-        Context.DISEASE,
-        proteinItem.name,
-        proteinItem.diseases
-      )
-    );
-  }
-  if (proteinItem.proteins && proteinItem.proteins.length > 0) {
-    drugsLinks.push(
-      generateLink(
-        Context.DRUG,
-        Context.PROTEIN,
-        proteinItem.name,
-        proteinItem.proteins
-      )
-    );
-  }
-  return drugsLinks;
 };
 
 const DrugsCard: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
@@ -88,7 +63,7 @@ const DrugsCard: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
   ];
 
   return (
-    <Card title={data.name} key={data.name} links={generateDrugsLinks(data)}>
+    <Card title={data.name} key={data.name}>
       <InfoList infoData={infoData} />
     </Card>
   );

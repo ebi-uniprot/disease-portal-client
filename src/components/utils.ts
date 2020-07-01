@@ -1,28 +1,17 @@
-import { Context } from "../types/context";
-import { colors } from "../config";
+import { Context, ContextObj } from "../types/context";
 
-export const generateLink = (
+export const createLink = (
+  diseaseId: string,
+  id: string,
   fromContext: Context,
   toContext: Context,
-  fromId: string,
-  toItems: any[]
-) => {
-  return {
-    name: `${toItems.length} ${toContext.toLowerCase()}${
-      toItems.length > 1 ? "s" : ""
-    }`,
-    link: `/${toContext}/${fromId}/${fromContext}`,
-    color: colors.get(toContext),
-  };
-};
-
-export const getProteinLink = (
-  diseaseId: string,
-  accession: string,
-  type: string,
   count: number
 ) => ({
-  name: `${count} ${type}${count > 1 ? "s" : ""}`,
-  link: `/disease/${diseaseId}/proteins/${accession}/${type}`,
-  color: colors.get(Context.INTERACTION),
+  name: `${count} ${ContextObj[toContext as keyof typeof ContextObj].label}${
+    count > 1 ? "s" : ""
+  }`,
+  link: `/disease/${diseaseId}/${
+    ContextObj[fromContext as keyof typeof ContextObj].id
+  }/${id}/${ContextObj[toContext as keyof typeof ContextObj].id}`,
+  color: ContextObj[toContext as keyof typeof ContextObj].color,
 });
