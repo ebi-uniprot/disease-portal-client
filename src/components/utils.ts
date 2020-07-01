@@ -12,6 +12,17 @@ export const generateLink = (
       toItems.length > 1 ? "s" : ""
     }`,
     link: `/${toContext}/${fromId}/${fromContext}`,
-    color: colors.get(toContext)
+    color: colors.get(toContext),
   };
 };
+
+export const getProteinLink = (
+  diseaseId: string,
+  accession: string,
+  type: string,
+  count: number
+) => ({
+  name: `${count} ${type}${count > 1 ? "s" : ""}`,
+  link: `/disease/${diseaseId}/proteins/${accession}/${type}`,
+  color: colors.get(Context.INTERACTION),
+});

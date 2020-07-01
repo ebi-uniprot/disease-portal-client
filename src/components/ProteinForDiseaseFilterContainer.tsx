@@ -13,7 +13,8 @@ enum Filters {
 const ProteinForDiseaseFilterContainer: FC<{
   data: any;
   diseaseId: string;
-}> = ({ data, diseaseId }) => {
+  selectedProteinId: string;
+}> = ({ data, diseaseId, selectedProteinId }) => {
   const [selectedFilters, setSelectedFilters] = useState({
     [Filters.INT]: false,
     [Filters.PAT]: false,
@@ -65,7 +66,12 @@ const ProteinForDiseaseFilterContainer: FC<{
       </section>
       {filteredData &&
         filteredData.map((item: ProteinData) => (
-          <ProteinCardCompact data={item} diseaseId={diseaseId} key={v1()} />
+          <ProteinCardCompact
+            data={item}
+            diseaseId={diseaseId}
+            key={v1()}
+            selectedProteinId={selectedProteinId ? selectedProteinId : data[0]}
+          />
         ))}
     </section>
   );

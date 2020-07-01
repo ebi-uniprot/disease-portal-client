@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { FranklinSite, Header } from "franklin-sites";
-import "./App.css";
-import logo from "./svg/uniprot-rgb.svg";
 import DiseasesForProteinCardContainer from "./components/DiseasesForProteinCardContainer";
 import ProteinsForDiseaseCardContainer from "./components/ProteinsForDiseaseCardContainer";
 import PathwaysForProteinCardContainer from "./components/PathwaysForProteinCardContainer";
@@ -11,60 +9,65 @@ import DrugsForProteinCardContainer from "./components/DrugsForProteinCardContai
 import LayoutTemplate from "./layout/LayoutTemplate";
 import DiseaseContainer from "./components/DiseaseContainer";
 import InteractionsForProteinCardContainer from "./components/InteractionsForProteinCardContainer";
+import logo from "./svg/uniprot-rgb.svg";
+
+import "./App.css";
+import ProteinContainer from "./components/ProteinContainer";
 
 class App extends Component {
   render() {
     return (
       <FranklinSite>
         <BrowserRouter basename={process.env.PUBLIC_URL}>
-          <div className="wrapper">
-            <div className="main-content">
-              <LayoutTemplate
-                header={
-                  <Header
-                    className="main-header"
-                    logo={<img src={logo} alt="logo" width={120} height={50} />}
+          <Switch>
+            <Route exact path="/">
+              <Redirect to="/disease/Alzheimer%20disease/proteins" />
+            </Route>
+            <LayoutTemplate
+              header={
+                <Header
+                  className="main-header"
+                  logo={<img src={logo} alt="logo" width={120} height={50} />}
+                />
+              }
+              top={<Route path={"/disease/:id"} component={DiseaseContainer} />}
+              left={
+                <Route
+                  path={"/disease/:diseaseid/proteins/:proteinid?"}
+                  component={ProteinsForDiseaseCardContainer}
+                />
+              }
+              right={
+                <>
+                  <Route
+                    path={"/disease/:id/proteins/:proteinid/protein"}
+                    component={ProteinContainer}
                   />
-                }
-                top={
-                  <Route path={"/disease/:id"} component={DiseaseContainer} />
-                }
-                left={
-                  <Switch>
-                    <Route
-                      path={"/disease/:diseaseid/proteins"}
-                      component={ProteinsForDiseaseCardContainer}
-                    />
-                  </Switch>
-                }
-                right={
-                  <Switch>
-                    <Route
-                      path={"/disease/:id/proteins/:proteinid/interaction"}
-                      component={InteractionsForProteinCardContainer}
-                    />
-                    <Route
-                      path={"/disease/:id/proteins/:proteinid/variants"}
-                      component={VariantsForProteinCardContainer}
-                    />
-                    <Route
-                      path={"/disease/:id/proteins/:proteinid/diseases"}
-                      component={DiseasesForProteinCardContainer}
-                    />
-                    <Route
-                      path={"/disease/:id/proteins/:proteinid/pathways"}
-                      component={PathwaysForProteinCardContainer}
-                    />
-                    <Route
-                      path={"/disease/:id/proteins/:proteinid/drugs"}
-                      component={DrugsForProteinCardContainer}
-                    />
-                  </Switch>
-                }
-                footer={<small>&copy; 2019 UniProt Consortium</small>}
-              />
-
-              {/* <Switch>
+                  <Route
+                    path={"/disease/:id/proteins/:proteinid/interaction"}
+                    component={InteractionsForProteinCardContainer}
+                  />
+                  <Route
+                    path={"/disease/:id/proteins/:proteinid/variant"}
+                    component={VariantsForProteinCardContainer}
+                  />
+                  <Route
+                    path={"/disease/:id/proteins/:proteinid/disease"}
+                    component={DiseasesForProteinCardContainer}
+                  />
+                  <Route
+                    path={"/disease/:id/proteins/:proteinid/pathway"}
+                    component={PathwaysForProteinCardContainer}
+                  />
+                  <Route
+                    path={"/disease/:id/proteins/:proteinid/drug"}
+                    component={DrugsForProteinCardContainer}
+                  />
+                </>
+              }
+              footer={<small>&copy; 2019 UniProt Consortium</small>}
+            />
+            {/* <Switch>
                 <Route
                   path={`/${Context.DRUG}/:id/${Context.DISEASE}`}
                   component={DrugsForDiseaseCardContainer}
@@ -86,8 +89,7 @@ class App extends Component {
                   component={ProteinsForDrugsCardContainer}
                 />
               </Switch> */}
-            </div>
-          </div>
+          </Switch>
         </BrowserRouter>
       </FranklinSite>
     );

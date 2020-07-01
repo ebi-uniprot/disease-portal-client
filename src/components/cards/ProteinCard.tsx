@@ -1,8 +1,6 @@
 import React, { FunctionComponent, Fragment, useState } from "react";
 import { v1 } from "uuid";
 import { Card } from "franklin-sites";
-import { Context } from "../../types/context";
-import { generateLink } from "../utils";
 
 export type ProteinData = {
   proteinId: string;
@@ -32,60 +30,60 @@ export const formatLargeNumber = (x: number) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-const generateProteinLinks = (proteinItem: ProteinData) => {
-  const proteinLinks = [];
-  if (proteinItem.interactions && proteinItem.interactions.length > 0) {
-    proteinLinks.push(
-      generateLink(
-        Context.PROTEIN,
-        Context.INTERACTION,
-        proteinItem.accession,
-        proteinItem.interactions
-      )
-    );
-  }
-  if (proteinItem.pathways && proteinItem.pathways.length > 0) {
-    proteinLinks.push(
-      generateLink(
-        Context.PROTEIN,
-        Context.PATHWAY,
-        proteinItem.accession,
-        proteinItem.pathways
-      )
-    );
-  }
-  if (proteinItem.variants && proteinItem.variants.length > 0) {
-    proteinLinks.push(
-      generateLink(
-        Context.PROTEIN,
-        Context.VARIANT,
-        proteinItem.accession,
-        proteinItem.variants
-      )
-    );
-  }
-  if (proteinItem.diseases && proteinItem.diseases.length > 0) {
-    proteinLinks.push(
-      generateLink(
-        Context.PROTEIN,
-        Context.DISEASE,
-        proteinItem.accession,
-        proteinItem.diseases
-      )
-    );
-  }
-  if (proteinItem.drugs && proteinItem.drugs.length > 0) {
-    proteinLinks.push(
-      generateLink(
-        Context.PROTEIN,
-        Context.DRUG,
-        proteinItem.accession,
-        proteinItem.drugs
-      )
-    );
-  }
-  return proteinLinks;
-};
+// const generateProteinLinks = (proteinItem: ProteinData) => {
+//   const proteinLinks = [];
+//   if (proteinItem.interactions && proteinItem.interactions.length > 0) {
+//     proteinLinks.push(
+//       generateLink(
+//         Context.PROTEIN,
+//         Context.INTERACTION,
+//         proteinItem.accession,
+//         proteinItem.interactions
+//       )
+//     );
+//   }
+//   if (proteinItem.pathways && proteinItem.pathways.length > 0) {
+//     proteinLinks.push(
+//       generateLink(
+//         Context.PROTEIN,
+//         Context.PATHWAY,
+//         proteinItem.accession,
+//         proteinItem.pathways
+//       )
+//     );
+//   }
+//   if (proteinItem.variants && proteinItem.variants.length > 0) {
+//     proteinLinks.push(
+//       generateLink(
+//         Context.PROTEIN,
+//         Context.VARIANT,
+//         proteinItem.accession,
+//         proteinItem.variants
+//       )
+//     );
+//   }
+//   if (proteinItem.diseases && proteinItem.diseases.length > 0) {
+//     proteinLinks.push(
+//       generateLink(
+//         Context.PROTEIN,
+//         Context.DISEASE,
+//         proteinItem.accession,
+//         proteinItem.diseases
+//       )
+//     );
+//   }
+//   if (proteinItem.drugs && proteinItem.drugs.length > 0) {
+//     proteinLinks.push(
+//       generateLink(
+//         Context.PROTEIN,
+//         Context.DRUG,
+//         proteinItem.accession,
+//         proteinItem.drugs
+//       )
+//     );
+//   }
+//   return proteinLinks;
+// };
 
 const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
   data,
@@ -113,9 +111,17 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
           </small>
         </Fragment>
       }
-      links={generateProteinLinks(data)}
       key={data.proteinId}
     >
+      {!data.isExternallyMapped ? (
+        <span className="label label__reviewed">
+          Disease association source: UniProt
+        </span>
+      ) : (
+        <span className="label label__manual">
+          Disease association source: Imported
+        </span>
+      )}
       <h4>Function</h4>
       <p>
         {!showWholeFunction && data.description.length > 200 ? (
@@ -169,15 +175,6 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
             </Fragment>
           ))}
         </Fragment>
-      )}
-      {!data.isExternallyMapped ? (
-        <span className="label label__reviewed">
-          Disease association source: UniProt
-        </span>
-      ) : (
-        <span className="label label__manual">
-          Disease association source: Imported
-        </span>
       )}
     </Card>
   );

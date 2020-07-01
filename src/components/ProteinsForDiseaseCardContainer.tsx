@@ -7,8 +7,8 @@ import ProteinForDiseaseFilterContainer from "./ProteinForDiseaseFilterContainer
 
 const ProteinsForDiseaseCardContainer: FunctionComponent<RouteComponentProps<
   any
->> = () => {
-  const { diseaseid } = useParams();
+>> = ({ history }) => {
+  const { diseaseid, proteinid } = useParams();
 
   const { data } = useApi<{ results: ProteinData[] }>(
     `${baseUrl}/disease/${diseaseid}/proteins`
@@ -34,7 +34,15 @@ const ProteinsForDiseaseCardContainer: FunctionComponent<RouteComponentProps<
     return null;
   }
 
-  const sortedData = data.results.sort(
+  const { results } = data;
+
+  if (!proteinid) {
+    history.push(
+      `/disease/${diseaseid}/proteins/${results[0].accession}/protein`
+    );
+  }
+
+  const sortedData = results.sort(
     (a: ProteinData, b: ProteinData) => (b.isExternallyMapped ? 1 : 0) && -1
   );
 
@@ -67,10 +75,10 @@ const ProteinsForDiseaseCardContainer: FunctionComponent<RouteComponentProps<
           </PageTemplate>
         }
       /> */}
-
       <ProteinForDiseaseFilterContainer
         data={sortedData}
         diseaseId={diseaseid}
+        selectedProteinId={proteinid}
       />
     </Fragment>
   );

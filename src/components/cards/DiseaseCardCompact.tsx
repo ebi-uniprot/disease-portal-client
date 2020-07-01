@@ -1,17 +1,17 @@
 import React, { Fragment, FunctionComponent, FC } from "react";
 import { Card } from "franklin-sites";
 import { Context } from "../../types/context";
-import { generateLink } from "../utils";
+import { generateLink, getProteinLink } from "../utils";
 import { Link } from "react-router-dom";
 import TreeLeaf from "../../svg/tree-leaf.svg";
 import TreeLeafEnd from "../../svg/tree-leaf-end.svg";
 import { DiseaseData } from "./DiseaseCard";
 
-const getAllItems = (
+function getAllItems(
   diseaseItem: DiseaseData,
   keyName: keyof DiseaseData,
   totalItems = new Set()
-) => {
+): any {
   const items = diseaseItem[keyName] as any[];
   if (items) {
     items.forEach((item: any) => totalItems.add(item));
@@ -22,26 +22,29 @@ const getAllItems = (
     });
   }
   return Array.from(totalItems);
-};
+}
 
 const generateDiseaseLinks = (diseaseItem: DiseaseData) => {
   const diseaseLinks = [];
+  const { diseaseId } = diseaseItem;
 
   const allProts = getAllItems(diseaseItem, "proteins");
   const allDrugs = getAllItems(diseaseItem, "drugs");
-  const allVariants = getAllItems(diseaseItem, "variants");
+  // const allVariants = getAllItems(diseaseItem, "variants");
 
   if (allProts && allProts.length > 0) {
+    // Get the first protein
+    const { accession } = allProts[0];
     diseaseLinks.push(
-      generateLink(
-        Context.DISEASE,
-        Context.PROTEIN,
-        diseaseItem.diseaseId,
-        allProts
-      )
+      getProteinLink(diseaseId, accession, "protein", allProts.length)
     );
   }
   if (allDrugs && allDrugs.length > 0) {
+    // Get the first protein
+    const { accession } = allProts[0];
+    diseaseLinks.push(
+      getProteinLink(diseaseId, accession, "drug", allProts.length)
+    );
     diseaseLinks.push(
       generateLink(
         Context.DISEASE,
@@ -51,16 +54,16 @@ const generateDiseaseLinks = (diseaseItem: DiseaseData) => {
       )
     );
   }
-  if (allVariants && allVariants.length > 0) {
-    diseaseLinks.push(
-      generateLink(
-        Context.DISEASE,
-        Context.VARIANT,
-        diseaseItem.diseaseId,
-        allVariants
-      )
-    );
-  }
+  // if (allVariants && allVariants.length > 0) {
+  //   diseaseLinks.push(
+  //     generateLink(
+  //       Context.DISEASE,
+  //       Context.VARIANT,
+  //       diseaseItem.diseaseId,
+  //       allVariants
+  //     )
+  //   );
+  // }
   return diseaseLinks;
 };
 

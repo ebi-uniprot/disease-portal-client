@@ -1,23 +1,23 @@
-import React, { Fragment, FunctionComponent } from "react";
+import React, { FunctionComponent } from "react";
 import useApi from "./hooks/UseApi";
 import ProteinCard, { ProteinData } from "./cards/ProteinCard";
 import { baseUrl } from "../config";
+import { withRouter, RouteComponentProps, useParams } from "react-router";
 
-const ProteinContainer: FunctionComponent<{ id: string }> = ({ id }) => {
-  const { data } = useApi<{ result: ProteinData }>(`${baseUrl}/proteins/${id}`);
+const ProteinContainer: FunctionComponent<
+  { id: string } & RouteComponentProps
+> = () => {
+  const { proteinid } = useParams();
+
+  const { data } = useApi<{ result: ProteinData }>(
+    `${baseUrl}/proteins/${proteinid}`
+  );
 
   if (!data) {
     return null;
   }
 
-  return (
-    <Fragment>
-      <div className="page-header">
-        <h2>Protein</h2>
-      </div>
-      <ProteinCard data={data?.result} id={id} />;
-    </Fragment>
-  );
+  return <ProteinCard data={data?.result} id={proteinid} />;
 };
 
-export default ProteinContainer;
+export default withRouter(ProteinContainer);

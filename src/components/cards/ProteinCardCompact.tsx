@@ -1,23 +1,12 @@
 import React, { FunctionComponent } from "react";
 import { Card } from "franklin-sites";
-import { Context } from "../../types/context";
 import { ProteinData } from "./ProteinCard";
-import { colors } from "../../config";
+import { getProteinLink } from "../utils";
+import { withRouter, RouteComponentProps } from "react-router";
 
 export const formatLargeNumber = (x: number) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
-
-const getProteinLink = (
-  diseaseId: string,
-  accession: string,
-  type: string,
-  count: number
-) => ({
-  name: `${count} ${type}${count > 1 ? "s" : ""}`,
-  link: `/disease/${diseaseId}/proteins/${accession}/${type}`,
-  color: colors.get(Context.INTERACTION),
-});
 
 const generateProteinLinks = (proteinItem: ProteinData, diseaseId: string) => {
   const proteinLinks = [];
@@ -37,7 +26,7 @@ const generateProteinLinks = (proteinItem: ProteinData, diseaseId: string) => {
       getProteinLink(
         diseaseId,
         accession,
-        "pathways",
+        "pathway",
         proteinItem.pathways.length
       )
     );
@@ -47,7 +36,7 @@ const generateProteinLinks = (proteinItem: ProteinData, diseaseId: string) => {
       getProteinLink(
         diseaseId,
         accession,
-        "variants",
+        "variant",
         proteinItem.variants.length
       )
     );
@@ -57,25 +46,36 @@ const generateProteinLinks = (proteinItem: ProteinData, diseaseId: string) => {
       getProteinLink(
         diseaseId,
         accession,
-        "diseases",
+        "disease",
         proteinItem.diseases.length
       )
     );
   }
   if (proteinItem.drugs && proteinItem.drugs.length > 0) {
     proteinLinks.push(
-      getProteinLink(diseaseId, accession, "drugs", proteinItem.drugs.length)
+      getProteinLink(diseaseId, accession, "drug", proteinItem.drugs.length)
     );
   }
   return proteinLinks;
 };
 
-const ProteinCardCompact: FunctionComponent<{
-  data: ProteinData;
-  diseaseId: string;
-}> = ({ data, diseaseId }) => {
+const ProteinCardCompact: FunctionComponent<
+  {
+    data: ProteinData;
+    diseaseId: string;
+    selectedProteinId: string;
+  } & RouteComponentProps
+> = ({ data, diseaseId, selectedProteinId, history }) => {
+  const { accession } = data;
   return (
-    <Card links={generateProteinLinks(data, diseaseId)} key={data.proteinId}>
+    <Card
+      links={generateProteinLinks(data, diseaseId)}
+      key={data.proteinId}
+      onClick={(s: any) =>
+        history.push(`/disease/${diseaseId}/proteins/${accession}/protein`)
+      }
+      active={accession === selectedProteinId}
+    >
       <h5>
         <a
           href={`//www.uniprot.org/uniprot/${data.accession}`}
@@ -108,4 +108,4 @@ const ProteinCardCompact: FunctionComponent<{
   );
 };
 
-export default ProteinCardCompact;
+export default withRouter(ProteinCardCompact);
