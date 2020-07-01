@@ -7,7 +7,7 @@ import TreeLeaf from "../../svg/tree-leaf.svg";
 import TreeLeafEnd from "../../svg/tree-leaf-end.svg";
 import { DiseaseData } from "./DiseaseCard";
 
-function getAllItems(
+export function getAllItems(
   diseaseItem: DiseaseData,
   keyName: keyof DiseaseData,
   totalItems = new Set()

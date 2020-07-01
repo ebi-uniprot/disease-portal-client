@@ -1,10 +1,11 @@
 import React, { Fragment, FunctionComponent, FC } from "react";
 import { Card } from "franklin-sites";
 import { Context } from "../../types/context";
-import { generateLink } from "../utils";
+import { generateLink, getProteinLink } from "../utils";
 import { Link } from "react-router-dom";
 import TreeLeaf from "../../svg/tree-leaf.svg";
 import TreeLeafEnd from "../../svg/tree-leaf-end.svg";
+import { getAllItems } from "./DiseaseCardCompact";
 
 export type DiseaseData = {
   diseaseId: string;
@@ -18,38 +19,19 @@ export type DiseaseData = {
   publications?: { type: string; id: string }[];
 };
 
-const getAllItems = (
-  diseaseItem: DiseaseData,
-  keyName: keyof DiseaseData,
-  totalItems = new Set()
-) => {
-  const items = diseaseItem[keyName] as any[];
-  if (items) {
-    items.forEach((item: any) => totalItems.add(item));
-  }
-  if (diseaseItem.children) {
-    diseaseItem.children.forEach((childDisease) => {
-      getAllItems(childDisease, keyName, totalItems);
-    });
-  }
-  return Array.from(totalItems);
-};
-
 const generateDiseaseLinks = (diseaseItem: DiseaseData) => {
   const diseaseLinks = [];
+  const { diseaseId } = diseaseItem;
 
   const allProts = getAllItems(diseaseItem, "proteins");
   const allDrugs = getAllItems(diseaseItem, "drugs");
   const allVariants = getAllItems(diseaseItem, "variants");
 
   if (allProts && allProts.length > 0) {
+    // Get the first protein
+    const { accession } = allProts[0];
     diseaseLinks.push(
-      generateLink(
-        Context.DISEASE,
-        Context.PROTEIN,
-        diseaseItem.diseaseId,
-        allProts
-      )
+      getProteinLink(diseaseId, accession, "protein", allProts.length)
     );
   }
   if (allDrugs && allDrugs.length > 0) {
@@ -88,7 +70,7 @@ const DiseaseChildren: FC<{ data: DiseaseData[]; depth?: number }> = ({
     <Fragment>
       {filtered.map((disease, i) => (
         <div key={disease.diseaseId} style={{ marginLeft: `${depth}rem` }}>
-          <Link to={`/${Context.DISEASE}/${disease.diseaseId}`}>
+          <Link to={`/disease/${disease.diseaseId}/proteins`}>
             <img
               alt="plus/minus"
               src={i < filtered.length - 1 ? TreeLeaf : TreeLeafEnd}

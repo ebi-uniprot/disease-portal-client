@@ -36,15 +36,15 @@ const ProteinsForDiseaseCardContainer: FunctionComponent<RouteComponentProps<
 
   const { results } = data;
 
-  if (!proteinid) {
-    history.push(
-      `/disease/${diseaseid}/proteins/${results[0].accession}/protein`
-    );
-  }
-
   const sortedData = results.sort(
     (a: ProteinData, b: ProteinData) => (b.isExternallyMapped ? 1 : 0) && -1
   );
+
+  if (!proteinid) {
+    history.push(
+      `/disease/${diseaseid}/proteins/${sortedData[0].accession}/protein`
+    );
+  }
 
   return (
     <Fragment>
