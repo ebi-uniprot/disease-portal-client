@@ -45,7 +45,7 @@ const ProteinsForDiseaseCardContainer: FunctionComponent<RouteComponentProps<
     history.push(
       `/${ContextObj[Context.DISEASE].id}/${diseaseid}/${
         ContextObj[Context.PROTEIN].id
-      }/${sortedData[0].accession}`
+      }/${sortedData[0].accession}/${ContextObj[Context.PROTEIN].id}`
     );
   }
 

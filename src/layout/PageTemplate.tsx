@@ -1,4 +1,4 @@
-import React, { Fragment, FC, ReactNode } from "react";
+import React, { FC, ReactNode } from "react";
 import { Context, ContextObj } from "../types/context";
 import spinner from "../svg/spinner.svg";
 import "./PageTemplate.css";
@@ -12,14 +12,14 @@ const PageTemplate: FC<{
 }> = ({ context, id, length, children, isLoading }) => {
   if (isLoading || !length) {
     return (
-      <div className="spinner-container">
+      <section className="spinner-container">
         <img src={spinner} alt="logo" width={120} height={50} />
-      </div>
+      </section>
     );
   }
 
   return (
-    <Fragment>
+    <section>
       <div className="page-header">
         <h5
           style={{
@@ -33,7 +33,7 @@ const PageTemplate: FC<{
         </h5>
       </div>
       {children}
-    </Fragment>
+    </section>
   );
 };
 

@@ -4,9 +4,7 @@ import ProteinCard, { ProteinData } from "./cards/ProteinCard";
 import { baseUrl } from "../config";
 import { withRouter, RouteComponentProps, useParams } from "react-router";
 
-const ProteinContainer: FunctionComponent<
-  { id: string } & RouteComponentProps
-> = () => {
+const ProteinContainer: FunctionComponent<RouteComponentProps> = () => {
   const { proteinid } = useParams();
 
   const { data } = useApi<{ result: ProteinData }>(

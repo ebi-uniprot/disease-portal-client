@@ -1,7 +1,7 @@
 import React, { Fragment, FunctionComponent, FC } from "react";
 import { Card } from "franklin-sites";
 import { Context } from "../../types/context";
-import { createLink } from "../utils";
+import { createTableLink } from "../utils";
 import { Link } from "react-router-dom";
 import TreeLeaf from "../../svg/tree-leaf.svg";
 import TreeLeafEnd from "../../svg/tree-leaf-end.svg";
@@ -30,44 +30,23 @@ const generateDiseaseLinks = (diseaseItem: DiseaseData) => {
 
   const allProts = getAllItems(diseaseItem, "proteins");
   const allDrugs = getAllItems(diseaseItem, "drugs");
-  // const allVariants = getAllItems(diseaseItem, "variants");
+  const allVariants = getAllItems(diseaseItem, "variants");
 
   if (allProts && allProts.length > 0) {
-    // Get the first protein
-    const { accession } = allProts[0];
     diseaseLinks.push(
-      createLink(
-        diseaseId,
-        accession,
-        Context.PROTEIN,
-        Context.PROTEIN,
-        allProts.length
-      )
+      createTableLink(diseaseId, Context.PROTEIN, allProts.length)
     );
   }
   if (allDrugs && allDrugs.length > 0) {
-    // Get the first protein
-    const { accession } = allProts[0];
     diseaseLinks.push(
-      createLink(
-        diseaseId,
-        accession,
-        Context.DRUG,
-        Context.DRUG,
-        allDrugs.length
-      )
+      createTableLink(diseaseId, Context.DRUG, allDrugs.length)
     );
   }
-  // if (allVariants && allVariants.length > 0) {
-  //   diseaseLinks.push(
-  //     generateLink(
-  //       Context.DISEASE,
-  //       Context.VARIANT,
-  //       diseaseItem.diseaseId,
-  //       allVariants
-  //     )
-  //   );
-  // }
+  if (allVariants && allVariants.length > 0) {
+    diseaseLinks.push(
+      createTableLink(diseaseId, Context.VARIANT, allVariants.length)
+    );
+  }
   return diseaseLinks;
 };
 

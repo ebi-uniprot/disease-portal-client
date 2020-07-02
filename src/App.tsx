@@ -13,7 +13,7 @@ import logo from "./svg/uniprot-rgb.svg";
 
 import "./App.css";
 import ProteinContainer from "./components/ProteinContainer";
-import DrugsForDiseaseCardContainer from "./components/DrugsForDiseaseCardContainer";
+import DrugsForDiseaseContainer from "./components/DrugsForDiseaseContainer";
 import { ContextObj, Context } from "./types/context";
 import ProteinsForDrugsCardContainer from "./components/ProteinsForDrugsCardContainer";
 
@@ -51,12 +51,6 @@ class App extends Component {
                     }/:proteinid?`}
                     component={ProteinsForDiseaseCardContainer}
                   />
-                  <Route
-                    path={`/${ContextObj[Context.DISEASE].id}/:diseaseid/${
-                      ContextObj[Context.DRUG].id
-                    }/:drugid?`}
-                    component={DrugsForDiseaseCardContainer}
-                  />
                 </>
               }
               right={
@@ -64,7 +58,7 @@ class App extends Component {
                   <Route
                     path={`/${ContextObj[Context.DISEASE].id}/:id/${
                       ContextObj[Context.PROTEIN].id
-                    }/:proteinid`}
+                    }/:proteinid/${ContextObj[Context.PROTEIN].id}`}
                     exact
                     component={ProteinContainer}
                   />
@@ -104,32 +98,16 @@ class App extends Component {
                     }/:drugid/${ContextObj[Context.PROTEIN].id}`}
                     component={ProteinsForDrugsCardContainer}
                   />
+                  <Route
+                    path={`/${ContextObj[Context.DISEASE].id}/:diseaseid/${
+                      ContextObj[Context.DRUG].id
+                    }`}
+                    component={DrugsForDiseaseContainer}
+                  />
                 </>
               }
               footer={<small>&copy; 2019 UniProt Consortium</small>}
             />
-            {/* <Switch>
-                <Route
-                  path={`/${Context.DRUG}/:id/${Context.DISEASE}`}
-                  component={DrugsForDiseaseCardContainer}
-                />
-                <Route
-                  path={`/${Context.DRUG}/:id/${Context.PROTEIN}`}
-                  component={DrugsForProteinCardContainer}
-                />
-                <Route
-                  path={`/${Context.VARIANT}/:id/${Context.DISEASE}`}
-                  component={VariantsForDiseaseCardContainer}
-                />
-                <Route
-                  path={`/${Context.DISEASE}/:id/${Context.DRUG}`}
-                  component={DiseasesForDrugsCardContainer}
-                />
-                <Route
-                  path={`/${Context.PROTEIN}/:id/${Context.DRUG}`}
-                  component={ProteinsForDrugsCardContainer}
-                />
-              </Switch> */}
           </Switch>
         </BrowserRouter>
       </FranklinSite>

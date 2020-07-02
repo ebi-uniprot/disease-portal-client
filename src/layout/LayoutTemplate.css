@@ -1,7 +1,7 @@
 .layout-template {
   display: grid;
   grid-template-rows: 8vh 14vh 75vh 2vh;
-  grid-template-columns: 33.3vw 66.7vw;
+  grid-template-columns: 1fr max-content;
   grid-template-areas:
     "header header"
     "top top"

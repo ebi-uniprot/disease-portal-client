@@ -86,7 +86,7 @@ const ProteinCardCompact: FunctionComponent<
         history.push(
           `/${ContextObj[Context.DISEASE].id}/${diseaseId}/${
             ContextObj[Context.PROTEIN].id
-          }/${accession}`
+          }/${accession}/${ContextObj[Context.PROTEIN].id}`
         )
       }
       active={accession === selectedProteinId}
