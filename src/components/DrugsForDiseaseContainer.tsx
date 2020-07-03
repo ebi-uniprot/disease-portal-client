@@ -22,7 +22,7 @@ const DrugsForDiseaseContainer = () => {
     <PageTemplate
       context={Context.DRUG}
       id={diseaseid}
-      length={data?.results && data.results.length}
+      length={data?.results?.length}
       isLoading={isLoading}
     >
       <DrugsTable data={data.results} diseaseId={diseaseid} />
