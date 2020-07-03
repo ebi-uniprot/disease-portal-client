@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { useParams } from "react-router";
 import { v1 } from "uuid";
 import useApi from "./hooks/UseApi";
@@ -13,19 +13,17 @@ const ProteinsForDrugsCardContainer = () => {
     `${baseUrl}/drug/${drugid}/proteins`
   );
   return (
-    <Fragment>
-      <PageTemplate
-        context={Context.PROTEIN}
-        id={drugid}
-        length={data && data.results.length}
-        isLoading={isLoading}
-      >
-        {data &&
-          data.results.map((item: ProteinData) => (
-            <ProteinCard data={item} id={drugid} key={v1()} />
-          ))}
-      </PageTemplate>
-    </Fragment>
+    <PageTemplate
+      context={Context.PROTEIN}
+      id={drugid}
+      length={data && data.results.length}
+      isLoading={isLoading}
+    >
+      {data &&
+        data.results.map((item: ProteinData) => (
+          <ProteinCard data={item} id={drugid} key={v1()} />
+        ))}
+    </PageTemplate>
   );
 };
 

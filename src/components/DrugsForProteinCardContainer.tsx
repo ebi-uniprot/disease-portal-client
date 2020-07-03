@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { useParams } from "react-router";
 import { v1 } from "uuid";
 import useApi from "./hooks/UseApi";
@@ -14,19 +14,17 @@ const DrugsForProteinCardContainer = () => {
   );
 
   return (
-    <Fragment>
-      <PageTemplate
-        context={Context.DRUG}
-        id={proteinid}
-        length={data?.results && data.results.length}
-        isLoading={isLoading}
-      >
-        {data &&
-          data.results.map((item: DrugsData) => (
-            <DrugsCard data={item} key={v1()} />
-          ))}
-      </PageTemplate>
-    </Fragment>
+    <PageTemplate
+      context={Context.DRUG}
+      id={proteinid}
+      length={data?.results && data.results.length}
+      isLoading={isLoading}
+    >
+      {data &&
+        data.results.map((item: DrugsData) => (
+          <DrugsCard data={item} key={v1()} />
+        ))}
+    </PageTemplate>
   );
 };
 

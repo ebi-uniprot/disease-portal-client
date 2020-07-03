@@ -1,4 +1,4 @@
-import React, { Fragment, FunctionComponent } from "react";
+import React, { FunctionComponent } from "react";
 import { RouteComponentProps, useParams } from "react-router";
 import { v1 } from "uuid";
 import useApi from "./hooks/UseApi";
@@ -15,19 +15,17 @@ const DiseasesForProteinCardContainer: FunctionComponent<RouteComponentProps<
     `${baseUrl}/protein/${proteinid}/diseases`
   );
   return (
-    <Fragment>
-      <PageTemplate
-        context={Context.DISEASE}
-        id={proteinid}
-        length={data?.results && data.results.length}
-        isLoading={isLoading}
-      >
-        {data &&
-          data.results.map((item: DiseaseData) => (
-            <DiseaseCard data={item} key={v1()} />
-          ))}
-      </PageTemplate>
-    </Fragment>
+    <PageTemplate
+      context={Context.DISEASE}
+      id={proteinid}
+      length={data?.results && data.results.length}
+      isLoading={isLoading}
+    >
+      {data &&
+        data.results.map((item: DiseaseData) => (
+          <DiseaseCard data={item} key={v1()} />
+        ))}
+    </PageTemplate>
   );
 };
 

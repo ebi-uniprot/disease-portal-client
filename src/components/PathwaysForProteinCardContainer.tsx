@@ -1,4 +1,4 @@
-import React, { Fragment, ReactElement } from "react";
+import React, { ReactElement } from "react";
 import { useParams } from "react-router";
 import { v1 } from "uuid";
 import useApi from "./hooks/UseApi";
@@ -21,16 +21,14 @@ const PathwaysForProteinCardContainer = () => {
     });
   }
   return (
-    <Fragment>
-      <PageTemplate
-        context={Context.PATHWAY}
-        id={proteinid}
-        length={pathwayCardNodes.length}
-        isLoading={isLoading}
-      >
-        {pathwayCardNodes}
-      </PageTemplate>
-    </Fragment>
+    <PageTemplate
+      context={Context.PATHWAY}
+      id={proteinid}
+      length={pathwayCardNodes.length}
+      isLoading={isLoading}
+    >
+      {pathwayCardNodes}
+    </PageTemplate>
   );
 };
 

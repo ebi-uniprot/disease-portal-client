@@ -1,4 +1,4 @@
-import React, { Fragment, FunctionComponent } from "react";
+import React, { FunctionComponent } from "react";
 import { useParams } from "react-router";
 import useApi from "./hooks/UseApi";
 import { DiseaseData } from "./cards/DiseaseCard";
