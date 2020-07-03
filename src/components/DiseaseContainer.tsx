@@ -12,7 +12,10 @@ const DiseaseContainer: FunctionComponent<{ id: string }> = () => {
     return null;
   }
   const { result } = data;
-  return <Fragment>{result && <DiseaseCardCompact data={result} />}</Fragment>;
+  if (!result) {
+    return null;
+  }
+  return <DiseaseCardCompact data={result} />;
 };
 
 export default DiseaseContainer;
