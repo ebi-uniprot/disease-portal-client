@@ -1,10 +1,10 @@
-import React, { FunctionComponent } from "react";
+import React from "react";
 import useApi from "./hooks/UseApi";
 import ProteinCard, { ProteinData } from "./cards/ProteinCard";
 import { baseUrl } from "../config";
-import { withRouter, RouteComponentProps, useParams } from "react-router";
+import { useParams } from "react-router";
 
-const ProteinContainer: FunctionComponent<RouteComponentProps> = () => {
+const ProteinContainer = () => {
   const { proteinid } = useParams();
 
   const { data } = useApi<{ result: ProteinData }>(
@@ -18,4 +18,4 @@ const ProteinContainer: FunctionComponent<RouteComponentProps> = () => {
   return <ProteinCard data={data?.result} id={proteinid} />;
 };
 
-export default withRouter(ProteinContainer);
+export default ProteinContainer;

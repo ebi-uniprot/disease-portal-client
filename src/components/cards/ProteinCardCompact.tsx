@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { Card } from "franklin-sites";
 import { ProteinData } from "./ProteinCard";
 import { createLink } from "../utils";
-import { withRouter, RouteComponentProps } from "react-router";
+import { useHistory } from "react-router";
 import { Context, ContextObj } from "../../types/context";
 
 export const formatLargeNumber = (x: number) => {
@@ -70,13 +70,12 @@ const generateProteinLinks = (proteinItem: ProteinData, diseaseId: string) => {
   return proteinLinks;
 };
 
-const ProteinCardCompact: FunctionComponent<
-  {
-    data: ProteinData;
-    diseaseId: string;
-    selectedProteinId: string;
-  } & RouteComponentProps
-> = ({ data, diseaseId, selectedProteinId, history }) => {
+const ProteinCardCompact: FunctionComponent<{
+  data: ProteinData;
+  diseaseId: string;
+  selectedProteinId: string;
+}> = ({ data, diseaseId, selectedProteinId }) => {
+  const history = useHistory();
   const { accession } = data;
   return (
     <Card
@@ -123,4 +122,4 @@ const ProteinCardCompact: FunctionComponent<
   );
 };
 
-export default withRouter(ProteinCardCompact);
+export default ProteinCardCompact;

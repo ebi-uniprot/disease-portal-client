@@ -1,5 +1,5 @@
-import React, { FunctionComponent } from "react";
-import { withRouter, RouteComponentProps, useParams } from "react-router";
+import React from "react";
+import { useParams } from "react-router";
 import useApi from "./hooks/UseApi";
 import { DrugsData } from "./cards/DrugsCard";
 import PageTemplate from "../layout/PageTemplate";
@@ -7,9 +7,7 @@ import { Context } from "../types/context";
 import { baseUrl } from "../config";
 import DrugsTable from "./tables/DrugsTable";
 
-const DrugsForDiseaseContainer: FunctionComponent<RouteComponentProps<any>> = ({
-  history,
-}) => {
+const DrugsForDiseaseContainer = () => {
   const { diseaseid } = useParams();
 
   const { data, isLoading } = useApi<{ results: DrugsData[] }>(
@@ -32,4 +30,4 @@ const DrugsForDiseaseContainer: FunctionComponent<RouteComponentProps<any>> = ({
   );
 };
 
-export default withRouter(DrugsForDiseaseContainer);
+export default DrugsForDiseaseContainer;

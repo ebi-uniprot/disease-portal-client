@@ -1,5 +1,5 @@
-import React, { Fragment, FunctionComponent, ReactElement } from "react";
-import { withRouter, RouteComponentProps, useParams } from "react-router";
+import React, { Fragment, ReactElement } from "react";
+import { useParams } from "react-router";
 import { v1 } from "uuid";
 import useApi from "./hooks/UseApi";
 import PathwayCard, { PathwayData } from "./cards/PathwayCard";
@@ -7,9 +7,7 @@ import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
 import { baseUrl } from "../config";
 
-const PathwaysForProteinCardContainer: FunctionComponent<RouteComponentProps<
-  any
->> = () => {
+const PathwaysForProteinCardContainer = () => {
   const { proteinid } = useParams();
   const { data, isLoading } = useApi<{ results: PathwayData[] }>(
     `${baseUrl}/protein/${proteinid}/xrefs`
@@ -36,4 +34,4 @@ const PathwaysForProteinCardContainer: FunctionComponent<RouteComponentProps<
   );
 };
 
-export default withRouter(PathwaysForProteinCardContainer);
+export default PathwaysForProteinCardContainer;

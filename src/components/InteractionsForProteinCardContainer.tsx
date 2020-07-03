@@ -1,5 +1,5 @@
-import React, { FunctionComponent } from "react";
-import { withRouter, RouteComponentProps } from "react-router";
+import React from "react";
+import { useParams } from "react-router";
 import InteractionViewer from "interaction-viewer";
 import { loadWebComponent } from "./cards/VariantCard";
 import useApi from "./hooks/UseApi";
@@ -8,10 +8,8 @@ import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
 import { baseUrl } from "../config";
 
-const InteractionsForProteinCardContainer: FunctionComponent<RouteComponentProps<
-  any
->> = ({ match }) => {
-  const { proteinid } = match.params;
+const InteractionsForProteinCardContainer = () => {
+  const { proteinid } = useParams();
   const { data, isLoading } = useApi<{ results: [] }>(
     `${baseUrl}/protein/${proteinid}/interactions`
   );
@@ -31,4 +29,4 @@ const InteractionsForProteinCardContainer: FunctionComponent<RouteComponentProps
   );
 };
 
-export default withRouter(InteractionsForProteinCardContainer);
+export default InteractionsForProteinCardContainer;

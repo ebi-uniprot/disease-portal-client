@@ -1,15 +1,14 @@
-import React, { Fragment, FunctionComponent } from "react";
-import { withRouter, RouteComponentProps, useParams } from "react-router";
+import React, { Fragment } from "react";
+import { useParams, useHistory } from "react-router";
 import useApi from "./hooks/UseApi";
 import { ProteinData } from "./cards/ProteinCard";
 import { baseUrl } from "../config";
 import ProteinForDiseaseFilterContainer from "./ProteinForDiseaseFilterContainer";
 import { ContextObj, Context } from "../types/context";
 
-const ProteinsForDiseaseCardContainer: FunctionComponent<RouteComponentProps<
-  any
->> = ({ history }) => {
+const ProteinsForDiseaseCardContainer = () => {
   const { diseaseid, proteinid } = useParams();
+  const history = useHistory();
 
   const { data } = useApi<{ results: ProteinData[] }>(
     `${baseUrl}/disease/${diseaseid}/proteins`
@@ -87,4 +86,4 @@ const ProteinsForDiseaseCardContainer: FunctionComponent<RouteComponentProps<
   );
 };
 
-export default withRouter(ProteinsForDiseaseCardContainer);
+export default ProteinsForDiseaseCardContainer;

@@ -1,13 +1,11 @@
-import React, { FunctionComponent } from "react";
-import { withRouter, RouteComponentProps, useParams } from "react-router";
+import React from "react";
+import { useParams } from "react-router";
 import useApi from "./hooks/UseApi";
 import VariantCard, { VariantData, VariationData } from "./cards/VariantCard";
 import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
 
-const VariantsForProteinCardContainer: FunctionComponent<RouteComponentProps<
-  any
->> = () => {
+const VariantsForProteinCardContainer = () => {
   const { proteinid } = useParams();
   const { data, isLoading } = useApi<VariationData>(
     `https://www.ebi.ac.uk/proteins/api/variation/${proteinid}?format=json`
@@ -35,4 +33,4 @@ const VariantsForProteinCardContainer: FunctionComponent<RouteComponentProps<
   );
 };
 
-export default withRouter(VariantsForProteinCardContainer);
+export default VariantsForProteinCardContainer;

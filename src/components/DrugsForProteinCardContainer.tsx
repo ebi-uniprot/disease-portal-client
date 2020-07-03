@@ -1,5 +1,5 @@
-import React, { Fragment, FunctionComponent } from "react";
-import { withRouter, RouteComponentProps, useParams } from "react-router";
+import React, { Fragment } from "react";
+import { useParams } from "react-router";
 import { v1 } from "uuid";
 import useApi from "./hooks/UseApi";
 import DrugsCard, { DrugsData } from "./cards/DrugsCard";
@@ -7,9 +7,7 @@ import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
 import { baseUrl } from "../config";
 
-const DrugsForProteinCardContainer: FunctionComponent<RouteComponentProps<
-  any
->> = () => {
+const DrugsForProteinCardContainer = () => {
   const { proteinid } = useParams();
   const { data, isLoading } = useApi<{ results: DrugsData[] }>(
     `${baseUrl}/protein/${proteinid}/drugs`
@@ -32,4 +30,4 @@ const DrugsForProteinCardContainer: FunctionComponent<RouteComponentProps<
   );
 };
 
-export default withRouter(DrugsForProteinCardContainer);
+export default DrugsForProteinCardContainer;
