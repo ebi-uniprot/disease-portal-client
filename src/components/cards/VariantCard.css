@@ -1,7 +1,7 @@
 protvista-manager {
   display: grid;
-  grid-template-columns: 7fr 2fr;
-  grid-template-areas: "navigation ." "sequence ." "variation filter" "datatable datatable";
+  grid-template-columns: 1fr 8fr;
+  grid-template-areas: "datatable datatable" ". navigation" ". sequence" "filter variation";
 }
 
 protvista-navigation {
@@ -14,12 +14,12 @@ protvista-sequence {
 
 protvista-filter {
   grid-area: filter;
-  height: 430px;
+  height: 420px;
   overflow-y: auto;
 }
 
 protvista-datatable {
-  margin-top: 1rem;
+  margin-bottom: 1rem;
   grid-area: datatable;
 }
 
