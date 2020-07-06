@@ -1,7 +1,5 @@
 import React, { FunctionComponent } from "react";
 import { Card, InfoList } from "franklin-sites";
-import { Context } from "../../types/context";
-import { createLink } from "../utils";
 
 export type DrugsData = {
   name: string;

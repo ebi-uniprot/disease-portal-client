@@ -1,12 +1,10 @@
 import React, { FC, useEffect } from "react";
 import ProtvistaDatatable from "protvista-datatable";
-import {
-  VariantData,
-  ProtvistaDatatableType,
-  loadWebComponent,
-} from "../cards/VariantCard";
+import { ProtvistaDatatableType, loadWebComponent } from "../cards/VariantCard";
+import { html } from "lit-html";
 
 export type DiseaseVariant = {
+  proteinAccession: string;
   altSeq: string;
   featureId: string;
   featureLocation: {
@@ -23,6 +21,13 @@ export type DiseaseVariant = {
 loadWebComponent("protvista-datatable", ProtvistaDatatable);
 
 const columns = (diseaseId: string) => ({
+  accession: {
+    label: "Protein",
+    resolver: (variant: DiseaseVariant) =>
+      html`<a href="//www.uniprot.org/uniprot/${variant.proteinAccession}"
+        >${variant.proteinAccession}</a
+      >`,
+  },
   position: {
     label: "Position",
     resolver: (variant: DiseaseVariant) => variant.featureLocation.startId,
@@ -46,7 +51,7 @@ const columns = (diseaseId: string) => ({
   },
 });
 
-const VariantsTable: FC<{ data: VariantData[]; diseaseId: string }> = ({
+const VariantsTable: FC<{ data: DiseaseVariant[]; diseaseId: string }> = ({
   data,
   diseaseId,
 }) => {

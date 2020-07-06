@@ -16,6 +16,7 @@ import ProteinContainer from "./components/ProteinContainer";
 import DrugsForDiseaseContainer from "./components/DrugsForDiseaseContainer";
 import { ContextObj, Context } from "./types/context";
 import ProteinsForDrugsCardContainer from "./components/ProteinsForDrugsCardContainer";
+import VariantsForDiseaseContainer from "./components/VariantsForDiseaseContainer";
 
 class App extends Component {
   render() {
@@ -103,6 +104,12 @@ class App extends Component {
                       ContextObj[Context.DRUG].id
                     }`}
                     component={DrugsForDiseaseContainer}
+                  />
+                  <Route
+                    path={`/${ContextObj[Context.DISEASE].id}/:diseaseid/${
+                      ContextObj[Context.VARIANT].id
+                    }`}
+                    component={VariantsForDiseaseContainer}
                   />
                 </>
               }
