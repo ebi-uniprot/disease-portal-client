@@ -61,7 +61,8 @@ const DrugsCard: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
   ];
 
   return (
-    <Card title={data.name} key={data.name}>
+    <Card>
+      <h4>{data.name}</h4>
       <InfoList infoData={infoData} />
     </Card>
   );

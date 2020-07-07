@@ -49,7 +49,8 @@ const PathwayCard: FunctionComponent<{ data: PathwayData }> = ({ data }) => {
   }, [showPathway, data.primaryId]);
 
   return (
-    <Card title={data.description} key={data.primaryId}>
+    <Card>
+      <h4>{data.description}</h4>
       <p>
         <a
           href={getUrl(data.dbType, data.primaryId)}
@@ -57,9 +58,9 @@ const PathwayCard: FunctionComponent<{ data: PathwayData }> = ({ data }) => {
           rel="noopener noreferrer"
         >
           {data.primaryId}
-        </a>
+        </a>{" "}
       </p>
-      <button className="button" onClick={() => setShowPathway(true)}>
+      <button className="button tertiary" onClick={() => setShowPathway(true)}>
         Show pathway
       </button>
       <div id={`${data.primaryId}_placeholder`} />

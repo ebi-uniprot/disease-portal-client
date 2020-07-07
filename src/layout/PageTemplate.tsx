@@ -21,7 +21,7 @@ const PageTemplate: FC<{
   return (
     <section>
       <div className="page-header">
-        <h5
+        <h4
           style={{
             borderBottom: `1px solid ${
               ContextObj[context as keyof typeof ContextObj].color
@@ -30,7 +30,7 @@ const PageTemplate: FC<{
         >
           {length} {context.toLowerCase()}
           {length > 1 && "s"} for {id}
-        </h5>
+        </h4>
       </div>
       {children}
     </section>

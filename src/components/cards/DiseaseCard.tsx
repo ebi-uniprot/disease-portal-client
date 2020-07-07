@@ -97,11 +97,8 @@ const DiseaseChildren: FC<{ data: DiseaseData[]; depth?: number }> = ({
 
 const DiseaseCard: FunctionComponent<{ data: DiseaseData }> = ({ data }) => {
   return (
-    <Card
-      title={data.diseaseName}
-      links={generateDiseaseLinks(data)}
-      key={data.diseaseId}
-    >
+    <Card links={generateDiseaseLinks(data)}>
+      <h4>{data.diseaseName}</h4>
       {data.description}
       <hr />
       {data.children && <DiseaseChildren data={data.children} />}

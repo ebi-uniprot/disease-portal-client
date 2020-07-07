@@ -22,7 +22,8 @@ const InteractionsForProteinCardContainer = () => {
       length={data?.results && data.results.length}
       isLoading={isLoading}
     >
-      <Card title="Interactions">
+      <Card>
+        <h4>Interactions</h4>
         <interaction-viewer accession={proteinid} />
       </Card>
     </PageTemplate>

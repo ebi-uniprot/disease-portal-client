@@ -41,23 +41,20 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
     data.diseases.filter((disease) => disease.diseaseName === id);
 
   return (
-    <Card
-      title={
-        <Fragment>
-          {data.gene} - {data.proteinName}{" "}
-          <small>
-            <a
-              href={`//www.uniprot.org/uniprot/${data.accession}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {data.accession}
-            </a>
-          </small>
-        </Fragment>
-      }
-      key={data.proteinId}
-    >
+    <Card>
+      <h4>
+        {data.gene} - {data.proteinName}{" "}
+        <small>
+          <a
+            href={`//www.uniprot.org/uniprot/${data.accession}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {data.accession}
+          </a>
+        </small>
+      </h4>
+
       {!data.isExternallyMapped ? (
         <span className="label label__reviewed">
           Disease association source: UniProt
@@ -67,7 +64,7 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
           Disease association source: Imported
         </span>
       )}
-      <h4>Function</h4>
+      <h5>Function</h5>
       <p>
         {!showWholeFunction && data.description.length > 200 ? (
           <Fragment>
@@ -80,7 +77,7 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
       </p>
       {data.geneCoordinates && (
         <div>
-          <h4>Gene information</h4>
+          <h5>Gene information</h5>
           {data.geneCoordinates.map((coordinate) => (
             <p key={v1()}>
               {coordinate.chromosome}:{formatLargeNumber(coordinate.start)}-
@@ -112,7 +109,7 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
       )}
       {diseaseNotes && (
         <Fragment>
-          {diseaseNotes.length > 0 && <h4>Disease notes</h4>}
+          {diseaseNotes.length > 0 && <h5>Disease notes</h5>}
           {diseaseNotes.map((note) => (
             <Fragment key={v1()}>
               <h5>{note.diseaseName}</h5>

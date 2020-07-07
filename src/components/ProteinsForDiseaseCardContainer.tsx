@@ -75,7 +75,7 @@ const ProteinForDiseaseCardContainer = () => {
   return (
     <section>
       <section className="page-header">
-        <h5>{filteredData.length} proteins</h5>
+        <h4>{filteredData.length} proteins</h4>
         <section className="button-group">
           <DropdownButton label="Filter" className="tertiary">
             <ul className="no-bullet">

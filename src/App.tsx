@@ -113,7 +113,7 @@ class App extends Component {
                   />
                 </>
               }
-              footer={<small>&copy; 2019 UniProt Consortium</small>}
+              footer={<small>&copy;2020 UniProt Consortium</small>}
             />
           </Switch>
         </BrowserRouter>

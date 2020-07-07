@@ -278,7 +278,8 @@ const VariantCard: FunctionComponent<{ data: VariationData }> = ({ data }) => {
   }
 
   return (
-    <Card title="Variants">
+    <Card>
+      <h4>Variants</h4>
       <div className="protvista-grid">
         <protvista-manager
           attributes="displaystart displayend highlight"
