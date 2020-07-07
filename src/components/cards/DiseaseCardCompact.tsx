@@ -91,7 +91,7 @@ const DiseaseCardCompact: FunctionComponent<{ data: DiseaseData }> = ({
       key={data.diseaseId}
       className="disease-compact"
     >
-      <h3 className="disease-title">{data.diseaseName}</h3>
+      <h4 className="disease-title">{data.diseaseName}</h4>
       {data.children && data.children.length > 0 && (
         <select
           className="disease-dropdown"
