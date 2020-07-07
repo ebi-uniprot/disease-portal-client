@@ -2,11 +2,19 @@
   display: flex;
 }
 
-.card__content * {
+.disease-title {
   flex: 1;
+  margin-right: 1rem;
 }
 
-.card__content select {
+.disease-dropdown {
+  flex: 1;
   width: auto;
-  flex: 0.5;
+  margin-right: 1rem;
+}
+
+.disease-description {
+  flex: 4;
+  height: 4rem;
+  overflow-y: auto;
 }

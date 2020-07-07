@@ -91,10 +91,12 @@ const DiseaseCardCompact: FunctionComponent<{ data: DiseaseData }> = ({
       key={data.diseaseId}
       className="disease-compact"
     >
-      <h4>{data.diseaseName}</h4>
-      {data.children && (
+      <h4 className="disease-title">{data.diseaseName}</h4>
+      {data.children && data.children.length > 0 && (
         <select
+          className="disease-dropdown"
           onChange={(val) => {
+            console.log("pushing");
             history.push(
               `/${ContextObj[Context.DISEASE].id}/${val.target.value}/${
                 ContextObj[Context.PROTEIN].id
@@ -102,10 +104,11 @@ const DiseaseCardCompact: FunctionComponent<{ data: DiseaseData }> = ({
             );
           }}
         >
-          <option>Select</option>
+          <option>Select sub-type</option>
           <DiseaseChildren data={data.children} />
         </select>
       )}
+      <section className="disease-description">{data.description}</section>
     </Card>
   );
 };
