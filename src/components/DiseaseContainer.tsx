@@ -5,7 +5,7 @@ import { DiseaseData } from "./cards/DiseaseCard";
 import { baseUrl } from "../config";
 import DiseaseCardCompact from "./cards/DiseaseCardCompact";
 
-const DiseaseContainer: FunctionComponent<{ id: string }> = () => {
+const DiseaseContainer: FunctionComponent = () => {
   const { id } = useParams();
   const { data } = useApi<{ result: DiseaseData }>(`${baseUrl}/diseases/${id}`);
   if (!data) {
