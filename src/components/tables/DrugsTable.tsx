@@ -66,7 +66,7 @@ const columns = (diseaseId: string) => ({
           html`<p>
             <a
               href="/${ContextObj[Context.DISEASE]
-                .id}/${disease.diseaseId}/${ContextObj[Context.PROTEIN]}"
+                .id}/${disease.diseaseId}/${ContextObj[Context.PROTEIN].id}"
               >${disease.diseaseName}</a
             >
           </p>`
