@@ -15,7 +15,8 @@
 
 .layout-template__top {
   grid-area: top;
-  overflow-y: auto;
+  z-index: 100;
+  box-shadow: 0 0.25rem 0.125rem rgba(22, 29, 57, 0.2);
 }
 
 .layout-template__left {
