@@ -11,18 +11,19 @@ const DiseasesForProteinCardContainer: FunctionComponent<RouteComponentProps<
   any
 >> = () => {
   const { proteinid } = useParams();
-  const { data, isLoading } = useApi<{ results: DiseaseData[] }>(
+  const { data, isLoading } = useApi<{ results?: DiseaseData[] }>(
     `${baseUrl}/protein/${proteinid}/diseases`
   );
+
   return (
     <PageTemplate
       context={Context.DISEASE}
       id={proteinid}
-      length={data?.results && data.results.length}
+      length={data?.results && data.results?.length}
       isLoading={isLoading}
     >
       {data &&
-        data.results.map((item: DiseaseData) => (
+        data.results?.map((item: DiseaseData) => (
           <DiseaseCard data={item} key={v1()} />
         ))}
     </PageTemplate>
