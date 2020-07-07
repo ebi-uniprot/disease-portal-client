@@ -1,16 +1,41 @@
-import React, { Fragment } from "react";
-import { useParams } from "react-router";
-import useApi from "./hooks/UseApi";
+import React, { useState } from "react";
+import { v1 } from "uuid";
+import { DropdownButton } from "franklin-sites";
 import { ProteinData } from "./cards/ProteinCard";
-import { baseUrl } from "../config";
-import ProteinForDiseaseFilterContainer from "./ProteinForDiseaseFilterContainer";
+import ProteinCardCompact from "./cards/ProteinCardCompact";
 import Axios from "axios";
+import { baseUrl } from "../config";
+import { useParams } from "react-router";
+import UseApi from "./hooks/UseApi";
 
-const ProteinsForDiseaseCardContainer = () => {
+enum Filters {
+  INT = "interactions",
+  PAT = "pathways",
+  DRU = "drugs",
+  SEQ = "variants",
+}
+
+const ProteinForDiseaseCardContainer = () => {
   const { diseaseid, proteinid } = useParams();
+  const [selectedFilters, setSelectedFilters] = useState({
+    [Filters.INT]: false,
+    [Filters.PAT]: false,
+    [Filters.DRU]: false,
+    [Filters.SEQ]: false,
+  });
 
-  const { data } = useApi<{ results: ProteinData[] }>(
+  const { data } = UseApi<{ results: ProteinData[] }>(
     `${baseUrl}/disease/${diseaseid}/proteins`
+  );
+
+  if (!data) {
+    return null;
+  }
+
+  const { results } = data;
+
+  const sortedData = results.sort(
+    (a: ProteinData, b: ProteinData) => (b.isExternallyMapped ? 1 : 0) && -1
   );
 
   const downloadProteins = (proteinIds: string[]) => {
@@ -29,39 +54,76 @@ const ProteinsForDiseaseCardContainer = () => {
     });
   };
 
-  if (!data) {
-    return null;
-  }
+  const handleFilterClick = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedFilters({
+      ...selectedFilters,
+      [e.target.name]: e.target.checked,
+    });
+  };
 
-  const { results } = data;
+  const appliedFilters = Object.keys(selectedFilters).filter(
+    (f) => selectedFilters[(f as unknown) as Filters]
+  );
 
-  const sortedData = results.sort(
-    (a: ProteinData, b: ProteinData) => (b.isExternallyMapped ? 1 : 0) && -1
+  const filteredData = sortedData.filter((protein: ProteinData) =>
+    appliedFilters.every((filter) => {
+      const items = protein[(filter as unknown) as Filters];
+      return items && items.length > 0;
+    })
   );
 
   return (
-    <Fragment>
-      {data && data.results.length <= 300 && (
-        <button
-          className="button align-right"
-          type="button"
-          onClick={() =>
-            downloadProteins(
-              data.results.map((protein: ProteinData) => protein.accession)
-            )
-          }
-        >
-          Download
-        </button>
-      )}
-
-      <ProteinForDiseaseFilterContainer
-        data={sortedData}
-        diseaseId={diseaseid}
-        selectedProteinId={proteinid}
-      />
-    </Fragment>
+    <section>
+      <section className="page-header">
+        <h5>{filteredData.length} proteins</h5>
+        <section className="button-group">
+          <DropdownButton label="Filter" className="tertiary">
+            <ul className="no-bullet">
+              {Object.keys(Filters).map((filterKey) => (
+                <li key={filterKey}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      onChange={(e) => handleFilterClick(e)}
+                      checked={
+                        selectedFilters[
+                          Filters[filterKey as keyof typeof Filters]
+                        ]
+                      }
+                      name={Filters[filterKey as keyof typeof Filters]}
+                    />
+                    {Filters[filterKey as keyof typeof Filters]}
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </DropdownButton>
+          {filteredData && filteredData.length <= 300 && (
+            <button
+              className="button tertiary"
+              type="button"
+              onClick={() =>
+                downloadProteins(
+                  filteredData.map((protein: ProteinData) => protein.accession)
+                )
+              }
+            >
+              Download
+            </button>
+          )}
+        </section>
+      </section>
+      {filteredData &&
+        filteredData.map((item: ProteinData) => (
+          <ProteinCardCompact
+            data={item}
+            diseaseId={diseaseid}
+            key={v1()}
+            selectedProteinId={proteinid ? proteinid : sortedData[0]}
+          />
+        ))}
+    </section>
   );
 };
 
-export default ProteinsForDiseaseCardContainer;
+export default ProteinForDiseaseCardContainer;

@@ -96,7 +96,6 @@ const DiseaseCardCompact: FunctionComponent<{ data: DiseaseData }> = ({
         <select
           className="disease-dropdown"
           onChange={(val) => {
-            console.log("pushing");
             history.push(
               `/${ContextObj[Context.DISEASE].id}/${val.target.value}/${
                 ContextObj[Context.PROTEIN].id

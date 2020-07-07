@@ -6,11 +6,24 @@ body,
 }
 
 .page-header {
+  width: 100%;
   padding: 0 1rem;
-  text-align: right;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
   background-color: #ffffff;
   position: sticky;
   top: 0;
+}
+
+.page-header .button-group {
+  margin-left: auto;
+  /* Override default */
+  flex-grow: 0;
+}
+
+.dropdown-menu {
+  padding: 1rem;
 }
 
 .label {
