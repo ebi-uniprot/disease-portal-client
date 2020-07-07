@@ -1,7 +1,7 @@
 import React, { Fragment, FunctionComponent, FC } from "react";
 import { Card } from "franklin-sites";
 import { Context } from "../../types/context";
-import { createLink, createTableLink } from "../utils";
+import { createTableLink } from "../utils";
 import { Link } from "react-router-dom";
 import TreeLeaf from "../../svg/tree-leaf.svg";
 import TreeLeafEnd from "../../svg/tree-leaf-end.svg";

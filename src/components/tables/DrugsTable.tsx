@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import ProtvistaDatatable from "protvista-datatable";
-import { Context } from "../../types/context";
-import { getTableLink } from "../utils";
+import { Context, ContextObj } from "../../types/context";
 import { DrugsData } from "../cards/DrugsCard";
 import { loadWebComponent, ProtvistaDatatableType } from "../cards/VariantCard";
 import { html } from "lit-html";
@@ -62,24 +61,31 @@ const columns = (diseaseId: string) => ({
     label: "Diseases",
     resolver: (drug: DrugsData) =>
       drug.diseases &&
-      getTableLink(
-        diseaseId,
-        drug.name,
-        Context.DRUG,
-        Context.DISEASE,
-        drug.diseases.length
+      drug.diseases.map(
+        (disease) =>
+          html`<p>
+            <a
+              href="/${ContextObj[Context.DISEASE]
+                .id}/${disease.diseaseId}/${ContextObj[Context.PROTEIN]}"
+              >${disease.diseaseName}</a
+            >
+          </p>`
       ),
   },
   proteins: {
     label: "Proteins",
     resolver: (drug: DrugsData) =>
       drug.proteins &&
-      getTableLink(
-        diseaseId,
-        drug.name,
-        Context.DRUG,
-        Context.PROTEIN,
-        drug.proteins.length
+      drug.proteins.map(
+        (protein) =>
+          html`<p>
+            <a
+              href="/${ContextObj[Context.DISEASE]
+                .id}/${diseaseId}/${ContextObj[Context.PROTEIN]
+                .id}/${protein}/${ContextObj[Context.PROTEIN].id}"
+              >${protein}</a
+            >
+          </p>`
       ),
   },
 });
@@ -97,6 +103,8 @@ const DrugsTable: FunctionComponent<{
       protvistaDatatable.data = data;
     }
   }, [data, diseaseId]);
+
+  console.log(data);
 
   return (
     <section className="full-width">

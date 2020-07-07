@@ -10,7 +10,7 @@ export type DrugsData = {
   clinicalTrialPhase: number;
   evidences: string[];
   mechanismOfAction: string;
-  diseases?: string[];
+  diseases?: { diseaseId: string; diseaseName: string }[];
   proteins?: string[];
 };
 

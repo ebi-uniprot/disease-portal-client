@@ -2,6 +2,7 @@ import React, { FC, useEffect } from "react";
 import ProtvistaDatatable from "protvista-datatable";
 import { ProtvistaDatatableType, loadWebComponent } from "../cards/VariantCard";
 import { html } from "lit-html";
+import { ContextObj, Context } from "../../types/context";
 
 export type DiseaseVariant = {
   proteinAccession: string;
@@ -24,7 +25,10 @@ const columns = (diseaseId: string) => ({
   accession: {
     label: "Protein",
     resolver: (variant: DiseaseVariant) =>
-      html`<a href="//www.uniprot.org/uniprot/${variant.proteinAccession}"
+      html`<a
+        href="/${ContextObj[Context.DISEASE].id}/${diseaseId}/${ContextObj[
+          Context.PROTEIN
+        ].id}/${variant.proteinAccession}/${ContextObj[Context.PROTEIN].id}"
         >${variant.proteinAccession}</a
       >`,
   },
