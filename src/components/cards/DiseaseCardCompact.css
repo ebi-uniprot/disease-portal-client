@@ -1,0 +1,12 @@
+.disease-compact .card__content {
+  display: flex;
+}
+
+.card__content * {
+  flex: 1;
+}
+
+.card__content select {
+  width: auto;
+  flex: 0.5;
+}

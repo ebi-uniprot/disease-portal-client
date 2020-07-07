@@ -1,11 +1,11 @@
-import React, { Fragment, FunctionComponent, FC } from "react";
+import React, { FunctionComponent, FC, Fragment } from "react";
 import { Card } from "franklin-sites";
-import { Context } from "../../types/context";
+import { Context, ContextObj } from "../../types/context";
 import { createTableLink } from "../utils";
-import { Link } from "react-router-dom";
-import TreeLeaf from "../../svg/tree-leaf.svg";
-import TreeLeafEnd from "../../svg/tree-leaf-end.svg";
 import { DiseaseData } from "./DiseaseCard";
+import { useHistory } from "react-router";
+
+import "./DiseaseCardCompact.css";
 
 export function getAllItems(
   diseaseItem: DiseaseData,
@@ -50,6 +50,10 @@ const generateDiseaseLinks = (diseaseItem: DiseaseData) => {
   return diseaseLinks;
 };
 
+const generateSpacer = (size: number) => {
+  return "--".repeat(size);
+};
+
 const DiseaseChildren: FC<{ data: DiseaseData[]; depth?: number }> = ({
   data,
   depth = 0,
@@ -60,33 +64,48 @@ const DiseaseChildren: FC<{ data: DiseaseData[]; depth?: number }> = ({
       (disease.proteins && disease.proteins.length > 0)
   );
   return (
-    <Fragment>
+    <>
       {filtered.map((disease, i) => (
-        <div key={disease.diseaseId} style={{ marginLeft: `${depth}rem` }}>
-          <Link to={`/${Context.DISEASE}/${disease.diseaseId}`}>
-            <img
-              alt="plus/minus"
-              src={i < filtered.length - 1 ? TreeLeaf : TreeLeafEnd}
-              width={25}
-              height={25}
-            />
+        <Fragment key={disease.diseaseName}>
+          <option value={disease.diseaseName}>
+            {generateSpacer(depth)}
             {disease.diseaseName}
-          </Link>
+          </option>
           {disease.children && (
             <DiseaseChildren data={disease.children} depth={depth + 1} />
           )}
-        </div>
+        </Fragment>
       ))}
-    </Fragment>
+    </>
   );
 };
 
 const DiseaseCardCompact: FunctionComponent<{ data: DiseaseData }> = ({
   data,
 }) => {
+  const history = useHistory();
+
   return (
-    <Card links={generateDiseaseLinks(data)} key={data.diseaseId}>
+    <Card
+      links={generateDiseaseLinks(data)}
+      key={data.diseaseId}
+      className="disease-compact"
+    >
       <h4>{data.diseaseName}</h4>
+      {data.children && (
+        <select
+          onChange={(val) => {
+            history.push(
+              `/${ContextObj[Context.DISEASE].id}/${val.target.value}/${
+                ContextObj[Context.PROTEIN].id
+              }`
+            );
+          }}
+        >
+          <option>Select</option>
+          <DiseaseChildren data={data.children} />
+        </select>
+      )}
     </Card>
   );
 };
