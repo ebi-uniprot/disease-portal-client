@@ -89,7 +89,7 @@ const ProteinForDiseaseCardContainer = () => {
                   <label>
                     <input
                       type="checkbox"
-                      onChange={(e) => handleFilterClick(e)}
+                      onChange={handleFilterClick}
                       checked={
                         selectedFilters[
                           Filters[filterKey as keyof typeof Filters]
