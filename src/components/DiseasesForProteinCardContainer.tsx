@@ -1,16 +1,16 @@
-import React, { FunctionComponent } from "react";
-import { RouteComponentProps, useParams } from "react-router";
-import { v1 } from "uuid";
+import React from "react";
+import { useParams } from "react-router";
+
 import useApi from "./hooks/UseApi";
 import DiseaseCard, { DiseaseData } from "./cards/DiseaseCard";
 import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
 import { baseUrl } from "../config";
 
-const DiseasesForProteinCardContainer: FunctionComponent<RouteComponentProps<
-  any
->> = () => {
+const DiseasesForProteinCardContainer = () => {
   const { proteinid } = useParams();
+  // TODO: check if a response could be defined, but its `results` field no
+  // TODO: if so, we need to apply this ?: type everywhere, not just here
   const { data, isLoading } = useApi<{ results?: DiseaseData[] }>(
     `${baseUrl}/protein/${proteinid}/diseases`
   );
@@ -19,13 +19,12 @@ const DiseasesForProteinCardContainer: FunctionComponent<RouteComponentProps<
     <PageTemplate
       context={Context.DISEASE}
       id={proteinid}
-      length={data?.results && data.results?.length}
+      length={data?.results?.length}
       isLoading={isLoading}
     >
-      {data &&
-        data.results?.map((item: DiseaseData) => (
-          <DiseaseCard data={item} key={v1()} />
-        ))}
+      {data?.results?.map((item) => (
+        <DiseaseCard data={item} key={item.diseaseId} />
+      ))}
     </PageTemplate>
   );
 };

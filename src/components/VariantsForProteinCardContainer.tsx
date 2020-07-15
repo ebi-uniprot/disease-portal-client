@@ -1,5 +1,6 @@
 import React from "react";
 import { useParams } from "react-router";
+
 import useApi from "./hooks/UseApi";
 import VariantCard, { VariantData, VariationData } from "./cards/VariantCard";
 import PageTemplate from "../layout/PageTemplate";
@@ -25,7 +26,7 @@ const VariantsForProteinCardContainer = () => {
     <PageTemplate
       context={Context.VARIANT}
       id={proteinid}
-      length={filteredData && filteredData.features.length}
+      length={filteredData?.features.length}
       isLoading={isLoading}
     >
       {filteredData && <VariantCard data={filteredData} />}

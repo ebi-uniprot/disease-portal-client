@@ -19,7 +19,7 @@ const InteractionsForProteinCardContainer = () => {
     <PageTemplate
       context={Context.INTERACTION}
       id={proteinid}
-      length={data?.results && data.results.length}
+      length={data?.results.length}
       isLoading={isLoading}
     >
       <Card>

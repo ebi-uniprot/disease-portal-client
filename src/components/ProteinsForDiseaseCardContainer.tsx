@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { v1 } from "uuid";
+import { useParams } from "react-router";
 import { DropdownButton } from "franklin-sites";
+import axios from "axios";
+
 import { ProteinData } from "./cards/ProteinCard";
 import ProteinCardCompact from "./cards/ProteinCardCompact";
-import Axios from "axios";
 import { baseUrl } from "../config";
-import { useParams } from "react-router";
 import UseApi from "./hooks/UseApi";
 
 enum Filters {
@@ -14,6 +14,12 @@ enum Filters {
   DRU = "drugs",
   SEQ = "variants",
 }
+
+const sortExternallyMappedLast = (a: ProteinData, b: ProteinData) =>
+  // externally mapped last
+  +a.isExternallyMapped - +b.isExternallyMapped ||
+  // then, order alphabetically (just to have something consistent)
+  a.accession.localeCompare(b.accession);
 
 const ProteinForDiseaseCardContainer = () => {
   const { diseaseid, proteinid } = useParams();
@@ -34,13 +40,12 @@ const ProteinForDiseaseCardContainer = () => {
 
   const { results } = data;
 
-  const sortedData = results.sort(
-    (a: ProteinData, b: ProteinData) => (b.isExternallyMapped ? 1 : 0) && -1
-  );
+  const sortedData = Array.from(results).sort(sortExternallyMappedLast);
 
   const downloadProteins = (proteinIds: string[]) => {
+    // TODO: check, not working
     const url = `${baseUrl}/proteins/${proteinIds.join(",")}/download`;
-    Axios({
+    axios({
       url: url,
       method: "GET",
       responseType: "blob", // important
@@ -61,13 +66,13 @@ const ProteinForDiseaseCardContainer = () => {
     });
   };
 
-  const appliedFilters = Object.keys(selectedFilters).filter(
-    (f) => selectedFilters[(f as unknown) as Filters]
-  );
+  const appliedFilters = (Object.keys(selectedFilters) as Array<
+    keyof typeof selectedFilters
+  >).filter((f) => selectedFilters[f]);
 
   const filteredData = sortedData.filter((protein: ProteinData) =>
     appliedFilters.every((filter) => {
-      const items = protein[(filter as unknown) as Filters];
+      const items = protein[filter];
       return items && items.length > 0;
     })
   );
@@ -104,7 +109,7 @@ const ProteinForDiseaseCardContainer = () => {
               type="button"
               onClick={() =>
                 downloadProteins(
-                  filteredData.map((protein: ProteinData) => protein.accession)
+                  filteredData.map((protein) => protein.accession)
                 )
               }
             >
@@ -114,12 +119,12 @@ const ProteinForDiseaseCardContainer = () => {
         </section>
       </section>
       {filteredData &&
-        filteredData.map((item: ProteinData) => (
+        filteredData.map((item) => (
           <ProteinCardCompact
             data={item}
             diseaseId={diseaseid}
-            key={v1()}
-            selectedProteinId={proteinid ? proteinid : sortedData[0]}
+            key={item.accession} //TODO: check (duplicates in data)
+            selectedProteinId={proteinid || sortedData[0]}
           />
         ))}
     </section>

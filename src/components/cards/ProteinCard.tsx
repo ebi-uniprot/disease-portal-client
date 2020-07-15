@@ -1,5 +1,4 @@
 import React, { FunctionComponent, Fragment, useState } from "react";
-import { v1 } from "uuid";
 import { Card } from "franklin-sites";
 
 export type ProteinData = {
@@ -55,20 +54,20 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
         </small>
       </h4>
 
-      {!data.isExternallyMapped ? (
-        <span className="label label__reviewed">
-          Disease association source: UniProt
-        </span>
-      ) : (
+      {data.isExternallyMapped ? (
         <span className="label label__manual">
           Disease association source: Imported
+        </span>
+      ) : (
+        <span className="label label__reviewed">
+          Disease association source: UniProt
         </span>
       )}
       <h5>Function</h5>
       <p>
         {!showWholeFunction && data.description.length > 200 ? (
           <Fragment>
-            <span>{data.description.substring(0, 197)}... </span>
+            <span>{data.description.substring(0, 197)}...&nbsp;</span>
             <button onClick={() => setShowWholeFunction(true)}>more</button>
           </Fragment>
         ) : (
@@ -79,7 +78,7 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
         <div>
           <h5>Gene information</h5>
           {data.geneCoordinates.map((coordinate) => (
-            <p key={v1()}>
+            <p key={coordinate.ensemblGeneId}>
               {coordinate.chromosome}:{formatLargeNumber(coordinate.start)}-
               {formatLargeNumber(coordinate.end)}{" "}
               <a
@@ -111,7 +110,7 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
         <Fragment>
           {diseaseNotes.length > 0 && <h5>Disease notes</h5>}
           {diseaseNotes.map((note) => (
-            <Fragment key={v1()}>
+            <Fragment key={note.note}>
               <h5>{note.diseaseName}</h5>
               <p>{note.note}</p>
             </Fragment>

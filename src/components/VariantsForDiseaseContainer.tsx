@@ -1,14 +1,15 @@
 import React, { FunctionComponent } from "react";
 import { RouteComponentProps } from "react-router";
+
 import useApi from "./hooks/UseApi";
 import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
 import { baseUrl } from "../config";
 import VariantsTable, { DiseaseVariant } from "./tables/VariantsTable";
 
-const VariantsForDiseaseContainer: FunctionComponent<RouteComponentProps<
-  any
->> = ({ match }) => {
+const VariantsForDiseaseContainer: FunctionComponent<RouteComponentProps<{
+  diseaseid: string;
+}>> = ({ match }) => {
   const { diseaseid } = match.params;
 
   const { data, isLoading } = useApi<{ results: DiseaseVariant[] }>(

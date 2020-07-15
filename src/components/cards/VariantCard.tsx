@@ -1,13 +1,15 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useState, useRef } from "react";
 import { html } from "lit-html";
+import { v1 } from "uuid";
+import { Card } from "franklin-sites";
+
 import ProtvistaVariation from "protvista-variation";
 import ProtvistaManager from "protvista-manager";
 import ProtvistaSequence from "protvista-sequence";
 import ProtvistaNavigation from "protvista-navigation";
 import ProtvistaDatatable from "protvista-datatable";
 import ProtvistaFilter from "protvista-filter";
-import { v1 } from "uuid";
-import { Card } from "franklin-sites";
+
 import "./VariantCard.css";
 
 type Evidence = {
@@ -185,7 +187,7 @@ const getDiseaseListForFeatures = (features: VariantData[]) => {
 };
 
 const VariantCard: FunctionComponent<{ data: VariationData }> = ({ data }) => {
-  const id = v1();
+  const idRef = useRef(v1());
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
 
   const getFilters = (data: VariantData[]) => {
@@ -224,12 +226,12 @@ const VariantCard: FunctionComponent<{ data: VariationData }> = ({ data }) => {
 
   useEffect(() => {
     const protvistaManager = document.querySelector<ProtvistaManager>(
-      `[data-uuid='${id}_manager']`
+      `[data-uuid='${idRef.current}_manager']`
     );
     if (protvistaManager) {
       protvistaManager.addEventListener("change", _handleEvent);
     }
-  }, [id]);
+  }, []);
 
   useEffect(() => {
     let filteredData;
@@ -247,14 +249,14 @@ const VariantCard: FunctionComponent<{ data: VariationData }> = ({ data }) => {
     }
 
     const protvistaFilter = document.querySelector<ProtvistaFilter>(
-      `[data-uuid='${id}_filter']`
+      `[data-uuid='${idRef.current}_filter']`
     );
 
     const protvistaVariation = document.querySelector<ProtvistaVariation>(
-      `[data-uuid='${id}_var']`
+      `[data-uuid='${idRef.current}_var']`
     );
     const protvistaDatatable = document.querySelector<ProtvistaDatatableType>(
-      `[data-uuid='${id}_table']`
+      `[data-uuid='${idRef.current}_table']`
     );
 
     if (protvistaFilter) {
@@ -271,7 +273,7 @@ const VariantCard: FunctionComponent<{ data: VariationData }> = ({ data }) => {
       protvistaDatatable.columns = columns;
       protvistaDatatable.data = filteredData;
     }
-  }, [activeFilters, id, data.features, data.sequence, diseaseFilter]);
+  }, [activeFilters, data.features, data.sequence, diseaseFilter]);
 
   if (!data.sequence) {
     return null;
@@ -283,25 +285,28 @@ const VariantCard: FunctionComponent<{ data: VariationData }> = ({ data }) => {
       <div className="protvista-grid">
         <protvista-manager
           attributes="displaystart displayend highlight"
-          data-uuid={`${id}_manager`}
+          data-uuid={`${idRef.current}_manager`}
         >
           <protvista-navigation
-            data-uuid={`${id}_nav`}
+            data-uuid={`${idRef.current}_nav`}
             length={data.sequence.length}
           />
 
           <protvista-filter
-            data-uuid={`${id}_filter`}
+            data-uuid={`${idRef.current}_filter`}
             for="protvista-variation"
           />
           <protvista-variation
-            data-uuid={`${id}_var`}
+            data-uuid={`${idRef.current}_var`}
             id="protvista-variation"
             length={data.sequence.length}
             displaystart={1}
             displayend={data.sequence.length}
           />
-          <protvista-datatable height="20" data-uuid={`${id}_table`} />
+          <protvista-datatable
+            height="20"
+            data-uuid={`${idRef.current}_table`}
+          />
         </protvista-manager>
       </div>
     </Card>

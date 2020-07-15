@@ -1,6 +1,6 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import { useParams } from "react-router";
-import { v1 } from "uuid";
+
 import useApi from "./hooks/UseApi";
 import PathwayCard, { PathwayData } from "./cards/PathwayCard";
 import PageTemplate from "../layout/PageTemplate";
@@ -12,22 +12,20 @@ const PathwaysForProteinCardContainer = () => {
   const { data, isLoading } = useApi<{ results: PathwayData[] }>(
     `${baseUrl}/protein/${proteinid}/xrefs`
   );
-  let pathwayCardNodes: ReactElement[] = [];
-  if (data) {
-    data.results.forEach((item: PathwayData) => {
-      if (item.dbType === "Reactome") {
-        pathwayCardNodes.push(<PathwayCard data={item} key={v1()} />);
-      }
-    });
-  }
+
+  const filtered =
+    data?.results.filter((item) => item.dbType === "Reactome") || [];
+
   return (
     <PageTemplate
       context={Context.PATHWAY}
       id={proteinid}
-      length={pathwayCardNodes.length}
+      length={filtered.length}
       isLoading={isLoading}
     >
-      {pathwayCardNodes}
+      {filtered.map((item) => (
+        <PathwayCard data={item} key={item.primaryId} />
+      ))}
     </PageTemplate>
   );
 };

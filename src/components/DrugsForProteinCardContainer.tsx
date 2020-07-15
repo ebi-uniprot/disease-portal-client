@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router";
-import { v1 } from "uuid";
+
 import useApi from "./hooks/UseApi";
 import DrugsCard, { DrugsData } from "./cards/DrugsCard";
 import PageTemplate from "../layout/PageTemplate";
@@ -17,13 +17,12 @@ const DrugsForProteinCardContainer = () => {
     <PageTemplate
       context={Context.DRUG}
       id={proteinid}
-      length={data?.results && data.results.length}
+      length={data?.results.length}
       isLoading={isLoading}
     >
-      {data &&
-        data.results.map((item: DrugsData) => (
-          <DrugsCard data={item} key={v1()} />
-        ))}
+      {data?.results.map((item) => (
+        <DrugsCard data={item} key={item.sourceId} />
+      ))}
     </PageTemplate>
   );
 };

@@ -80,7 +80,7 @@ const ProteinCardCompact: FunctionComponent<{
   return (
     <Card
       links={generateProteinLinks(data, diseaseId)}
-      key={data.proteinId}
+      key={data.accession}
       onClick={(s: any) =>
         history.push(
           `/${ContextObj[Context.DISEASE].id}/${diseaseId}/${
@@ -100,19 +100,19 @@ const ProteinCardCompact: FunctionComponent<{
         </a>
         {" • "}
         {data.proteinId}
-        {!data.isExternallyMapped ? (
-          <span
-            className="label label__reviewed"
-            title="Disease association source: UniProt"
-          >
-            UniProt
-          </span>
-        ) : (
+        {data.isExternallyMapped ? (
           <span
             className="label label__manual"
             title="Disease association source: Imported"
           >
             Imported
+          </span>
+        ) : (
+          <span
+            className="label label__reviewed"
+            title="Disease association source: UniProt"
+          >
+            UniProt
           </span>
         )}
       </h5>

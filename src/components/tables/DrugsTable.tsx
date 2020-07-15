@@ -1,9 +1,10 @@
 import React, { FunctionComponent, useEffect } from "react";
 import ProtvistaDatatable from "protvista-datatable";
+import { html } from "lit-html";
+
 import { Context, ContextObj } from "../../types/context";
 import { DrugsData } from "../cards/DrugsCard";
 import { loadWebComponent, ProtvistaDatatableType } from "../cards/VariantCard";
-import { html } from "lit-html";
 
 loadWebComponent("protvista-datatable", ProtvistaDatatable);
 
@@ -103,8 +104,6 @@ const DrugsTable: FunctionComponent<{
       protvistaDatatable.data = data;
     }
   }, [data, diseaseId]);
-
-  console.log(data);
 
   return (
     <section className="full-width">
