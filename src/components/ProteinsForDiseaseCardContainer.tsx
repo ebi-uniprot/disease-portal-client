@@ -123,7 +123,7 @@ const ProteinForDiseaseCardContainer = () => {
           <ProteinCardCompact
             data={item}
             diseaseId={diseaseid}
-            key={item.accession} //TODO: check (duplicates in data)
+            key={item.accession}
             selectedProteinId={proteinid || sortedData[0]}
           />
         ))}
