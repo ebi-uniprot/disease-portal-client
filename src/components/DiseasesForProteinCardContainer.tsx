@@ -5,14 +5,14 @@ import useApi from "./hooks/UseApi";
 import DiseaseCard, { DiseaseData } from "./cards/DiseaseCard";
 import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
-import { baseUrl } from "../config";
+import { diseasesForProteinsUrl } from "../urls";
 
 const DiseasesForProteinCardContainer = () => {
   const { proteinid } = useParams();
   // TODO: check if a response could be defined, but its `results` field no
   // TODO: if so, we need to apply this ?: type everywhere, not just here
   const { data, isLoading } = useApi<{ results?: DiseaseData[] }>(
-    `${baseUrl}/protein/${proteinid}/diseases`
+    diseasesForProteinsUrl(proteinid)
   );
 
   return (

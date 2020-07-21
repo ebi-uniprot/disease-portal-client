@@ -4,8 +4,8 @@ import { RouteComponentProps } from "react-router";
 import useApi from "./hooks/UseApi";
 import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
-import { baseUrl } from "../config";
 import VariantsTable, { DiseaseVariant } from "./tables/VariantsTable";
+import { variantsForDiseaseUrl } from "../urls";
 
 const VariantsForDiseaseContainer: FunctionComponent<RouteComponentProps<{
   diseaseid: string;
@@ -13,7 +13,7 @@ const VariantsForDiseaseContainer: FunctionComponent<RouteComponentProps<{
   const { diseaseid } = match.params;
 
   const { data, isLoading } = useApi<{ results: DiseaseVariant[] }>(
-    `${baseUrl}/disease/${diseaseid}/variants`
+    variantsForDiseaseUrl(diseaseid)
   );
 
   if (!data) {

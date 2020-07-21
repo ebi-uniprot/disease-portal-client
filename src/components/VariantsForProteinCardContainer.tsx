@@ -5,11 +5,12 @@ import useApi from "./hooks/UseApi";
 import VariantCard, { VariantData, VariationData } from "./cards/VariantCard";
 import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
+import { variantsForProteinUrl } from "../urls";
 
 const VariantsForProteinCardContainer = () => {
   const { proteinid } = useParams();
   const { data, isLoading } = useApi<VariationData>(
-    `https://www.ebi.ac.uk/proteins/api/variation/${proteinid}?format=json`
+    variantsForProteinUrl(proteinid)
   );
   let filteredData;
   if (data) {

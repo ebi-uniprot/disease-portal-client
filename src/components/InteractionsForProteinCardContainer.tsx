@@ -6,12 +6,12 @@ import useApi from "./hooks/UseApi";
 import { Card } from "franklin-sites";
 import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
-import { baseUrl } from "../config";
+import { interactionsForProteinUrl } from "../urls";
 
 const InteractionsForProteinCardContainer = () => {
   const { proteinid } = useParams();
   const { data, isLoading } = useApi<{ results: [] }>(
-    `${baseUrl}/protein/${proteinid}/interactions`
+    interactionsForProteinUrl(proteinid)
   );
   loadWebComponent("interaction-viewer", InteractionViewer);
 

@@ -7,6 +7,7 @@ import { ProteinData } from "./cards/ProteinCard";
 import ProteinCardCompact from "./cards/ProteinCardCompact";
 import { baseUrl } from "../config";
 import UseApi from "./hooks/UseApi";
+import { proteinsForDiseaseUrl } from "../urls";
 
 enum Filters {
   INT = "interactions",
@@ -31,7 +32,7 @@ const ProteinForDiseaseCardContainer = () => {
   });
 
   const { data } = UseApi<{ results: ProteinData[] }>(
-    `${baseUrl}/disease/${diseaseid}/proteins`
+    proteinsForDiseaseUrl(diseaseid)
   );
 
   if (!data) {

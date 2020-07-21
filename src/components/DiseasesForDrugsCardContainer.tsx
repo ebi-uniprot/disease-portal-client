@@ -5,12 +5,12 @@ import useApi from "./hooks/UseApi";
 import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
 import DiseaseCard, { DiseaseData } from "./cards/DiseaseCard";
-import { baseUrl } from "../config";
+import { diseasesForDrugUrl } from "../urls";
 
 const DiseasesForDrugsCardContainer = () => {
   const { id } = useParams();
   const { data, isLoading } = useApi<{ results: DiseaseData[] }>(
-    `${baseUrl}/drug/${id}/diseases`
+    diseasesForDrugUrl(id)
   );
   return (
     <PageTemplate

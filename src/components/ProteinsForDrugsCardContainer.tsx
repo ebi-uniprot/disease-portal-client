@@ -5,12 +5,12 @@ import useApi from "./hooks/UseApi";
 import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
 import ProteinCard, { ProteinData } from "./cards/ProteinCard";
-import { baseUrl } from "../config";
+import { proteinsForDrugUrl } from "../urls";
 
 const ProteinsForDrugsCardContainer = () => {
   const { drugid } = useParams();
   const { data, isLoading } = useApi<{ results: ProteinData[] }>(
-    `${baseUrl}/drug/${drugid}/proteins`
+    proteinsForDrugUrl(drugid)
   );
   return (
     <PageTemplate

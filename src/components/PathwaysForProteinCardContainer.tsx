@@ -5,12 +5,12 @@ import useApi from "./hooks/UseApi";
 import PathwayCard, { PathwayData } from "./cards/PathwayCard";
 import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
-import { baseUrl } from "../config";
+import { pathwaysForProteinUrl } from "../urls";
 
 const PathwaysForProteinCardContainer = () => {
   const { proteinid } = useParams();
   const { data, isLoading } = useApi<{ results: PathwayData[] }>(
-    `${baseUrl}/protein/${proteinid}/xrefs`
+    pathwaysForProteinUrl(proteinid)
   );
 
   const filtered =

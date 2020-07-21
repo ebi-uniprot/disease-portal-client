@@ -4,14 +4,14 @@ import useApi from "./hooks/UseApi";
 import { DrugsData } from "./cards/DrugsCard";
 import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
-import { baseUrl } from "../config";
 import DrugsTable from "./tables/DrugsTable";
+import { drugsForDiseaseUrl } from "../urls";
 
 const DrugsForDiseaseContainer = () => {
   const { diseaseid } = useParams();
 
   const { data, isLoading } = useApi<{ results: DrugsData[] }>(
-    `${baseUrl}/disease/${diseaseid}/drugs`
+    drugsForDiseaseUrl(diseaseid)
   );
 
   if (!data) {
