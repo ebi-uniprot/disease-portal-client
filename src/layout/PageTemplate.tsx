@@ -1,7 +1,6 @@
-import React, { Fragment, FC, ReactNode } from "react";
-import { Context } from "./types/context";
-import { colors } from "./config";
-import spinner from "./svg/spinner.svg";
+import React, { FC, ReactNode } from "react";
+import { Context, ContextObj } from "../types/context";
+import spinner from "../svg/spinner.svg";
 import "./PageTemplate.css";
 
 const PageTemplate: FC<{
@@ -13,22 +12,28 @@ const PageTemplate: FC<{
 }> = ({ context, id, length, children, isLoading }) => {
   if (isLoading || !length) {
     return (
-      <div className="spinner-container">
+      <section className="spinner-container">
         <img src={spinner} alt="logo" width={120} height={50} />
-      </div>
+      </section>
     );
   }
 
   return (
-    <Fragment>
+    <section>
       <div className="page-header">
-        <h2 style={{ borderBottom: `1px solid ${colors.get(context)}` }}>
+        <h4
+          style={{
+            borderBottom: `1px solid ${
+              ContextObj[context as keyof typeof ContextObj].color
+            }`,
+          }}
+        >
           {length} {context.toLowerCase()}
           {length > 1 && "s"} for {id}
-        </h2>
+        </h4>
       </div>
       {children}
-    </Fragment>
+    </section>
   );
 };
 

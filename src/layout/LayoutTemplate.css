@@ -1,0 +1,35 @@
+.layout-template {
+  display: grid;
+  grid-template-rows: 8vh 14vh 75vh 2vh;
+  grid-template-columns: 1fr max-content;
+  grid-template-areas:
+    "header header"
+    "top top"
+    "left right"
+    "footer footer";
+}
+
+.layout-template__header {
+  grid-area: header;
+}
+
+.layout-template__top {
+  grid-area: top;
+  z-index: 100;
+  box-shadow: 0 0.25rem 0.125rem rgba(22, 29, 57, 0.2);
+}
+
+.layout-template__left {
+  grid-area: left;
+  overflow-y: auto;
+}
+
+.layout-template__right {
+  grid-area: right;
+  overflow-y: auto;
+}
+
+.layout-template__footer {
+  grid-area: footer;
+  text-align: center;
+}

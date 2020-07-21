@@ -1,46 +1,33 @@
-import React, { Fragment, FunctionComponent, ReactElement } from "react";
-import { withRouter, RouteComponentProps } from "react-router";
-import { v1 } from "uuid";
-import useApi from "./UseApi";
-import PathwayCard, { PathwayData } from "./cards/PathwayCard";
-import PageTemplate from "../PageTemplate";
-import { Context } from "../types/context";
-import PageContainer from "../PageContainer";
-import ProteinContainer from "./ProteinContainer";
-import { baseUrl } from "../config";
+import React from "react";
+import { useParams } from "react-router";
 
-const PathwaysForProteinCardContainer: FunctionComponent<RouteComponentProps<
-  any
->> = ({ match }) => {
-  const { id } = match.params;
+import useApi from "./hooks/UseApi";
+import PathwayCard, { PathwayData } from "./cards/PathwayCard";
+import PageTemplate from "../layout/PageTemplate";
+import { Context } from "../types/context";
+import { pathwaysForProteinUrl } from "../urls";
+
+const PathwaysForProteinCardContainer = () => {
+  const { proteinid } = useParams();
   const { data, isLoading } = useApi<{ results: PathwayData[] }>(
-    `${baseUrl}/protein/${id}/xrefs`
+    pathwaysForProteinUrl(proteinid)
   );
-  let pathwayCardNodes: ReactElement[] = [];
-  if (data) {
-    data.results.forEach((item: PathwayData) => {
-      if (item.dbType === "Reactome") {
-        pathwayCardNodes.push(<PathwayCard data={item} key={v1()} />);
-      }
-    });
-  }
+
+  const filtered =
+    data?.results.filter((item) => item.dbType === "Reactome") || [];
+
   return (
-    <Fragment>
-      <PageContainer
-        leftColumn={<ProteinContainer id={id} />}
-        rightColumn={
-          <PageTemplate
-            context={Context.PATHWAY}
-            id={id}
-            length={pathwayCardNodes.length}
-            isLoading={isLoading}
-          >
-            {pathwayCardNodes}
-          </PageTemplate>
-        }
-      />
-    </Fragment>
+    <PageTemplate
+      context={Context.PATHWAY}
+      id={proteinid}
+      length={filtered.length}
+      isLoading={isLoading}
+    >
+      {filtered.map((item) => (
+        <PathwayCard data={item} key={item.primaryId} />
+      ))}
+    </PageTemplate>
   );
 };
 
-export default withRouter(PathwaysForProteinCardContainer);
+export default PathwaysForProteinCardContainer;

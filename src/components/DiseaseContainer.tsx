@@ -1,22 +1,21 @@
-import React, { Fragment, FunctionComponent } from "react";
-import useApi from "./UseApi";
-import DiseaseCard, { DiseaseData } from "./cards/DiseaseCard";
-import { baseUrl } from "../config";
+import React, { FunctionComponent } from "react";
+import { useParams } from "react-router";
+import useApi from "./hooks/UseApi";
+import { DiseaseData } from "./cards/DiseaseCard";
+import DiseaseCardCompact from "./cards/DiseaseCardCompact";
+import { diseasesUrl } from "../urls";
 
-const DiseaseContainer: FunctionComponent<{ id: string }> = ({ id }) => {
-  const { data } = useApi<{ result: DiseaseData }>(`${baseUrl}/diseases/${id}`);
+const DiseaseContainer: FunctionComponent = () => {
+  const { id } = useParams();
+  const { data } = useApi<{ result: DiseaseData }>(diseasesUrl(id));
   if (!data) {
     return null;
   }
   const { result } = data;
-  return (
-    <Fragment>
-      <div className="page-header">
-        <h2>Disease</h2>
-      </div>
-      {result && <DiseaseCard data={result} />}
-    </Fragment>
-  );
+  if (!result) {
+    return null;
+  }
+  return <DiseaseCardCompact data={result} />;
 };
 
 export default DiseaseContainer;

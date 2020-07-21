@@ -1,34 +1,29 @@
-import React, { Fragment, FunctionComponent } from "react";
-import { withRouter, RouteComponentProps } from "react-router";
-import { v1 } from "uuid";
-import useApi from "./UseApi";
-import PageTemplate from "../PageTemplate";
+import React from "react";
+import { useParams } from "react-router";
+
+import useApi from "./hooks/UseApi";
+import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
 import DiseaseCard, { DiseaseData } from "./cards/DiseaseCard";
-import { baseUrl } from "../config";
+import { diseasesForDrugUrl } from "../urls";
 
-const DiseasesForDrugsCardContainer: FunctionComponent<RouteComponentProps<
-  any
->> = ({ match }) => {
-  const { id } = match.params;
+const DiseasesForDrugsCardContainer = () => {
+  const { id } = useParams();
   const { data, isLoading } = useApi<{ results: DiseaseData[] }>(
-    `${baseUrl}/drug/${id}/diseases`
+    diseasesForDrugUrl(id)
   );
   return (
-    <Fragment>
-      <PageTemplate
-        context={Context.DISEASE}
-        id={id}
-        length={data?.results && data.results.length}
-        isLoading={isLoading}
-      >
-        {data &&
-          data.results.map((item: DiseaseData) => (
-            <DiseaseCard data={item} key={v1()} />
-          ))}
-      </PageTemplate>
-    </Fragment>
+    <PageTemplate
+      context={Context.DISEASE}
+      id={id}
+      length={data?.results.length}
+      isLoading={isLoading}
+    >
+      {data?.results.map((item) => (
+        <DiseaseCard data={item} key={item.diseaseId} />
+      ))}
+    </PageTemplate>
   );
 };
 
-export default withRouter(DiseasesForDrugsCardContainer);
+export default DiseasesForDrugsCardContainer;

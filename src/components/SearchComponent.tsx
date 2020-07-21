@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { MainSearch } from "franklin-sites";
 
 const SearchComponent = () => <MainSearch />;

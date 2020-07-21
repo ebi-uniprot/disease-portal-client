@@ -1,10 +1,9 @@
 import React, { Fragment, FunctionComponent, FC } from "react";
 import { Card } from "franklin-sites";
 import { Context } from "../../types/context";
-import { generateLink } from "../utils";
+import { createTableLink } from "../utils";
 import { Link } from "react-router-dom";
-import TreeLeaf from "../../svg/tree-leaf.svg";
-import TreeLeafEnd from "../../svg/tree-leaf-end.svg";
+import { getAllItems } from "./DiseaseCardCompact";
 
 export type DiseaseData = {
   diseaseId: string;
@@ -18,58 +17,28 @@ export type DiseaseData = {
   publications?: { type: string; id: string }[];
 };
 
-const getAllItems = (
-  diseaseItem: DiseaseData,
-  keyName: keyof DiseaseData,
-  totalItems = new Set()
-) => {
-  const items = diseaseItem[keyName] as any[];
-  if (items) {
-    items.forEach((item: any) => totalItems.add(item));
-  }
-  if (diseaseItem.children) {
-    diseaseItem.children.forEach((childDisease) => {
-      getAllItems(childDisease, keyName, totalItems);
-    });
-  }
-  return Array.from(totalItems);
-};
-
 const generateDiseaseLinks = (diseaseItem: DiseaseData) => {
   const diseaseLinks = [];
+  const { diseaseId } = diseaseItem;
 
   const allProts = getAllItems(diseaseItem, "proteins");
   const allDrugs = getAllItems(diseaseItem, "drugs");
   const allVariants = getAllItems(diseaseItem, "variants");
 
   if (allProts && allProts.length > 0) {
+    // Get the first protein
     diseaseLinks.push(
-      generateLink(
-        Context.DISEASE,
-        Context.PROTEIN,
-        diseaseItem.diseaseId,
-        allProts
-      )
+      createTableLink(diseaseId, Context.PROTEIN, allProts.length)
     );
   }
   if (allDrugs && allDrugs.length > 0) {
     diseaseLinks.push(
-      generateLink(
-        Context.DISEASE,
-        Context.DRUG,
-        diseaseItem.diseaseId,
-        allDrugs
-      )
+      createTableLink(diseaseId, Context.DRUG, allDrugs.length)
     );
   }
   if (allVariants && allVariants.length > 0) {
     diseaseLinks.push(
-      generateLink(
-        Context.DISEASE,
-        Context.VARIANT,
-        diseaseItem.diseaseId,
-        allVariants
-      )
+      createTableLink(diseaseId, Context.VARIANT, allVariants.length)
     );
   }
   return diseaseLinks;
@@ -88,13 +57,8 @@ const DiseaseChildren: FC<{ data: DiseaseData[]; depth?: number }> = ({
     <Fragment>
       {filtered.map((disease, i) => (
         <div key={disease.diseaseId} style={{ marginLeft: `${depth}rem` }}>
-          <Link to={`/${Context.DISEASE}/${disease.diseaseId}`}>
-            <img
-              alt="plus/minus"
-              src={i < filtered.length - 1 ? TreeLeaf : TreeLeafEnd}
-              width={25}
-              height={25}
-            />
+          <Link to={`/disease/${disease.diseaseId}/proteins`}>
+            {i < filtered.length - 1 ? "├" : "└"}
             {disease.diseaseName}
           </Link>
           {disease.children && (
@@ -108,11 +72,8 @@ const DiseaseChildren: FC<{ data: DiseaseData[]; depth?: number }> = ({
 
 const DiseaseCard: FunctionComponent<{ data: DiseaseData }> = ({ data }) => {
   return (
-    <Card
-      title={data.diseaseName}
-      links={generateDiseaseLinks(data)}
-      key={data.diseaseId}
-    >
+    <Card links={generateDiseaseLinks(data)}>
+      <h4>{data.diseaseName}</h4>
       {data.description}
       <hr />
       {data.children && <DiseaseChildren data={data.children} />}

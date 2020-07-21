@@ -1,18 +1,16 @@
-import React, { Fragment, FunctionComponent } from "react";
-import { withRouter, RouteComponentProps } from "react-router";
-import useApi from "./UseApi";
-import VariantCard, { VariantData, VariationData } from "./cards/VariantCard";
-import PageTemplate from "../PageTemplate";
-import { Context } from "../types/context";
-import PageContainer from "../PageContainer";
-import ProteinContainer from "./ProteinContainer";
+import React from "react";
+import { useParams } from "react-router";
 
-const VariantsForProteinCardContainer: FunctionComponent<RouteComponentProps<
-  any
->> = ({ match }) => {
-  const { id } = match.params;
+import useApi from "./hooks/UseApi";
+import VariantCard, { VariantData, VariationData } from "./cards/VariantCard";
+import PageTemplate from "../layout/PageTemplate";
+import { Context } from "../types/context";
+import { variantsForProteinUrl } from "../urls";
+
+const VariantsForProteinCardContainer = () => {
+  const { proteinid } = useParams();
   const { data, isLoading } = useApi<VariationData>(
-    `https://www.ebi.ac.uk/proteins/api/variation/${id}?format=json`
+    variantsForProteinUrl(proteinid)
   );
   let filteredData;
   if (data) {
@@ -26,22 +24,15 @@ const VariantsForProteinCardContainer: FunctionComponent<RouteComponentProps<
   }
 
   return (
-    <Fragment>
-      <PageContainer
-        leftColumn={<ProteinContainer id={id} />}
-        rightColumn={
-          <PageTemplate
-            context={Context.VARIANT}
-            id={id}
-            length={filteredData && filteredData.features.length}
-            isLoading={isLoading}
-          >
-            {filteredData && <VariantCard data={filteredData} />}
-          </PageTemplate>
-        }
-      />
-    </Fragment>
+    <PageTemplate
+      context={Context.VARIANT}
+      id={proteinid}
+      length={filteredData?.features.length}
+      isLoading={isLoading}
+    >
+      {filteredData && <VariantCard data={filteredData} />}
+    </PageTemplate>
   );
 };
 
-export default withRouter(VariantsForProteinCardContainer);
+export default VariantsForProteinCardContainer;

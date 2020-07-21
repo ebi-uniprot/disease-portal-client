@@ -1,0 +1,20 @@
+.disease-compact .card__content {
+  display: flex;
+}
+
+.disease-title {
+  flex: 1;
+  margin-right: 1rem;
+}
+
+.disease-dropdown {
+  flex: 1;
+  width: auto;
+  margin-right: 1rem;
+}
+
+.disease-description {
+  flex: 4;
+  height: 4rem;
+  overflow-y: auto;
+}

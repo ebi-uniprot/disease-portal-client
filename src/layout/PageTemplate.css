@@ -1,0 +1,9 @@
+.spinner-container {
+  margin-top: 30vh;
+  text-align: center;
+}
+
+.layout-template__right .card,
+.layout-template__right .spinner-container {
+  width: 70vw;
+}

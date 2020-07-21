@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useState, useRef } from "react";
 import { Card } from "franklin-sites";
 
 export enum PathwayDbType {
@@ -21,6 +21,11 @@ declare global {
   }
 }
 
+interface Diagram {
+  loadDiagram(id: string): void;
+  detach(): void;
+}
+
 const getUrl = (dbType: PathwayDbType, id: string) => {
   switch (dbType) {
     case PathwayDbType.REACTOME:
@@ -37,19 +42,37 @@ const getUrl = (dbType: PathwayDbType, id: string) => {
 const PathwayCard: FunctionComponent<{ data: PathwayData }> = ({ data }) => {
   const [showPathway, setShowPathway] = useState(false);
 
+  const diagramRef = useRef<Diagram | null>(null);
+
+  useEffect(() => {
+    // on unmount
+    return () => {
+      if (diagramRef.current) {
+        // detach diagram and unreference it, to be able to garbage collect it
+        diagramRef.current.detach();
+        diagramRef.current = null;
+      }
+    };
+  }, []);
+
   useEffect(() => {
     if (showPathway) {
-      const diagram = Reactome.Diagram.create({
+      diagramRef.current = Reactome.Diagram.create({
         placeHolder: `${data.primaryId}_placeholder`,
         width: 900,
         height: 500,
-      });
-      diagram.loadDiagram(data.primaryId);
+      }) as Diagram;
+      diagramRef.current.loadDiagram(data.primaryId);
+    } else if (diagramRef.current) {
+      // detach diagram and unreference it, to be able to garbage collect it
+      diagramRef.current.detach();
+      diagramRef.current = null;
     }
   }, [showPathway, data.primaryId]);
 
   return (
-    <Card title={data.description} key={data.primaryId}>
+    <Card>
+      <h4>{data.description}</h4>
       <p>
         <a
           href={getUrl(data.dbType, data.primaryId)}
@@ -57,10 +80,13 @@ const PathwayCard: FunctionComponent<{ data: PathwayData }> = ({ data }) => {
           rel="noopener noreferrer"
         >
           {data.primaryId}
-        </a>
+        </a>{" "}
       </p>
-      <button className="button" onClick={() => setShowPathway(true)}>
-        Show pathway
+      <button
+        className="button tertiary"
+        onClick={() => setShowPathway((current) => !current)}
+      >
+        {showPathway ? "Hide " : "Show "}pathway
       </button>
       <div id={`${data.primaryId}_placeholder`} />
     </Card>

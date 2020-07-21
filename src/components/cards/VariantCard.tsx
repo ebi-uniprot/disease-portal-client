@@ -1,13 +1,15 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useState, useRef } from "react";
 import { html } from "lit-html";
+import { v1 } from "uuid";
+import { Card } from "franklin-sites";
+
 import ProtvistaVariation from "protvista-variation";
 import ProtvistaManager from "protvista-manager";
 import ProtvistaSequence from "protvista-sequence";
 import ProtvistaNavigation from "protvista-navigation";
 import ProtvistaDatatable from "protvista-datatable";
 import ProtvistaFilter from "protvista-filter";
-import { v1 } from "uuid";
-import { Card } from "franklin-sites";
+
 import "./VariantCard.css";
 
 type Evidence = {
@@ -184,38 +186,52 @@ const getDiseaseListForFeatures = (features: VariantData[]) => {
   return diseaseSet;
 };
 
-const getFilters = (data: VariantData[]) => {
-  const diseases = getDiseaseListForFeatures(data);
-
-  return Array.from(diseases).map((diseaseName) => {
-    return {
-      name: diseaseName as string,
-      type: { name: "diseases", text: "Disease" },
-      options: { labels: [diseaseName as string], colors: ["#A31D5F"] },
-    };
-  });
-};
-
 const VariantCard: FunctionComponent<{ data: VariationData }> = ({ data }) => {
-  const id = v1();
+  const idRef = useRef(v1());
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
 
-  const diseases = getFilters(data.features);
+  const getFilters = (data: VariantData[]) => {
+    const diseases = getDiseaseListForFeatures(data);
+
+    return Array.from(diseases).map((diseaseName) => {
+      return {
+        name: diseaseName as string,
+        type: { name: "diseases", text: "Disease" },
+        options: { labels: [diseaseName as string], colors: ["#A31D5F"] },
+        filterData: (variants: any) =>
+          variants.map((variantPosition: any) => ({
+            ...variantPosition,
+            variants: variantPosition.variants.filter(
+              (variant: VariantData) => {
+                if (!variant.association) {
+                  return null;
+                }
+                return variant.association.some(
+                  (varantDiseaseName) => varantDiseaseName.name === diseaseName
+                );
+              }
+            ),
+          })),
+      };
+    });
+  };
+
+  const diseaseFilter = getFilters(data.features);
 
   const _handleEvent = (e: ChangeEvent) => {
-    if (e.detail && e.detail.type === "activefilters") {
+    if (e.detail && e.detail.type === "change") {
       setActiveFilters(e.detail.value.map((d) => d.substring(9)));
     }
   };
 
   useEffect(() => {
     const protvistaManager = document.querySelector<ProtvistaManager>(
-      `[data-uuid='${id}_manager']`
+      `[data-uuid='${idRef.current}_manager']`
     );
     if (protvistaManager) {
       protvistaManager.addEventListener("change", _handleEvent);
     }
-  }, [id]);
+  }, []);
 
   useEffect(() => {
     let filteredData;
@@ -233,18 +249,18 @@ const VariantCard: FunctionComponent<{ data: VariationData }> = ({ data }) => {
     }
 
     const protvistaFilter = document.querySelector<ProtvistaFilter>(
-      `[data-uuid='${id}_filter']`
+      `[data-uuid='${idRef.current}_filter']`
     );
 
     const protvistaVariation = document.querySelector<ProtvistaVariation>(
-      `[data-uuid='${id}_var']`
+      `[data-uuid='${idRef.current}_var']`
     );
     const protvistaDatatable = document.querySelector<ProtvistaDatatableType>(
-      `[data-uuid='${id}_table']`
+      `[data-uuid='${idRef.current}_table']`
     );
 
     if (protvistaFilter) {
-      protvistaFilter.filters = diseases;
+      protvistaFilter.filters = diseaseFilter;
     }
 
     if (protvistaVariation) {
@@ -257,32 +273,40 @@ const VariantCard: FunctionComponent<{ data: VariationData }> = ({ data }) => {
       protvistaDatatable.columns = columns;
       protvistaDatatable.data = filteredData;
     }
-  }, [activeFilters, id, data.features, data.sequence, diseases]);
+  }, [activeFilters, data.features, data.sequence, diseaseFilter]);
 
   if (!data.sequence) {
     return null;
   }
 
   return (
-    <Card title="Variants">
+    <Card>
+      <h4>Variants</h4>
       <div className="protvista-grid">
         <protvista-manager
           attributes="displaystart displayend highlight"
-          data-uuid={`${id}_manager`}
+          data-uuid={`${idRef.current}_manager`}
         >
           <protvista-navigation
-            data-uuid={`${id}_nav`}
+            data-uuid={`${idRef.current}_nav`}
             length={data.sequence.length}
           />
 
-          <protvista-filter data-uuid={`${id}_filter`} />
+          <protvista-filter
+            data-uuid={`${idRef.current}_filter`}
+            for="protvista-variation"
+          />
           <protvista-variation
-            data-uuid={`${id}_var`}
+            data-uuid={`${idRef.current}_var`}
+            id="protvista-variation"
             length={data.sequence.length}
             displaystart={1}
             displayend={data.sequence.length}
           />
-          <protvista-datatable height="20" data-uuid={`${id}_table`} />
+          <protvista-datatable
+            height="20"
+            data-uuid={`${idRef.current}_table`}
+          />
         </protvista-manager>
       </div>
     </Card>

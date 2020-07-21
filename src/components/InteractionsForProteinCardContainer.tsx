@@ -1,43 +1,33 @@
-import React, { Fragment, FunctionComponent } from "react";
-import { withRouter, RouteComponentProps } from "react-router";
+import React from "react";
+import { useParams } from "react-router";
 import InteractionViewer from "interaction-viewer";
 import { loadWebComponent } from "./cards/VariantCard";
-import useApi from "./UseApi";
+import useApi from "./hooks/UseApi";
 import { Card } from "franklin-sites";
-import PageTemplate from "../PageTemplate";
+import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
-import PageContainer from "../PageContainer";
-import ProteinContainer from "./ProteinContainer";
-import { baseUrl } from "../config";
+import { interactionsForProteinUrl } from "../urls";
 
-const InteractionsForProteinCardContainer: FunctionComponent<RouteComponentProps<
-  any
->> = ({ match }) => {
-  const { id } = match.params;
+const InteractionsForProteinCardContainer = () => {
+  const { proteinid } = useParams();
   const { data, isLoading } = useApi<{ results: [] }>(
-    `${baseUrl}/protein/${id}/interactions`
+    interactionsForProteinUrl(proteinid)
   );
   loadWebComponent("interaction-viewer", InteractionViewer);
 
   return (
-    <Fragment>
-      <PageContainer
-        leftColumn={<ProteinContainer id={id} />}
-        rightColumn={
-          <PageTemplate
-            context={Context.INTERACTION}
-            id={id}
-            length={data?.results && data.results.length}
-            isLoading={isLoading}
-          >
-            <Card title="Interactions">
-              <interaction-viewer accession={id} />
-            </Card>
-          </PageTemplate>
-        }
-      />
-    </Fragment>
+    <PageTemplate
+      context={Context.INTERACTION}
+      id={proteinid}
+      length={data?.results.length}
+      isLoading={isLoading}
+    >
+      <Card>
+        <h4>Interactions</h4>
+        <interaction-viewer accession={proteinid} />
+      </Card>
+    </PageTemplate>
   );
 };
 
-export default withRouter(InteractionsForProteinCardContainer);
+export default InteractionsForProteinCardContainer;

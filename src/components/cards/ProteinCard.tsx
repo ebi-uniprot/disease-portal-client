@@ -1,8 +1,5 @@
 import React, { FunctionComponent, Fragment, useState } from "react";
-import { v1 } from "uuid";
 import { Card } from "franklin-sites";
-import { Context } from "../../types/context";
-import { generateLink } from "../utils";
 
 export type ProteinData = {
   proteinId: string;
@@ -32,61 +29,6 @@ export const formatLargeNumber = (x: number) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-const generateProteinLinks = (proteinItem: ProteinData) => {
-  const proteinLinks = [];
-  if (proteinItem.interactions && proteinItem.interactions.length > 0) {
-    proteinLinks.push(
-      generateLink(
-        Context.PROTEIN,
-        Context.INTERACTION,
-        proteinItem.accession,
-        proteinItem.interactions
-      )
-    );
-  }
-  if (proteinItem.pathways && proteinItem.pathways.length > 0) {
-    proteinLinks.push(
-      generateLink(
-        Context.PROTEIN,
-        Context.PATHWAY,
-        proteinItem.accession,
-        proteinItem.pathways
-      )
-    );
-  }
-  if (proteinItem.variants && proteinItem.variants.length > 0) {
-    proteinLinks.push(
-      generateLink(
-        Context.PROTEIN,
-        Context.VARIANT,
-        proteinItem.accession,
-        proteinItem.variants
-      )
-    );
-  }
-  if (proteinItem.diseases && proteinItem.diseases.length > 0) {
-    proteinLinks.push(
-      generateLink(
-        Context.PROTEIN,
-        Context.DISEASE,
-        proteinItem.accession,
-        proteinItem.diseases
-      )
-    );
-  }
-  if (proteinItem.drugs && proteinItem.drugs.length > 0) {
-    proteinLinks.push(
-      generateLink(
-        Context.PROTEIN,
-        Context.DRUG,
-        proteinItem.accession,
-        proteinItem.drugs
-      )
-    );
-  }
-  return proteinLinks;
-};
-
 const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
   data,
   id,
@@ -98,29 +40,34 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
     data.diseases.filter((disease) => disease.diseaseName === id);
 
   return (
-    <Card
-      title={
-        <Fragment>
-          {data.gene} - {data.proteinName}{" "}
-          <small>
-            <a
-              href={`//www.uniprot.org/uniprot/${data.accession}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {data.accession}
-            </a>
-          </small>
-        </Fragment>
-      }
-      links={generateProteinLinks(data)}
-      key={data.proteinId}
-    >
-      <h4>Function</h4>
+    <Card>
+      <h4>
+        {data.gene} - {data.proteinName}{" "}
+        <small>
+          <a
+            href={`//www.uniprot.org/uniprot/${data.accession}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {data.accession}
+          </a>
+        </small>
+      </h4>
+
+      {data.isExternallyMapped ? (
+        <span className="label label__manual">
+          Disease association source: Imported
+        </span>
+      ) : (
+        <span className="label label__reviewed">
+          Disease association source: UniProt
+        </span>
+      )}
+      <h5>Function</h5>
       <p>
         {!showWholeFunction && data.description.length > 200 ? (
           <Fragment>
-            <span>{data.description.substring(0, 197)}... </span>
+            <span>{data.description.substring(0, 197)}...&nbsp;</span>
             <button onClick={() => setShowWholeFunction(true)}>more</button>
           </Fragment>
         ) : (
@@ -129,9 +76,9 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
       </p>
       {data.geneCoordinates && (
         <div>
-          <h4>Gene information</h4>
+          <h5>Gene information</h5>
           {data.geneCoordinates.map((coordinate) => (
-            <p key={v1()}>
+            <p key={coordinate.ensemblGeneId}>
               {coordinate.chromosome}:{formatLargeNumber(coordinate.start)}-
               {formatLargeNumber(coordinate.end)}{" "}
               <a
@@ -161,23 +108,14 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
       )}
       {diseaseNotes && (
         <Fragment>
-          {diseaseNotes.length > 0 && <h4>Disease notes</h4>}
+          {diseaseNotes.length > 0 && <h5>Disease notes</h5>}
           {diseaseNotes.map((note) => (
-            <Fragment key={v1()}>
+            <Fragment key={note.note}>
               <h5>{note.diseaseName}</h5>
               <p>{note.note}</p>
             </Fragment>
           ))}
         </Fragment>
-      )}
-      {!data.isExternallyMapped ? (
-        <span className="label label__reviewed">
-          Disease association source: UniProt
-        </span>
-      ) : (
-        <span className="label label__manual">
-          Disease association source: Imported
-        </span>
       )}
     </Card>
   );
