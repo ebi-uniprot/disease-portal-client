@@ -50,9 +50,7 @@ const generateDiseaseLinks = (diseaseItem: DiseaseData) => {
   return diseaseLinks;
 };
 
-const generateSpacer = (size: number) => {
-  return "--".repeat(size);
-};
+const generateSpacer = (size: number) => "─".repeat(size);
 
 const DiseaseChildren: FC<{ data: DiseaseData[]; depth?: number }> = ({
   data,
@@ -68,6 +66,7 @@ const DiseaseChildren: FC<{ data: DiseaseData[]; depth?: number }> = ({
       {filtered.map((disease, i) => (
         <Fragment key={disease.diseaseName}>
           <option value={disease.diseaseName}>
+            {i < filtered.length - 1 ? "├" : "└"}
             {generateSpacer(depth)}
             {disease.diseaseName}
           </option>

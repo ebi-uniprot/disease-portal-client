@@ -3,8 +3,6 @@ import { Card } from "franklin-sites";
 import { Context } from "../../types/context";
 import { createTableLink } from "../utils";
 import { Link } from "react-router-dom";
-import TreeLeaf from "../../svg/tree-leaf.svg";
-import TreeLeafEnd from "../../svg/tree-leaf-end.svg";
 import { getAllItems } from "./DiseaseCardCompact";
 
 export type DiseaseData = {
@@ -60,12 +58,7 @@ const DiseaseChildren: FC<{ data: DiseaseData[]; depth?: number }> = ({
       {filtered.map((disease, i) => (
         <div key={disease.diseaseId} style={{ marginLeft: `${depth}rem` }}>
           <Link to={`/disease/${disease.diseaseId}/proteins`}>
-            <img
-              alt="plus/minus"
-              src={i < filtered.length - 1 ? TreeLeaf : TreeLeafEnd}
-              width={25}
-              height={25}
-            />
+            {i < filtered.length - 1 ? "├" : "└"}
             {disease.diseaseName}
           </Link>
           {disease.children && (
