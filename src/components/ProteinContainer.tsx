@@ -1,19 +1,45 @@
 import React from "react";
-import useApi from "./hooks/UseApi";
-import ProteinCard, { ProteinData } from "./cards/ProteinCard";
+import ProteinCard from "./cards/ProteinCard";
 import { useParams } from "react-router";
-import { proteinsUrl } from "../urls";
+import { gql, useQuery } from "@apollo/client";
+import ResponseHandler from "./ResponseHandler";
+
+const PROTEIN = gql`
+  query getProtein($proteinid: String!) {
+    protein(accession: $proteinid) {
+      proteinName
+      proteinId
+      accession
+      gene
+      description
+      diseases {
+        diseaseName
+      }
+      pathways {
+        primaryId
+      }
+      interactions {
+        accession
+      }
+      variants {
+        type
+      }
+    }
+  }
+`;
 
 const ProteinContainer = () => {
   const { proteinid } = useParams();
 
-  const { data } = useApi<{ result: ProteinData }>(proteinsUrl(proteinid));
+  const { loading, error, data } = useQuery(PROTEIN, {
+    variables: { proteinid },
+  });
 
-  if (!data) {
-    return null;
-  }
-
-  return <ProteinCard data={data?.result} id={proteinid} />;
+  return (
+    <ResponseHandler loading={loading} error={error} data={data}>
+      <ProteinCard data={data?.protein} id={proteinid} />
+    </ResponseHandler>
+  );
 };
 
 export default ProteinContainer;
