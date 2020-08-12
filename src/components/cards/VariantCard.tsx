@@ -101,6 +101,19 @@ loadWebComponent("protvista-variation", ProtvistaVariation);
 loadWebComponent("protvista-datatable", ProtvistaDatatable);
 loadWebComponent("protvista-filter", ProtvistaFilter);
 
+const colours = {
+  diseaseColour: "#A31D5F",
+  other: "#00a6d5",
+};
+
+const getColour = (variant: VariantData) => {
+  if (variant.association) {
+    return colours.diseaseColour;
+  } else {
+    return colours.other;
+  }
+};
+
 const processVariantData = (variantData: VariantData[]) =>
   variantData.map((variant) => {
     return {
@@ -110,6 +123,7 @@ const processVariantData = (variantData: VariantData[]) =>
       start: variant.begin,
       end: variant.end,
       association: variant.association,
+      color: getColour(variant),
     };
   });
 
@@ -202,7 +216,10 @@ const VariantCard: FunctionComponent<{
       return {
         name: diseaseName as string,
         type: { name: "diseases", text: "Disease" },
-        options: { labels: [diseaseName as string], colors: ["#A31D5F"] },
+        options: {
+          labels: [diseaseName as string],
+          colors: [colours.diseaseColour],
+        },
         filterData: (variants: any) =>
           variants.map((variantPosition: any) => ({
             ...variantPosition,
@@ -309,6 +326,7 @@ const VariantCard: FunctionComponent<{
           <protvista-variation
             data-uuid={`${idRef.current}_var`}
             id="protvista-variation"
+            height="260"
             length={data.sequence.length}
             displaystart={1}
             displayend={data.sequence.length}
@@ -324,7 +342,7 @@ const VariantCard: FunctionComponent<{
             </a>
           </section>
           <protvista-datatable
-            height="40"
+            height="30"
             data-uuid={`${idRef.current}_table`}
           />
         </protvista-manager>
