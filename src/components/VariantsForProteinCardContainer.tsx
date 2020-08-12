@@ -30,7 +30,9 @@ const VariantsForProteinCardContainer = () => {
       length={filteredData?.features.length}
       isLoading={isLoading}
     >
-      {filteredData && <VariantCard data={filteredData} />}
+      {filteredData && (
+        <VariantCard data={filteredData} accession={proteinid} />
+      )}
     </PageTemplate>
   );
 };

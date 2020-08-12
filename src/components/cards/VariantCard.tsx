@@ -105,6 +105,7 @@ const processVariantData = (variantData: VariantData[]) =>
   variantData.map((variant) => {
     return {
       accession: variant.ftId,
+      protvistaFeatureId: variant.ftId,
       variant: variant.alternativeSequence,
       start: variant.begin,
       end: variant.end,
@@ -186,7 +187,10 @@ const getDiseaseListForFeatures = (features: VariantData[]) => {
   return diseaseSet;
 };
 
-const VariantCard: FunctionComponent<{ data: VariationData }> = ({ data }) => {
+const VariantCard: FunctionComponent<{
+  data: VariationData;
+  accession: string;
+}> = ({ data, accession }) => {
   const idRef = useRef(v1());
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
 
@@ -271,7 +275,10 @@ const VariantCard: FunctionComponent<{ data: VariationData }> = ({ data }) => {
     }
     if (protvistaDatatable) {
       protvistaDatatable.columns = columns;
-      protvistaDatatable.data = filteredData;
+      protvistaDatatable.data = filteredData.map((d) => ({
+        ...d,
+        protvistaFeatureId: d.ftId,
+      }));
     }
   }, [activeFilters, data.features, data.sequence, diseaseFilter]);
 
@@ -284,18 +291,20 @@ const VariantCard: FunctionComponent<{ data: VariationData }> = ({ data }) => {
       <h4>Variants</h4>
       <div className="protvista-grid">
         <protvista-manager
-          attributes="displaystart displayend highlight"
+          attributes="displaystart displayend highlight selectedid"
           data-uuid={`${idRef.current}_manager`}
         >
           <protvista-navigation
             data-uuid={`${idRef.current}_nav`}
             length={data.sequence.length}
           />
-
-          <protvista-filter
-            data-uuid={`${idRef.current}_filter`}
-            for="protvista-variation"
-          />
+          <section className="protvista-filter-section">
+            <h5>Filter</h5>
+            <protvista-filter
+              data-uuid={`${idRef.current}_filter`}
+              for="protvista-variation"
+            />
+          </section>
           <protvista-variation
             data-uuid={`${idRef.current}_var`}
             id="protvista-variation"
@@ -303,8 +312,18 @@ const VariantCard: FunctionComponent<{ data: VariationData }> = ({ data }) => {
             displaystart={1}
             displayend={data.sequence.length}
           />
+          <section className="protvista-button-section">
+            <a
+              className="button"
+              href={`//www.uniprot.org/uniprot/${accession}/protvista`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View all sequence annotation
+            </a>
+          </section>
           <protvista-datatable
-            height="20"
+            height="40"
             data-uuid={`${idRef.current}_table`}
           />
         </protvista-manager>
