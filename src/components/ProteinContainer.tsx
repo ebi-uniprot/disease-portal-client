@@ -15,7 +15,7 @@ const PROTEIN = gql`
       diseases {
         diseaseName
       }
-      pathways {
+      proteinCrossRefs {
         primaryId
       }
       interactions {

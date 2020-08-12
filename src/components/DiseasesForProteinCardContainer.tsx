@@ -1,31 +1,46 @@
 import React from "react";
 import { useParams } from "react-router";
 
-import useApi from "./hooks/UseApi";
-import DiseaseCard, { DiseaseData } from "./cards/DiseaseCard";
-import PageTemplate from "../layout/PageTemplate";
-import { Context } from "../types/context";
-import { diseasesForProteinsUrl } from "../urls";
+import DiseaseCard from "./cards/DiseaseCard";
+import { gql, useQuery } from "@apollo/client";
+import ResponseHandler from "./ResponseHandler";
+import { getDisease_disease } from "../generated-types/getDisease";
+
+const DISEASES_FOR_PROTEIN = gql`
+  query getDiseasesForProtein($id: String!) {
+    protein(accession: $id) {
+      diseases {
+        diseaseId
+        diseaseName
+        description
+        source
+        note
+        synonyms {
+          name
+          source
+        }
+        publications {
+          pubId
+          pubType
+        }
+      }
+    }
+  }
+`;
 
 const DiseasesForProteinCardContainer = () => {
-  const { proteinid } = useParams();
-  // TODO: check if a response could be defined, but its `results` field no
-  // TODO: if so, we need to apply this ?: type everywhere, not just here
-  const { data, isLoading } = useApi<{ results?: DiseaseData[] }>(
-    diseasesForProteinsUrl(proteinid)
-  );
+  const { proteinid: id } = useParams();
+
+  const { loading, error, data } = useQuery(DISEASES_FOR_PROTEIN, {
+    variables: { id },
+  });
 
   return (
-    <PageTemplate
-      context={Context.DISEASE}
-      id={proteinid}
-      length={data?.results?.length}
-      isLoading={isLoading}
-    >
-      {data?.results?.map((item) => (
+    <ResponseHandler loading={loading} error={error} data={data}>
+      {data?.protein?.diseases?.map((item: getDisease_disease) => (
         <DiseaseCard data={item} key={item.diseaseId} />
       ))}
-    </PageTemplate>
+    </ResponseHandler>
   );
 };
 

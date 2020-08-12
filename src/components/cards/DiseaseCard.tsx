@@ -3,7 +3,11 @@ import { Card } from "franklin-sites";
 import { Context } from "../../types/context";
 import { createTableLink } from "../utils";
 import { Link } from "react-router-dom";
-import { getAllItems } from "./DiseaseCardCompact";
+import {
+  getDisease,
+  getDisease_disease,
+} from "../../generated-types/getDisease";
+// import { getAllItems } from "./DiseaseCardCompact";
 
 export type DiseaseData = {
   diseaseId: string;
@@ -17,7 +21,7 @@ export type DiseaseData = {
   publications?: { type: string; id: string }[];
 };
 
-const generateDiseaseLinks = (diseaseItem: DiseaseData) => {
+const generateDiseaseLinks = (diseaseItem: getDisease_disease) => {
   const diseaseLinks = [];
   const { diseaseId } = diseaseItem;
 
@@ -70,13 +74,15 @@ const DiseaseChildren: FC<{ data: DiseaseData[]; depth?: number }> = ({
   );
 };
 
-const DiseaseCard: FunctionComponent<{ data: DiseaseData }> = ({ data }) => {
+const DiseaseCard: FunctionComponent<{ data: getDisease_disease }> = ({
+  data,
+}) => {
   return (
     <Card links={generateDiseaseLinks(data)}>
       <h4>{data.diseaseName}</h4>
       {data.description}
       <hr />
-      {data.children && <DiseaseChildren data={data.children} />}
+      {/* {data.children && <DiseaseChildren data={data.children} />} */}
     </Card>
   );
 };

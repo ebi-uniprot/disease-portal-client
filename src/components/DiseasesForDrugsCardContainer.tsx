@@ -19,9 +19,9 @@ const DiseasesForDrugsCardContainer = () => {
       length={data?.results.length}
       isLoading={isLoading}
     >
-      {data?.results.map((item) => (
+      {/* {data?.results.map((item) => (
         <DiseaseCard data={item} key={item.diseaseId} />
-      ))}
+      ))} */}
     </PageTemplate>
   );
 };
