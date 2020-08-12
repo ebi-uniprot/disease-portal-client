@@ -26,6 +26,7 @@ protvista-sequence {
 protvista-datatable {
   margin-bottom: 1rem;
   grid-area: datatable;
+  font-size: 0.85rem;
 }
 
 protvista-variation {

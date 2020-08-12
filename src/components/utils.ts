@@ -6,11 +6,11 @@ export const createLink = (
   id: string,
   fromContext: Context,
   toContext: Context,
-  count: number
+  count: number | null
 ) => ({
-  name: `${count} ${ContextObj[toContext as keyof typeof ContextObj].label}${
-    count > 1 ? "s" : ""
-  }`,
+  name: `${count ? count : ""} ${
+    ContextObj[toContext as keyof typeof ContextObj].label
+  }s`,
   link: `/disease/${diseaseId}/${
     ContextObj[fromContext as keyof typeof ContextObj].id
   }/${id}/${ContextObj[toContext as keyof typeof ContextObj].id}`,

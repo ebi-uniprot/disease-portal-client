@@ -36,13 +36,7 @@ const generateProteinLinks = (proteinItem: ProteinData, diseaseId: string) => {
   }
   if (proteinItem.variants && proteinItem.variants.length > 0) {
     proteinLinks.push(
-      createLink(
-        diseaseId,
-        accession,
-        Context.PROTEIN,
-        Context.VARIANT,
-        proteinItem.variants.length
-      )
+      createLink(diseaseId, accession, Context.PROTEIN, Context.VARIANT, null)
     );
   }
   if (proteinItem.diseases && proteinItem.diseases.length > 0) {

@@ -149,6 +149,7 @@ const columns = {
   rsId: {
     label: "IDs",
     resolver: (d: VariantData) => d.xrefs?.map(({ id }) => id).join(", "),
+    child: true,
   },
   association: {
     label: "Disease association",
