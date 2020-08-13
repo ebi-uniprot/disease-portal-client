@@ -148,6 +148,7 @@ const columns = {
   },
   description: {
     label: "Description",
+    child: true,
     resolver: (d: VariantData) => {
       return d.description;
     },

@@ -9098,10 +9098,10 @@ prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.2,
     object-assign "^4.1.1"
     react-is "^16.8.1"
 
-protvista-datatable@^2.12.0:
-  version "2.12.0"
-  resolved "https://registry.yarnpkg.com/protvista-datatable/-/protvista-datatable-2.12.0.tgz#5985857c11d3a9e6d42232d9222da9350b6604a5"
-  integrity sha512-j4FUShlcmjZJha+Hpsq5UTvfrzaUrbe92e0N80CGx5s8ottZXCEhL/pUFY8oESfcHO6Nda6beYFv9YtnaVRXLg==
+protvista-datatable@^2.16.3:
+  version "2.16.3"
+  resolved "https://registry.yarnpkg.com/protvista-datatable/-/protvista-datatable-2.16.3.tgz#14c486741b9dd505873fd1f6e50b7b464aa8820c"
+  integrity sha512-3gzVAhFZ9zjRAKawHa4gL+oUCEUTb7TDL+4223mOduyz+pVnKWK1KtmZ60louwB6RUcEVJeId6bGSxDPkrAUDA==
   dependencies:
     lit-element "^2.2.0"
     lit-html "^1.2.1"
@@ -9116,10 +9116,10 @@ protvista-filter@^2.12.0:
     lit-element "^2.2.0"
     lodash-es "^4.17.11"
 
-protvista-manager@^2.16.2:
-  version "2.16.2"
-  resolved "https://registry.yarnpkg.com/protvista-manager/-/protvista-manager-2.16.2.tgz#6fc11d367640ceeabcfb69032fde6ac98bde57f3"
-  integrity sha512-9Et+HeYRA5eJKepeXnha4/26EbfumjvlH522yn+GK6HWKdoAqHQ2Opjr1mo1ZKjPEqNTHADpf/MvJcV3GyXX3Q==
+protvista-manager@^2.16.3:
+  version "2.16.3"
+  resolved "https://registry.yarnpkg.com/protvista-manager/-/protvista-manager-2.16.3.tgz#394ea09583ef340c1b2f0955afe990d240d76af4"
+  integrity sha512-/RG7TwcqesZPcTmi/+b8JgoC48tgP1kOCWQE9e8o9fIthiX+KN/Rgw+fYyS5owyP/DJk7L7DK+ptFMEVnaskoA==
   dependencies:
     lodash-es "^4.17.11"
 
