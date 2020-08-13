@@ -1,4 +1,4 @@
-import React, { FunctionComponent, Fragment, useState } from "react";
+import React, { FunctionComponent, Fragment } from "react";
 import { Card } from "franklin-sites";
 
 export type ProteinData = {

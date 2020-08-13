@@ -14,6 +14,7 @@ body,
   background-color: #ffffff;
   position: sticky;
   top: 0;
+  z-index: 999999;
 }
 
 .page-header .button-group {
@@ -59,4 +60,8 @@ body,
 
 .card__content {
   padding: 0.5rem;
+}
+
+protvista-datatable {
+  font-size: 0.85rem;
 }
