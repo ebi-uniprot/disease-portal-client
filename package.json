@@ -32,7 +32,7 @@
     "build:staging": "env-cmd -f .env.staging yarn build",
     "build:prod": "env-cmd -f .env.prod yarn build",
     "test": "react-scripts test",
-    "deploy": "gh-pages -d build:staging",
+    "deploy": "gh-pages -d build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
