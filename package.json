@@ -29,11 +29,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build:local": "env-cmd -f .env.local yarn build",
-    "build:development": "env-cmd -f .env.development yarn build",
-    "build:production": "env-cmd -f .env.production yarn build",
+    "build:staging": "env-cmd -f .env.staging yarn build",
+    "build:prod": "env-cmd -f .env.prod yarn build",
     "test": "react-scripts test",
-    "deploy": "gh-pages -d build",
+    "deploy": "gh-pages -d build:staging",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
