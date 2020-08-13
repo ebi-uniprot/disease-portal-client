@@ -19,7 +19,6 @@ import VariantsForDiseaseContainer from "./components/VariantsForDiseaseContaine
 import logo from "./svg/uniprot-rgb.svg";
 
 import "./App.css";
-
 class App extends Component {
   render() {
     return (

@@ -25,7 +25,7 @@ build_static_assets:
   extends: .js
   stage: build_static_assets
   script:
-    - yarn build:prod
+    - yarn build
   artifacts:
     paths:
       - build/
@@ -67,3 +67,4 @@ deploy:
     - kubectl get secrets gitlab-registry -o yaml
     - kubectl get secrets gitlab-registry -o yaml
     - kubectl apply -f k8s_deploy.yml
+    - kubectl rollout restart deployment/disease-portal-client
