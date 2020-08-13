@@ -95,18 +95,12 @@ const ProteinCardCompact: FunctionComponent<{
         {" • "}
         {data.proteinId}
         {data.isExternallyMapped ? (
-          <span
-            className="label label__manual"
-            title="Disease association source: Imported"
-          >
-            Imported
+          <span className="label label__manual">
+            Disease association source: Imported
           </span>
         ) : (
-          <span
-            className="label label__reviewed"
-            title="Disease association source: UniProt"
-          >
-            UniProt
+          <span className="label label__reviewed">
+            Disease association source: UniProt
           </span>
         )}
       </h5>

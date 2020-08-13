@@ -33,8 +33,6 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
   data,
   id,
 }) => {
-  const [showWholeFunction, setShowWholeFunction] = useState(false);
-
   const diseaseNotes =
     data.diseases &&
     data.diseases.filter((disease) => disease.diseaseName === id);
@@ -42,43 +40,21 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
   return (
     <Card>
       <h4>
-        {data.gene} - {data.proteinName}{" "}
-        <small>
-          <a
-            href={`//www.uniprot.org/uniprot/${data.accession}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {data.accession}
-          </a>
-        </small>
+        <a
+          href={`//www.uniprot.org/uniprot/${data.accession}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {data.accession}
+        </a>
+        {" • "}
+        {data.proteinId}
       </h4>
-
-      {data.isExternallyMapped ? (
-        <span className="label label__manual">
-          Disease association source: Imported
-        </span>
-      ) : (
-        <span className="label label__reviewed">
-          Disease association source: UniProt
-        </span>
-      )}
-      <h5>Function</h5>
-      <p>
-        {!showWholeFunction && data.description.length > 200 ? (
-          <Fragment>
-            <span>{data.description.substring(0, 197)}...&nbsp;</span>
-            <button onClick={() => setShowWholeFunction(true)}>more</button>
-          </Fragment>
-        ) : (
-          data.description
-        )}
-      </p>
-      {data.geneCoordinates && (
-        <div>
-          <h5>Gene information</h5>
-          {data.geneCoordinates.map((coordinate) => (
-            <p key={coordinate.ensemblGeneId}>
+      <section>
+        <h5>Gene</h5> {data.gene}
+        {data.geneCoordinates &&
+          data.geneCoordinates.map((coordinate) => (
+            <section key={coordinate.ensemblGeneId}>
               {coordinate.chromosome}:{formatLargeNumber(coordinate.start)}-
               {formatLargeNumber(coordinate.end)}{" "}
               <a
@@ -102,10 +78,24 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
               >
                 {coordinate.ensemblTranslationId}
               </a>
-            </p>
+            </section>
           ))}
-        </div>
-      )}
+      </section>
+      <section>
+        <h5>Protein name</h5> {data.proteinName}
+      </section>
+      {/* isExternallyMapped not returned by API */}
+      {/* {data.isExternallyMapped ? (
+        <span className="label label__manual">
+          Disease association source: Imported
+        </span>
+      ) : (
+        <span className="label label__reviewed">
+          Disease association source: UniProt
+        </span>
+      )} */}
+      <h5>Function</h5>
+      <p>{data.description}</p>
       {diseaseNotes && (
         <Fragment>
           {diseaseNotes.length > 0 && <h5>Disease notes</h5>}
