@@ -1,5 +1,6 @@
 import React, { FunctionComponent, Fragment } from "react";
 import { Card } from "franklin-sites";
+import { formatTextWithPubmeds } from "../../utils";
 
 export type ProteinData = {
   proteinId: string;
@@ -95,7 +96,11 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
         </span>
       )} */}
       <h5>Function</h5>
-      <p>{data.description}</p>
+      <p
+        dangerouslySetInnerHTML={{
+          __html: formatTextWithPubmeds(data.description),
+        }}
+      ></p>
       {diseaseNotes && (
         <Fragment>
           {diseaseNotes.length > 0 && <h5>Disease notes</h5>}
