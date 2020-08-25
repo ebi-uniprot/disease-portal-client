@@ -8,6 +8,7 @@ import { getAllItems } from "./DiseaseCardCompact";
 export type DiseaseData = {
   diseaseId: string;
   diseaseName: string;
+  isGroup: boolean;
   acronym: string;
   description: string;
   proteins?: string[];
@@ -57,10 +58,14 @@ const DiseaseChildren: FC<{ data: DiseaseData[]; depth?: number }> = ({
     <Fragment>
       {filtered.map((disease, i) => (
         <div key={disease.diseaseId} style={{ marginLeft: `${depth}rem` }}>
-          <Link to={`/disease/${disease.diseaseId}/proteins`}>
-            {i < filtered.length - 1 ? "├" : "└"}
-            {disease.diseaseName}
-          </Link>
+          {disease.isGroup ? (
+            disease.diseaseName
+          ) : (
+            <Link to={`/disease/${disease.diseaseId}/proteins`}>
+              {i < filtered.length - 1 ? "├" : "└"}
+              {disease.diseaseName}
+            </Link>
+          )}
           {disease.children && (
             <DiseaseChildren data={disease.children} depth={depth + 1} />
           )}

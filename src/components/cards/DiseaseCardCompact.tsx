@@ -65,7 +65,7 @@ const DiseaseChildren: FC<{ data: DiseaseData[]; depth?: number }> = ({
     <>
       {filtered.map((disease, i) => (
         <Fragment key={disease.diseaseName}>
-          <option value={disease.diseaseName}>
+          <option value={disease.diseaseName} disabled={disease.isGroup}>
             {i < filtered.length - 1 ? "├" : "└"}
             {generateSpacer(depth)}
             {disease.diseaseName}
