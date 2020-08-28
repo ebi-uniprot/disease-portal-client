@@ -1,5 +1,6 @@
 import React, { FunctionComponent, FC, Fragment } from "react";
 import { Card } from "franklin-sites";
+import uniq from "lodash-es/uniq";
 import { Context, ContextObj } from "../../types/context";
 import { createTableLink } from "../utils";
 import { DiseaseData } from "./DiseaseCard";
@@ -21,7 +22,7 @@ export function getAllItems(
       getAllItems(childDisease, keyName, totalItems);
     });
   }
-  return Array.from(totalItems);
+  return uniq(Array.from(totalItems));
 }
 
 const generateDiseaseLinks = (diseaseItem: DiseaseData) => {

@@ -1,1 +1,1 @@
-export const baseUrl = "//wwwdev.ebi.ac.uk/uniprot/api/diseaseservice";
+export const baseUrl = "https://www.ebi.ac.uk/uniprot/api/diseaseservice";
