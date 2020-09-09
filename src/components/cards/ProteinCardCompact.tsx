@@ -95,7 +95,10 @@ const ProteinCardCompact: FunctionComponent<{
         {" • "}
         {data.proteinId}
         {data.isExternallyMapped ? (
-          <span className="label label__manual">
+          <span
+            className="label label__manual"
+            title="Disease association based on scientific recommendations from specialist research communities"
+          >
             Disease association source: Imported
           </span>
         ) : (
