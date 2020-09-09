@@ -1,5 +1,6 @@
 import React, { Fragment, FunctionComponent, FC } from "react";
 import { Card } from "franklin-sites";
+import { uniq } from "lodash-es";
 import { Context } from "../../types/context";
 import { createTableLink } from "../utils";
 import { Link } from "react-router-dom";
@@ -11,7 +12,7 @@ export type DiseaseData = {
   isGroup: boolean;
   acronym: string;
   description: string;
-  proteins?: string[];
+  proteins?: { accession: string; isExternallyMapped: boolean }[];
   variants?: string[];
   drugs?: string[];
   children?: DiseaseData[];
@@ -26,10 +27,15 @@ const generateDiseaseLinks = (diseaseItem: DiseaseData) => {
   const allDrugs = getAllItems(diseaseItem, "drugs");
   const allVariants = getAllItems(diseaseItem, "variants");
 
-  if (allProts && allProts.length > 0) {
+  // proteins are returned as object so need further processing
+  const allUniqueProts = uniq(
+    allProts.map(({ accession }: { accession: string }) => accession)
+  );
+
+  if (allUniqueProts && allUniqueProts.length > 0) {
     // Get the first protein
     diseaseLinks.push(
-      createTableLink(diseaseId, Context.PROTEIN, allProts.length)
+      createTableLink(diseaseId, Context.PROTEIN, allUniqueProts.length)
     );
   }
   if (allDrugs && allDrugs.length > 0) {

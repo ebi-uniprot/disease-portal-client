@@ -11,18 +11,21 @@ import "./DiseaseCardCompact.css";
 export function getAllItems(
   diseaseItem: DiseaseData,
   keyName: keyof DiseaseData,
-  totalItems = new Set()
+  totalItems = new Set(),
+  idKey?: string
 ): any {
   const items = diseaseItem[keyName] as any[];
   if (items) {
-    items.forEach((item: any) => totalItems.add(item));
+    items.forEach((item: any) => {
+      idKey ? totalItems.add(item[idKey]) : totalItems.add(item);
+    });
   }
   if (diseaseItem.children) {
     diseaseItem.children.forEach((childDisease) => {
       getAllItems(childDisease, keyName, totalItems);
     });
   }
-  return uniq(Array.from(totalItems));
+  return Array.from(totalItems);
 }
 
 const generateDiseaseLinks = (diseaseItem: DiseaseData) => {
@@ -33,9 +36,14 @@ const generateDiseaseLinks = (diseaseItem: DiseaseData) => {
   const allDrugs = getAllItems(diseaseItem, "drugs");
   const allVariants = getAllItems(diseaseItem, "variants");
 
-  if (allProts && allProts.length > 0) {
+  // proteins are returned as object so need further processing
+  const allUniqueProts = uniq(
+    allProts.map(({ accession }: { accession: string }) => accession)
+  );
+
+  if (allUniqueProts && allUniqueProts.length > 0) {
     diseaseLinks.push(
-      createTableLink(diseaseId, Context.PROTEIN, allProts.length)
+      createTableLink(diseaseId, Context.PROTEIN, allUniqueProts.length)
     );
   }
   if (allDrugs && allDrugs.length > 0) {
