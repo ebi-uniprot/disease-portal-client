@@ -48,7 +48,7 @@ const columns = (diseaseId: string) => ({
   evidences: {
     label: "Evidence",
     resolver: (drug: DrugsData) =>
-      drug.evidences.map(
+      drug.evidences?.map(
         (evidence) => html`
           <div>
             <a href="${evidence}" target="_blank" rel="noopener noreferrer">

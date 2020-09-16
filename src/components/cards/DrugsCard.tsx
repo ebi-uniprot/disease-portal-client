@@ -8,7 +8,7 @@ export type DrugsData = {
   moleculeType: string;
   clinicalTrialLink: string;
   clinicalTrialPhase: number;
-  evidences: string[];
+  evidences?: string[];
   mechanismOfAction: string;
   diseases?: { diseaseId: string; diseaseName: string }[];
   proteins?: string[];
@@ -37,6 +37,10 @@ const DrugsCard: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
       content: data.mechanismOfAction,
     },
     {
+      title: "Disease(s)",
+      content: data.diseases?.map((disease) => disease.diseaseName).join(", "),
+    },
+    {
       title: "Source",
       content: (
         <a
@@ -50,7 +54,7 @@ const DrugsCard: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
     },
     {
       title: "Evidences",
-      content: data.evidences.map((evidence) => (
+      content: data.evidences?.map((evidence) => (
         <div key={evidence}>
           <a href={evidence} target="_blank" rel="noopener noreferrer">
             {evidence}
