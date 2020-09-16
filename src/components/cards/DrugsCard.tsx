@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { Card, InfoList } from "franklin-sites";
+import { Card, InfoList, ExpandableList } from "franklin-sites";
 
 export type DrugsData = {
   name: string;
@@ -38,7 +38,14 @@ const DrugsCard: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
     },
     {
       title: "Disease(s)",
-      content: data.diseases?.map((disease) => disease.diseaseName).join(", "),
+      content: (
+        <ExpandableList numberCollapsedItems={5} descriptionString="diseases">
+          {data.diseases?.map((disease) => ({
+            id: disease.diseaseId,
+            content: disease.diseaseName,
+          }))}
+        </ExpandableList>
+      ),
     },
     {
       title: "Source",
