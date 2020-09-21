@@ -1,5 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { Card, InfoList, ExpandableList } from "franklin-sites";
+import { Link } from "react-router-dom";
+import { Context, ContextObj } from "../../types/context";
 
 export type DrugsData = {
   name: string;
@@ -10,8 +12,37 @@ export type DrugsData = {
   clinicalTrialPhase: number;
   evidences?: string[];
   mechanismOfAction: string;
-  diseases?: { diseaseId: string; diseaseName: string }[];
+  diseases?: {
+    diseaseId: string;
+    diseaseName: string;
+    proteinCount?: number;
+  }[];
   proteins?: string[];
+};
+
+const DiseaseLink: FunctionComponent<{
+  name: string;
+  withProteins: boolean;
+}> = ({ name, withProteins }) => {
+  return withProteins ? (
+    <Link
+      to={`/${ContextObj[Context.DISEASE].id}/${name}/${
+        ContextObj[Context.PROTEIN].id
+      }`}
+    >
+      {name}
+    </Link>
+  ) : (
+    <>
+      {name.match(/www/) ? (
+        <a href={name} target="_blank" rel="noopener noreferrer">
+          {name}
+        </a>
+      ) : (
+        <>{name}</>
+      )}
+    </>
+  );
 };
 
 const DrugsCard: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
@@ -39,12 +70,27 @@ const DrugsCard: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
     {
       title: "Disease(s)",
       content: (
-        <ExpandableList numberCollapsedItems={5} descriptionString="diseases">
-          {data.diseases?.map((disease) => ({
-            id: disease.diseaseId,
-            content: disease.diseaseName,
-          }))}
-        </ExpandableList>
+        <>
+          {data.diseases && (
+            <ExpandableList
+              numberCollapsedItems={5}
+              descriptionString="diseases"
+            >
+              {data.diseases.map((disease) => ({
+                id: disease.diseaseName,
+                content: (
+                  <DiseaseLink
+                    name={disease.diseaseName}
+                    withProteins={
+                      disease.proteinCount !== undefined &&
+                      disease.proteinCount > 0
+                    }
+                  />
+                ),
+              }))}
+            </ExpandableList>
+          )}
+        </>
       ),
     },
     {
