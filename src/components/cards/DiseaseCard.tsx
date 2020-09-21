@@ -67,7 +67,7 @@ const DiseaseChildren: FC<{ data: DiseaseData[]; depth?: number }> = ({
           {disease.isGroup ? (
             disease.diseaseName
           ) : (
-            <Link to={`/disease/${disease.diseaseId}/proteins`}>
+            <Link to={`/disease/${disease.diseaseId}/protein`}>
               {i < filtered.length - 1 ? "├" : "└"}
               {disease.diseaseName}
             </Link>

@@ -8,6 +8,7 @@ import ProteinCardCompact from "./cards/ProteinCardCompact";
 import { baseUrl } from "../config";
 import UseApi from "./hooks/UseApi";
 import { proteinsForDiseaseUrl } from "../urls";
+import spinner from "../svg/spinner.svg";
 
 enum Filters {
   INT = "interactions",
@@ -31,12 +32,16 @@ const ProteinForDiseaseCardContainer = () => {
     [Filters.SEQ]: false,
   });
 
-  const { data } = UseApi<{ results: ProteinData[] }>(
+  const { data, isLoading } = UseApi<{ results: ProteinData[] }>(
     proteinsForDiseaseUrl(diseaseid)
   );
 
-  if (!data) {
-    return null;
+  if (isLoading || !data) {
+    return (
+      <section className="spinner-container">
+        <img src={spinner} alt="logo" width={120} height={50} />
+      </section>
+    );
   }
 
   const { results } = data;
@@ -84,6 +89,7 @@ const ProteinForDiseaseCardContainer = () => {
         <h4>{filteredData.length} proteins</h4>
         <section className="button-group">
           <DropdownButton label="Filter" className="tertiary">
+            <p>Proteins with:</p>
             <ul className="no-bullet">
               {Object.keys(Filters).map((filterKey) => (
                 <li key={filterKey}>
@@ -97,7 +103,7 @@ const ProteinForDiseaseCardContainer = () => {
                         ]
                       }
                       name={Filters[filterKey as keyof typeof Filters]}
-                    />
+                    />{" "}
                     {Filters[filterKey as keyof typeof Filters]}
                   </label>
                 </li>

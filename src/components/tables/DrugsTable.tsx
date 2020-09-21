@@ -62,16 +62,17 @@ const columns = (diseaseId: string) => ({
     label: "Diseases",
     resolver: (drug: DrugsData) =>
       drug.diseases &&
-      drug.diseases.map(
-        (disease) =>
-          html`<p>
-            <a
-              href="/${ContextObj[Context.DISEASE]
-                .id}/${disease.diseaseId}/${ContextObj[Context.PROTEIN].id}"
-              >${disease.diseaseName}</a
-            >
-          </p>`
-      ),
+      drug.diseases.map((disease) => {
+        // TODO add the link ONLY if proteinCount > 0
+        // waiting for backend
+        return html`<p>
+          <a
+            href="/${ContextObj[Context.DISEASE]
+              .id}/${disease.diseaseId}/${ContextObj[Context.PROTEIN].id}"
+            >${disease.diseaseName}</a
+          >
+        </p>`;
+      }),
   },
   proteins: {
     label: "Proteins",

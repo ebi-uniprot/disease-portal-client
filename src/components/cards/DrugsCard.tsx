@@ -34,7 +34,7 @@ const DiseaseLink: FunctionComponent<{
     </Link>
   ) : (
     <>
-      {name.match(/www/) ? (
+      {name.match(/http/) ? (
         <a href={name} target="_blank" rel="noopener noreferrer">
           {name}
         </a>
