@@ -65,13 +65,24 @@ const columns = (diseaseId: string) => ({
       drug.diseases.map((disease) => {
         // TODO add the link ONLY if proteinCount > 0
         // waiting for backend
-        return html`<p>
-          <a
-            href="/${ContextObj[Context.DISEASE]
-              .id}/${disease.diseaseId}/${ContextObj[Context.PROTEIN].id}"
-            >${disease.diseaseName}</a
-          >
-        </p>`;
+        return disease.proteinCount && disease.proteinCount > 0
+          ? html`<p>
+              <a
+                href="/${ContextObj[Context.DISEASE]
+                  .id}/${disease.diseaseId}/${ContextObj[Context.PROTEIN].id}"
+                >${disease.diseaseName}</a
+              >
+            </p>`
+          : disease.diseaseName.match("http")
+          ? html`<p>
+              <a
+                href="${disease.diseaseName}"
+                target="_blank"
+                rel="noopener noreferrer"
+                >${disease.diseaseName}</a
+              >
+            </p>`
+          : html`<p>${disease.diseaseName}</p>`;
       }),
   },
   proteins: {
