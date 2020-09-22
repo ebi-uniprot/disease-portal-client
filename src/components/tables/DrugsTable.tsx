@@ -62,28 +62,28 @@ const columns = (diseaseId: string) => ({
     label: "Diseases",
     resolver: (drug: DrugsData) =>
       drug.diseases &&
-      drug.diseases.map((disease) => {
-        // TODO add the link ONLY if proteinCount > 0
-        // waiting for backend
-        return disease.proteinCount && disease.proteinCount > 0
-          ? html`<p>
-              <a
-                href="/${ContextObj[Context.DISEASE]
-                  .id}/${disease.diseaseId}/${ContextObj[Context.PROTEIN].id}"
-                >${disease.diseaseName}</a
-              >
-            </p>`
-          : disease.diseaseName.match("http")
-          ? html`<p>
-              <a
-                href="${disease.diseaseName}"
-                target="_blank"
-                rel="noopener noreferrer"
-                >${disease.diseaseName}</a
-              >
-            </p>`
-          : html`<p>${disease.diseaseName}</p>`;
-      }),
+      html`<div style="overflow-y:auto;height:10vh;">
+        ${drug.diseases.map((disease) => {
+          return disease.proteinCount && disease.proteinCount > 0
+            ? html`<p>
+                <a
+                  href="/${ContextObj[Context.DISEASE]
+                    .id}/${disease.diseaseId}/${ContextObj[Context.PROTEIN].id}"
+                  >${disease.diseaseName}</a
+                >
+              </p>`
+            : disease.diseaseName.match("http")
+            ? html`<p>
+                <a
+                  href="${disease.diseaseName}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >${disease.diseaseName}</a
+                >
+              </p>`
+            : html`<p>${disease.diseaseName}</p>`;
+        })}
+      </div>`,
   },
   proteins: {
     label: "Proteins",
