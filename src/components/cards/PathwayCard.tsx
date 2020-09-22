@@ -1,5 +1,5 @@
-import React, { FunctionComponent, useEffect, useState, useRef } from "react";
-import { Card } from "franklin-sites";
+import React, { FunctionComponent, useEffect, useRef } from "react";
+import { Card, ButtonModal } from "franklin-sites";
 
 export enum PathwayDbType {
   REACTOME = "Reactome",
@@ -23,6 +23,9 @@ declare global {
 
 interface Diagram {
   loadDiagram(id: string): void;
+  highlightItem(id: string): void;
+  flagItems(id: string): void;
+  selectItem(stId: string): void;
   detach(): void;
 }
 
@@ -39,37 +42,42 @@ const getUrl = (dbType: PathwayDbType, id: string) => {
   }
 };
 
-const PathwayCard: FunctionComponent<{ data: PathwayData }> = ({ data }) => {
-  const [showPathway, setShowPathway] = useState(false);
-
+const Pathway: FunctionComponent<{ id: string; protein: string }> = ({
+  id,
+  protein,
+}) => {
   const diagramRef = useRef<Diagram | null>(null);
+  const dummyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // on unmount
-    return () => {
-      if (diagramRef.current) {
-        // detach diagram and unreference it, to be able to garbage collect it
-        diagramRef.current.detach();
-        diagramRef.current = null;
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    if (showPathway) {
+    if (dummyRef.current) {
       diagramRef.current = Reactome.Diagram.create({
-        placeHolder: `${data.primaryId}_placeholder`,
-        width: 900,
+        placeHolder: `${id}_placeholder`,
+        width: dummyRef.current.offsetWidth,
         height: 500,
       }) as Diagram;
-      diagramRef.current.loadDiagram(data.primaryId);
+      diagramRef.current.loadDiagram(id);
+      // Note: it doesn't look like the line below is working, maybe using wrong id
+      diagramRef.current.selectItem(protein);
     } else if (diagramRef.current) {
       // detach diagram and unreference it, to be able to garbage collect it
       diagramRef.current.detach();
       diagramRef.current = null;
     }
-  }, [showPathway, data.primaryId]);
+  }, [id, protein]);
 
+  return (
+    <>
+      <div ref={dummyRef} />
+      <div id={`${id}_placeholder`} style={{ backgroundColor: "#FFF" }} />
+    </>
+  );
+};
+
+const PathwayCard: FunctionComponent<{
+  data: PathwayData;
+  protein: string;
+}> = ({ data, protein }) => {
   return (
     <Card>
       <h4>{data.description}</h4>
@@ -82,13 +90,13 @@ const PathwayCard: FunctionComponent<{ data: PathwayData }> = ({ data }) => {
           {data.primaryId}
         </a>{" "}
       </p>
-      <button
-        className="button tertiary"
-        onClick={() => setShowPathway((current) => !current)}
+      <ButtonModal
+        buttonText="Show pathway"
+        className="button"
+        title={data.description}
       >
-        {showPathway ? "Hide " : "Show "}pathway
-      </button>
-      <div id={`${data.primaryId}_placeholder`} />
+        <Pathway id={data.primaryId} protein={protein} />
+      </ButtonModal>
     </Card>
   );
 };

@@ -24,7 +24,7 @@ const PathwaysForProteinCardContainer = () => {
       isLoading={isLoading}
     >
       {filtered.map((item) => (
-        <PathwayCard data={item} key={item.primaryId} />
+        <PathwayCard data={item} protein={proteinid} key={item.primaryId} />
       ))}
     </PageTemplate>
   );
