@@ -1,7 +1,14 @@
 import React, { FunctionComponent } from "react";
 import { Card, InfoList, ExpandableList } from "franklin-sites";
+import { groupBy, sortBy } from "lodash-es";
 import { Link } from "react-router-dom";
 import { Context, ContextObj } from "../../types/context";
+
+export type DiseaseForDrug = {
+  diseaseId: string;
+  diseaseName: string;
+  proteinCount?: number;
+};
 
 export type DrugsData = {
   name: string;
@@ -12,12 +19,19 @@ export type DrugsData = {
   clinicalTrialPhase: number;
   evidences?: string[];
   mechanismOfAction: string;
-  diseases?: {
-    diseaseId: string;
-    diseaseName: string;
-    proteinCount?: number;
-  }[];
+  diseases?: DiseaseForDrug[];
   proteins?: string[];
+};
+
+export const sortDiseases = (diseases: DiseaseForDrug[]) => {
+  const grouped = groupBy(
+    diseases,
+    (disease) => disease.proteinCount !== undefined && disease.proteinCount > 0
+  );
+  return [
+    ...(grouped["true"] ? sortBy(grouped["true"], "diseaseName") : []),
+    ...(grouped["false"] ? sortBy(grouped["false"], "diseaseName") : []),
+  ];
 };
 
 const DiseaseLink: FunctionComponent<{
@@ -76,7 +90,7 @@ const DrugsCard: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
               numberCollapsedItems={5}
               descriptionString="diseases"
             >
-              {data.diseases.map((disease) => ({
+              {sortDiseases(data.diseases).map((disease) => ({
                 id: disease.diseaseName,
                 content: (
                   <DiseaseLink

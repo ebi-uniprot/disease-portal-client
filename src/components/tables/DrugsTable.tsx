@@ -3,7 +3,7 @@ import ProtvistaDatatable from "protvista-datatable";
 import { html } from "lit-html";
 
 import { Context, ContextObj } from "../../types/context";
-import { DrugsData } from "../cards/DrugsCard";
+import { DrugsData, sortDiseases } from "../cards/DrugsCard";
 import { loadWebComponent, ProtvistaDatatableType } from "../cards/VariantCard";
 
 loadWebComponent("protvista-datatable", ProtvistaDatatable);
@@ -63,7 +63,7 @@ const columns = (diseaseId: string) => ({
     resolver: (drug: DrugsData) =>
       drug.diseases &&
       html`<div style="overflow-y:auto;height:10vh;">
-        ${drug.diseases.map((disease) => {
+        ${sortDiseases(drug.diseases).map((disease) => {
           return disease.proteinCount && disease.proteinCount > 0
             ? html`<p>
                 <a
