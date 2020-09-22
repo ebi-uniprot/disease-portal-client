@@ -6,6 +6,7 @@ import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
 import VariantsTable, { DiseaseVariant } from "./tables/VariantsTable";
 import { variantsForDiseaseUrl } from "../urls";
+import spinner from "../svg/spinner.svg";
 
 const VariantsForDiseaseContainer: FunctionComponent<RouteComponentProps<{
   diseaseid: string;
@@ -16,8 +17,12 @@ const VariantsForDiseaseContainer: FunctionComponent<RouteComponentProps<{
     variantsForDiseaseUrl(diseaseid)
   );
 
-  if (!data) {
-    return null;
+  if (isLoading || !data) {
+    return (
+      <section className="spinner-container">
+        <img src={spinner} alt="logo" width={120} height={50} />
+      </section>
+    );
   }
 
   const { results } = data;

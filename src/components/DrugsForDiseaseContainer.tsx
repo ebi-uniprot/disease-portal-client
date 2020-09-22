@@ -6,6 +6,7 @@ import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
 import DrugsTable from "./tables/DrugsTable";
 import { drugsForDiseaseUrl } from "../urls";
+import spinner from "../svg/spinner.svg";
 
 const DrugsForDiseaseContainer = () => {
   const { diseaseid } = useParams();
@@ -14,8 +15,12 @@ const DrugsForDiseaseContainer = () => {
     drugsForDiseaseUrl(diseaseid)
   );
 
-  if (!data) {
-    return null;
+  if (isLoading || !data) {
+    return (
+      <section className="spinner-container">
+        <img src={spinner} alt="logo" width={120} height={50} />
+      </section>
+    );
   }
 
   return (
