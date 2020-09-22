@@ -49,7 +49,7 @@ const DrugsCard: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
   const infoData = [
     {
       title: "Clinical trial",
-      content: (
+      content: data.clinicalTrialPhase && (
         <a
           href={data.clinicalTrialLink}
           target="_blank"
