@@ -36,6 +36,16 @@ class App extends Component {
               <Header
                 className="main-header"
                 logo={<img src={logo} alt="logo" width={120} height={50} />}
+                links={[
+                  {
+                    label: "UniProt website",
+                    href: "https://www.uniprot.org",
+                  },
+                  {
+                    label: "Feedback",
+                    href: "https://forms.gle/cYB8jScHtjaAsTuB8",
+                  },
+                ]}
               />
             }
             top={

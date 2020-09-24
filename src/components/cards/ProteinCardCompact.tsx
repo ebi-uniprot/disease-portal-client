@@ -34,11 +34,20 @@ const generateProteinLinks = (proteinItem: ProteinData, diseaseId: string) => {
       )
     );
   }
+
+  // Do not show count for variants as it's different in proteins API
   if (proteinItem.variants && proteinItem.variants.length > 0) {
-    proteinLinks.push(
-      createLink(diseaseId, accession, Context.PROTEIN, Context.VARIANT, null)
-    );
+    proteinLinks.push({
+      name: `${ContextObj[Context.VARIANT as keyof typeof ContextObj].label}s`,
+      link: `/disease/${diseaseId}/${
+        ContextObj[Context.PROTEIN as keyof typeof ContextObj].id
+      }/${accession}/${
+        ContextObj[Context.VARIANT as keyof typeof ContextObj].id
+      }`,
+      color: ContextObj[Context.VARIANT as keyof typeof ContextObj].color,
+    });
   }
+
   if (proteinItem.diseases && proteinItem.diseases.length > 0) {
     proteinLinks.push(
       createLink(
