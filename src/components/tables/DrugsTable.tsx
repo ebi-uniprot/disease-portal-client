@@ -15,15 +15,18 @@ const columns = (diseaseId: string) => ({
   },
   phase: {
     label: "Clinical trial",
-    resolver: (drug: DrugsData) => html`
-      <a
-        href="${drug.clinicalTrialLink}"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Phase ${drug.clinicalTrialPhase}
-      </a>
-    `,
+    resolver: (drug: DrugsData) =>
+      drug.clinicalTrialLink
+        ? html`
+            <a
+              href="${drug.clinicalTrialLink}"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Max Phase ${drug.clinicalTrialPhase}
+            </a>
+          `
+        : html` Max Phase ${drug.clinicalTrialPhase} `,
   },
   type: {
     label: "Type",
@@ -34,7 +37,7 @@ const columns = (diseaseId: string) => ({
     resolver: (drug: DrugsData) => drug.mechanismOfAction,
   },
   source: {
-    label: "Source",
+    label: "Cross Reference",
     resolver: (drug: DrugsData) => html`
       <a
         href="//www.ebi.ac.uk/chembl/compound_report_card/${drug.sourceId}"

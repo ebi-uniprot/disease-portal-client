@@ -62,16 +62,20 @@ const DiseaseLink: FunctionComponent<{
 const DrugsCard: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
   const infoData = [
     {
-      title: "Clinical trial",
-      content: data.clinicalTrialPhase && (
-        <a
-          href={data.clinicalTrialLink}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Phase {data.clinicalTrialPhase}
-        </a>
-      ),
+      title: "Max Phase",
+      content:
+        data.clinicalTrialPhase &&
+        (data.clinicalTrialLink ? (
+          <a
+            href={data.clinicalTrialLink}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Phase {data.clinicalTrialPhase}
+          </a>
+        ) : (
+          `Phase ${data.clinicalTrialPhase}`
+        )),
     },
     {
       title: "Type",
@@ -108,7 +112,7 @@ const DrugsCard: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
       ),
     },
     {
-      title: "Source",
+      title: "Cross Reference",
       content: (
         <a
           href={`//www.ebi.ac.uk/chembl/compound_report_card/${data.sourceId}`}
