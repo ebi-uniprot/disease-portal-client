@@ -14,7 +14,7 @@ const columns = (diseaseId: string) => ({
     resolver: (drug: DrugsData) => drug.name,
   },
   phase: {
-    label: "Clinical trial",
+    label: "Max phase",
     resolver: (drug: DrugsData) =>
       drug.clinicalTrialLink
         ? html`
@@ -23,10 +23,10 @@ const columns = (diseaseId: string) => ({
               target="_blank"
               rel="noopener noreferrer"
             >
-              Max Phase ${drug.clinicalTrialPhase}
+              Phase ${drug.clinicalTrialPhase}
             </a>
           `
-        : html` Max Phase ${drug.clinicalTrialPhase} `,
+        : html`Phase ${drug.clinicalTrialPhase} `,
   },
   type: {
     label: "Type",
@@ -122,6 +122,24 @@ const DrugsTable: FunctionComponent<{
 
   return (
     <section className="full-width">
+      <p>
+        Drugs in clinical trials or approved for Alzheimer’s disease. Source:{" "}
+        <a
+          href="https://www.ebi.ac.uk/chembl/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Chembl
+        </a>
+        ,{" "}
+        <a
+          href="https://www.opentargets.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Open Targets
+        </a>
+      </p>
       <protvista-datatable height="100%" data-uuid={`${diseaseId}_table`} />
     </section>
   );
