@@ -1,4 +1,10 @@
-import React, { FunctionComponent, useEffect, useState, useRef } from "react";
+import React, {
+  FunctionComponent,
+  useEffect,
+  useState,
+  useRef,
+  useMemo,
+} from "react";
 import { html } from "lit-html";
 import { v1 } from "uuid";
 import { Card } from "franklin-sites";
@@ -45,6 +51,7 @@ export type VariantData = {
   siftScore?: number;
   cytogeneticBand?: string;
   consequenceType?: string;
+  protvistaFeatureId?: string;
 };
 
 export type VariationData = {
@@ -118,7 +125,7 @@ const processVariantData = (variantData: VariantData[]) =>
   variantData.map((variant) => {
     return {
       accession: variant.ftId,
-      protvistaFeatureId: variant.ftId,
+      protvistaFeatureId: variant.protvistaFeatureId,
       variant: variant.alternativeSequence,
       start: variant.begin,
       end: variant.end,
@@ -210,6 +217,14 @@ const VariantCard: FunctionComponent<{
   const idRef = useRef(v1());
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
 
+  const idData = useMemo(
+    () => ({
+      sequence: data.sequence,
+      features: data.features.map((d) => ({ ...d, protvistaFeatureId: v1() })),
+    }),
+    [data]
+  );
+
   const getFilters = (data: VariantData[]) => {
     const diseases = getDiseaseListForFeatures(data);
 
@@ -239,7 +254,7 @@ const VariantCard: FunctionComponent<{
     });
   };
 
-  const diseaseFilter = getFilters(data.features);
+  const diseaseFilter = getFilters(idData.features);
 
   const _handleEvent = (e: ChangeEvent) => {
     if (e.detail && e.detail.type === "change") {
@@ -259,7 +274,7 @@ const VariantCard: FunctionComponent<{
   useEffect(() => {
     let filteredData;
     if (activeFilters.length > 0) {
-      filteredData = data.features.filter((feature) => {
+      filteredData = idData.features.filter((feature) => {
         if (!feature.association) {
           return null;
         }
@@ -268,7 +283,7 @@ const VariantCard: FunctionComponent<{
         );
       });
     } else {
-      filteredData = data.features;
+      filteredData = idData.features;
     }
 
     const protvistaFilter = document.querySelector<ProtvistaFilter>(
@@ -288,18 +303,15 @@ const VariantCard: FunctionComponent<{
 
     if (protvistaVariation) {
       protvistaVariation.data = {
-        sequence: data.sequence,
+        sequence: idData.sequence,
         variants: processVariantData(filteredData),
       };
     }
     if (protvistaDatatable) {
       protvistaDatatable.columns = columns;
-      protvistaDatatable.data = filteredData.map((d) => ({
-        ...d,
-        protvistaFeatureId: d.ftId,
-      }));
+      protvistaDatatable.data = filteredData;
     }
-  }, [activeFilters, data.features, data.sequence, diseaseFilter]);
+  }, [activeFilters, data.features, data.sequence, diseaseFilter, idData]);
 
   if (!data.sequence) {
     return null;
