@@ -71,6 +71,7 @@ const VariantsTable: FC<{ data: DiseaseVariant[]; diseaseId: string }> = ({
 
   return (
     <section className="full-width">
+      <p>UniProt curated variants for {diseaseId}</p>
       <protvista-datatable height="100%" data-uuid={`${diseaseId}_table`} />
     </section>
   );
