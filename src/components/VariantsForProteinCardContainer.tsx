@@ -1,15 +1,16 @@
 import React from "react";
 import { useParams } from "react-router";
+import { ProteinsAPIVariation } from "protvista-variation-adapter/dist/es/variants";
 
 import useApi from "./hooks/UseApi";
-import VariantCard, { VariationData } from "./cards/VariantCard";
+import VariantCard from "./cards/VariantCard";
 import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
 import { variantsForProteinUrl } from "../urls";
 
 const VariantsForProteinCardContainer = () => {
   const { proteinid } = useParams();
-  const { data, isLoading } = useApi<VariationData>(
+  const { data, isLoading } = useApi<ProteinsAPIVariation>(
     variantsForProteinUrl(proteinid)
   );
   return (

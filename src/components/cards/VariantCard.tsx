@@ -16,48 +16,16 @@ import ProtvistaNavigation from "protvista-navigation";
 import ProtvistaDatatable from "protvista-datatable";
 import ProtvistaFilter from "protvista-filter";
 
+import {
+  ProteinsAPIVariation,
+  Feature as VariantFeature,
+  Prediction,
+} from "protvista-variation-adapter/dist/es/variants";
+
 import "./VariantCard.css";
+import { groupBy } from "lodash-es";
 
-type Evidence = {
-  source: {
-    name: string;
-    id: string;
-    url?: string;
-    alternativeUrl?: string;
-  };
-};
-
-type Xref = {
-  name: string;
-  url: string;
-  id: string;
-};
-
-export type VariantData = {
-  wildType: string;
-  alternativeSequence: string;
-  ftId: string;
-  begin: number;
-  end: number;
-  sourceType: string;
-  description: string;
-  genomicLocation?: string;
-  frequency?: string;
-  association: { name: string; evidences?: Evidence[] }[];
-  xrefs?: Xref[];
-  polyphenPrediction?: string;
-  polyphenScore?: number;
-  siftPrediction?: string;
-  siftScore?: number;
-  cytogeneticBand?: string;
-  consequenceType?: string;
-  protvistaFeatureId?: string;
-};
-
-export type VariationData = {
-  sequence: string;
-  features: VariantData[];
-};
+type VariantWithId = { protvistaFeatureId: string } & VariantFeature;
 
 interface ProtvistaManager extends Element {}
 
@@ -108,12 +76,34 @@ loadWebComponent("protvista-variation", ProtvistaVariation);
 loadWebComponent("protvista-datatable", ProtvistaDatatable);
 loadWebComponent("protvista-filter", ProtvistaFilter);
 
+export const getPredictions = (predictions: Prediction[]) => {
+  const groupedPredictions = groupBy(predictions, "predAlgorithmNameType");
+  const counts = Object.keys(groupedPredictions).map((key) => {
+    const valueGroups = groupBy(groupedPredictions[key], "predictionValType");
+    return {
+      algorithm: key,
+      values: Object.keys(valueGroups).map((valKey) => ({
+        name: valKey,
+        count: valueGroups[valKey].length,
+      })),
+    };
+  });
+  return html`${counts.map(
+    (countItem) =>
+      html`<p>
+        <strong>${countItem.algorithm}</strong> ${countItem.values.map(
+          (countValue) => html`${countValue.name}<br />`
+        )}
+      </p>`
+  )}`;
+};
+
 const colours = {
   diseaseColour: "#A31D5F",
   other: "#00a6d5",
 };
 
-const getColour = (variant: VariantData) => {
+const getColour = (variant: VariantFeature) => {
   if (variant.association) {
     return colours.diseaseColour;
   } else {
@@ -121,12 +111,12 @@ const getColour = (variant: VariantData) => {
   }
 };
 
-const processVariantData = (variantData: VariantData[]) =>
+const processVariantData = (variantData: VariantWithId[]) =>
   variantData.map((variant) => {
     return {
       accession: variant.ftId,
       protvistaFeatureId: variant.protvistaFeatureId,
-      variant: variant.alternativeSequence,
+      variant: variant.alternativeSequence ? variant.alternativeSequence : "-",
       start: variant.begin,
       end: variant.end,
       association: variant.association,
@@ -135,47 +125,67 @@ const processVariantData = (variantData: VariantData[]) =>
   });
 
 const columns = {
-  type: {
-    label: "ID",
-    resolver: (d: VariantData) => d.ftId,
-  },
-  positions: {
-    label: "Positions",
-    resolver: (d: VariantData) => {
-      return d.begin === d.end ? d.begin : `${d.begin}-${d.end}`;
-    },
-  },
   change: {
     label: "Change",
-    resolver: (d: VariantData) => {
+    resolver: (d: VariantFeature) => {
       return `
         ${d.wildType}->${d.alternativeSequence}
       `;
     },
   },
+  positions: {
+    label: "Positions",
+    resolver: (d: VariantFeature) => {
+      return d.begin === d.end ? d.begin : `${d.begin}-${d.end}`;
+    },
+  },
   description: {
     label: "Description",
-    child: true,
-    resolver: (d: VariantData) => {
-      return d.description;
+    resolver: (d: VariantFeature) => {
+      return d.descriptions?.map(
+        (description) =>
+          html`<p>${description.value} (${description.sources.join(", ")})</p>`
+      );
+    },
+  },
+  rsId: {
+    label: "IDs",
+    resolver: (d: VariantFeature) => {
+      return html`${d.xrefs?.map(
+        ({ id, url }) =>
+          html`<p>
+            ${url
+              ? html`<a href="${url}" target="_blank" rel="noopener noreferrer"
+                  >${id}</a
+                >`
+              : id}
+          </p>`
+      )}`;
     },
   },
   genomicLocation: {
     label: "Genomic location",
-    resolver: (d: VariantData) => d.genomicLocation,
+    resolver: (d: VariantFeature) => d.genomicLocation,
   },
-  frequency: {
-    label: "Frequency",
-    resolver: (d: VariantData) => d.frequency,
-  },
-  rsId: {
-    label: "IDs",
-    resolver: (d: VariantData) => d.xrefs?.map(({ id }) => id).join(", "),
+  popFrequencey: {
+    label: "Population frequencies",
     child: true,
+    resolver: (d: VariantFeature) =>
+      d.populationFrequencies?.map(
+        (frequency) =>
+          html`${frequency.populationName} - ${frequency.frequency}`
+      ),
+  },
+  predictions: {
+    label: "Predictions",
+    child: true,
+    resolver: (d: VariantFeature) =>
+      d.predictions ? getPredictions(d.predictions) : "",
   },
   association: {
     label: "Disease association",
-    resolver: (d: VariantData) =>
+    child: "true",
+    resolver: (d: VariantFeature) =>
       d.association
         ? d.association.map(
             (association) =>
@@ -198,7 +208,7 @@ const columns = {
   },
 };
 
-const getDiseaseListForFeatures = (features: VariantData[]) => {
+const getDiseaseListForFeatures = (features: VariantFeature[]) => {
   const diseaseSet = new Set();
   features.forEach(
     (variant) =>
@@ -211,7 +221,7 @@ const getDiseaseListForFeatures = (features: VariantData[]) => {
 };
 
 const VariantCard: FunctionComponent<{
-  data: VariationData;
+  data: ProteinsAPIVariation;
   accession: string;
 }> = ({ data, accession }) => {
   const idRef = useRef(v1());
@@ -225,7 +235,7 @@ const VariantCard: FunctionComponent<{
     [data]
   );
 
-  const getFilters = (data: VariantData[]) => {
+  const getFilters = (data: VariantFeature[]) => {
     const diseases = getDiseaseListForFeatures(data);
 
     return Array.from(diseases).map((diseaseName) => {
@@ -240,7 +250,7 @@ const VariantCard: FunctionComponent<{
           variants.map((variantPosition: any) => ({
             ...variantPosition,
             variants: variantPosition.variants.filter(
-              (variant: VariantData) => {
+              (variant: VariantFeature) => {
                 if (!variant.association) {
                   return null;
                 }
