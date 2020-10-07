@@ -5,7 +5,6 @@ import axios from "axios";
 
 import { ProteinData } from "./cards/ProteinCard";
 import ProteinCardCompact from "./cards/ProteinCardCompact";
-import { baseUrl } from "../config";
 import UseApi from "./hooks/UseApi";
 import { proteinsForDiseaseUrl } from "../urls";
 import spinner from "../svg/spinner.svg";
@@ -50,7 +49,9 @@ const ProteinForDiseaseCardContainer = () => {
 
   const downloadProteins = (proteinIds: string[]) => {
     // TODO: check, not working
-    const url = `${baseUrl}/proteins/${proteinIds.join(",")}/download`;
+    const url = `${process.env.REACT_APP_API_URL}/proteins/${proteinIds.join(
+      ","
+    )}/download`;
     axios({
       url: url,
       method: "GET",
