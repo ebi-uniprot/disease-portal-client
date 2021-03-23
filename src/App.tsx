@@ -26,7 +26,7 @@ class App extends Component {
         <BrowserRouter basename={process.env.PUBLIC_URL}>
           <Route exact path="/">
             <Redirect
-              to={`/${ContextObj[Context.DISEASE].id}/Alzheimer%20disease/${
+              to={`/${ContextObj[Context.DISEASE].id}/DI-03832/${
                 ContextObj[Context.PROTEIN].id
               }`}
             />
