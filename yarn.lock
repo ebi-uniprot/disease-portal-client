@@ -7029,6 +7029,13 @@ lit-element@^2.2.0:
   dependencies:
     lit-html "^1.1.1"
 
+lit-element@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/lit-element/-/lit-element-2.4.0.tgz#b22607a037a8fc08f5a80736dddf7f3f5d401452"
+  integrity sha512-pBGLglxyhq/Prk2H91nA0KByq/hx/wssJBQFiYqXhGDvEnY31PRGYf1RglVzyLeRysu0IHm2K0P196uLLWmwFg==
+  dependencies:
+    lit-html "^1.1.1"
+
 lit-html@^1.1.1, lit-html@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/lit-html/-/lit-html-1.2.1.tgz#1fb933dc1e2ddc095f60b8086277d4fcd9d62cc8"
@@ -9097,6 +9104,14 @@ protvista-sequence@^3.0.0:
   dependencies:
     lodash-es "^4.17.11"
     protvista-zoomable "^3.0.0"
+
+protvista-tooltip@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/protvista-tooltip/-/protvista-tooltip-3.1.2.tgz#2da11a28027ffdf686a560b857c3dffa815c6f84"
+  integrity sha512-X9H/oN1/1fbagRhOBfBO+5r2LLARl5QelSLNSpOgWh50iBcCyIU8P5iC6S3cCtNdb+VGssGB4+fHpOBv7nu7Lw==
+  dependencies:
+    lit-element "^2.4.0"
+    lodash-es "^4.17.11"
 
 protvista-track@^3.0.0:
   version "3.0.0"

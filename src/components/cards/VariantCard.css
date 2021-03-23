@@ -1,4 +1,4 @@
-protvista-manager {
+.variant-card protvista-manager {
   display: grid;
   grid-template-columns: 2fr 7fr;
   grid-template-areas: ". navigation" ". sequence" "filter variation" "protvista-button protvista-button" "datatable datatable";

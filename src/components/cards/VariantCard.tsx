@@ -329,7 +329,7 @@ const VariantCard: FunctionComponent<{
 
   return (
     <Card>
-      <div className="protvista-grid">
+      <div className="variant-card">
         <protvista-manager
           attributes="displaystart displayend highlight selectedid"
           data-uuid={`${idRef.current}_manager`}
