@@ -12,17 +12,13 @@ import ProtvistaManager from "protvista-manager";
 import ProtvistaSequence from "protvista-sequence";
 import ProtvistaNavigation from "protvista-navigation";
 import ProtvistaTooltip from "protvista-tooltip";
+import { ChangeEvent } from "./VariantCard";
 
 interface ProtvistaManager extends Element {}
 
 interface ProtvistaTrack extends Element {
   length: number;
-  data: any[];
-}
-
-export interface ProtvistaDatatableType extends Element {
-  columns: any;
-  data: any[];
+  data: OrthologueMapping[];
 }
 
 export type OrthologuesAPI = {
@@ -35,7 +31,7 @@ export type OrthologuesAPI = {
   results: OrthologueMapping[];
 };
 
-type OrthologueMapping = {
+export type OrthologueMapping = {
   accession: string;
   uniProtId: string;
   sitePosition: number;
@@ -91,6 +87,27 @@ const OrthologuesCard: FunctionComponent<{
     }
   }, [data]);
 
+  const handleChangeClick = (e: ChangeEvent) => {
+    if (e.detail?.eventtype === "click") {
+      setTTContent(
+        <ul>
+          {(e.detail.feature as OrthologueMapping).mappedSites?.map((site) => (
+            <li key={site.accession}>
+              {site.accession}: {site.position}
+            </li>
+          ))}
+        </ul>
+      );
+      setX(e.detail.coords[0]);
+      setY(e.detail.coords[1]);
+      setVisible((visible) => !visible);
+    }
+  };
+
+  const handleOutsideClick = () => {
+    setVisible(false);
+  };
+
   useEffect(() => {
     const protvistaTrack = document.querySelector<ProtvistaTrack>(
       `[data-uuid='${idRef.current}_track']`
@@ -99,25 +116,17 @@ const OrthologuesCard: FunctionComponent<{
     if (protvistaTrack && processedData) {
       protvistaTrack.data = processedData;
     }
-
-    // TODO Fix this any
-    document.addEventListener("change", (e: any) => {
-      if (e.detail.eventtype === "click") {
-        setTTContent(
-          <ul>
-            {e.detail.feature.mappedSites.map((site: any) => (
-              <li key={site.accession}>
-                {site.accession}: {site.position}
-              </li>
-            ))}
-          </ul>
-        );
-        setX(e.pageX);
-        setY(e.pageY);
-        setVisible((visible) => !visible);
-      }
-    });
   }, [processedData, sequence]);
+
+  useEffect(() => {
+    document.addEventListener("change", handleChangeClick);
+    // Handle click outside
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("change", handleChangeClick);
+    };
+  }, []);
 
   if (!sequence || !processedData || processedData.length <= 0) {
     return null;

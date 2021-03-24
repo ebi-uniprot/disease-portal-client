@@ -24,6 +24,7 @@ import {
 
 import "./VariantCard.css";
 import { groupBy } from "lodash-es";
+import { OrthologueMapping } from "./OrthologuesCard";
 
 type VariantWithId = { protvistaFeatureId: string } & VariantFeature;
 
@@ -51,8 +52,14 @@ interface ProtvistaFilter extends Element {
   }[];
 }
 
-interface ChangeEvent extends Event {
-  detail?: { type: string; value: string[] };
+export interface ChangeEvent extends Event {
+  detail?: {
+    type: string;
+    value: string[];
+    eventtype?: string;
+    feature?: VariantFeature | OrthologueMapping;
+    coords: number[];
+  };
 }
 
 export interface ProtvistaDatatableType extends Element {
