@@ -123,7 +123,7 @@ const DrugsTable: FunctionComponent<{
   return (
     <section className="full-width">
       <p>
-        Drugs linked to proteins associated with Alzheimer’s disease. Source:{" "}
+        Drugs related to proteins associated with Alzheimer’s disease. Source:{" "}
         <a
           href="https://www.ebi.ac.uk/chembl/"
           target="_blank"
