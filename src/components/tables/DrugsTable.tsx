@@ -123,7 +123,7 @@ const DrugsTable: FunctionComponent<{
   return (
     <section className="full-width">
       <p>
-        Drugs in clinical trials or approved for Alzheimer’s disease. Source:{" "}
+        Drugs linked to proteins associated with Alzheimer’s disease. Source:{" "}
         <a
           href="https://www.ebi.ac.uk/chembl/"
           target="_blank"
