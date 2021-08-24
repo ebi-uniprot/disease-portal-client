@@ -37,4 +37,4 @@ export const featuresForProteinUrl = (id: string) =>
   `https://www.ebi.ac.uk/proteins/api/features/${id}?format=json`;
 
 export const orthologuesForProteinUrl = (id: string) =>
-  `http://wwwdev.ebi.ac.uk/uniprot/api/diseaseservice/ortholog-mappings/${id}`;
+  `https://www.ebi.ac.uk/uniprot/api/diseaseservice/ortholog-mappings/${id}`;
