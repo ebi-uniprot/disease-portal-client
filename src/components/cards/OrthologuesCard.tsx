@@ -55,12 +55,14 @@ loadWebComponent("protvista-navigation", ProtvistaNavigation);
 loadWebComponent("protvista-track", ProtvistaTrack);
 
 const processOrthologuesData = (data: OrthologuesAPI) =>
-  data.results.map((d) => ({
-    ...d,
-    start: d.sitePosition,
-    end: d.sitePosition,
-    color: "blue",
-  }));
+  data.results
+    .map((d) => ({
+      ...d,
+      start: d.sitePosition,
+      end: d.sitePosition,
+      color: "blue",
+    }))
+    .sort((d1, d2) => d1.sitePosition - d2.sitePosition);
 
 const OrthologuesCard: FunctionComponent<{
   data: OrthologuesAPI;
@@ -73,17 +75,6 @@ const OrthologuesCard: FunctionComponent<{
       return processOrthologuesData(data);
     }
   }, [data]);
-
-  // <ul>
-  //   {(e.detail.feature as OrthologueMapping).mappedSites?.map((site) => (
-  //     <li key={site.accession}>
-  //       <a href={`//www.uniprot.org/uniprot/${site.accession}`}>
-  //         {site.accession}
-  //       </a>
-  //       : {site.position}
-  //     </li>
-  //   ))}
-  // </ul>
 
   useEffect(() => {
     const protvistaTrack = document.querySelector<ProtvistaTrack>(
