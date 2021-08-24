@@ -61,6 +61,7 @@ const processOrthologuesData = (data: OrthologuesAPI) =>
       start: d.sitePosition,
       end: d.sitePosition,
       color: "blue",
+      protvistaFeatureId: d.sitePosition,
     }))
     .sort((d1, d2) => d1.sitePosition - d2.sitePosition);
 
@@ -121,6 +122,7 @@ const OrthologuesCard: FunctionComponent<{
                 alignment.mappedSites.map((row) => (
                   <tr
                     key={row.accession}
+                    data-id={alignment.sitePosition}
                     data-start={alignment.sitePosition}
                     data-end={alignment.sitePosition}
                   >
