@@ -1,18 +1,10 @@
-import React, {
-  FunctionComponent,
-  useEffect,
-  useRef,
-  useMemo,
-  useState,
-} from "react";
+import React, { FunctionComponent, useEffect, useRef, useMemo } from "react";
 import { v1 } from "uuid";
 
 import ProtvistaTrack from "protvista-track";
 import ProtvistaManager from "protvista-manager";
 import ProtvistaSequence from "protvista-sequence";
 import ProtvistaNavigation from "protvista-navigation";
-import ProtvistaTooltip from "protvista-tooltip";
-import { ChangeEvent } from "./VariantCard";
 
 interface ProtvistaManager extends Element {}
 
@@ -61,7 +53,6 @@ loadWebComponent("protvista-manager", ProtvistaManager);
 loadWebComponent("protvista-sequence", ProtvistaSequence);
 loadWebComponent("protvista-navigation", ProtvistaNavigation);
 loadWebComponent("protvista-track", ProtvistaTrack);
-loadWebComponent("protvista-tooltip", ProtvistaTooltip);
 
 const processOrthologuesData = (data: OrthologuesAPI) =>
   data.results.map((d) => ({
@@ -76,10 +67,6 @@ const OrthologuesCard: FunctionComponent<{
   sequence: string;
 }> = ({ data, sequence }) => {
   const idRef = useRef(v1());
-  const [ttContent, setTTContent] = useState(<></>);
-  const [visible, setVisible] = useState(false);
-  const [x, setX] = useState(0);
-  const [y, setY] = useState(0);
 
   const processedData = useMemo(() => {
     if (data && data.results.length > 0) {
@@ -87,26 +74,16 @@ const OrthologuesCard: FunctionComponent<{
     }
   }, [data]);
 
-  const handleChangeClick = (e: ChangeEvent) => {
-    if (e.detail?.eventtype === "click") {
-      setTTContent(
-        <ul>
-          {(e.detail.feature as OrthologueMapping).mappedSites?.map((site) => (
-            <li key={site.accession}>
-              {site.accession}: {site.position}
-            </li>
-          ))}
-        </ul>
-      );
-      setX(e.detail.coords[0]);
-      setY(e.detail.coords[1]);
-      setVisible((visible) => !visible);
-    }
-  };
-
-  const handleOutsideClick = () => {
-    setVisible(false);
-  };
+  // <ul>
+  //   {(e.detail.feature as OrthologueMapping).mappedSites?.map((site) => (
+  //     <li key={site.accession}>
+  //       <a href={`//www.uniprot.org/uniprot/${site.accession}`}>
+  //         {site.accession}
+  //       </a>
+  //       : {site.position}
+  //     </li>
+  //   ))}
+  // </ul>
 
   useEffect(() => {
     const protvistaTrack = document.querySelector<ProtvistaTrack>(
@@ -117,16 +94,6 @@ const OrthologuesCard: FunctionComponent<{
       protvistaTrack.data = processedData;
     }
   }, [processedData, sequence]);
-
-  useEffect(() => {
-    document.addEventListener("change", handleChangeClick);
-    // Handle click outside
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-      document.removeEventListener("change", handleChangeClick);
-    };
-  }, []);
 
   if (!sequence || !processedData || processedData.length <= 0) {
     return null;
@@ -148,15 +115,43 @@ const OrthologuesCard: FunctionComponent<{
           data-uuid={`${idRef.current}_track`}
           length={sequence.length}
         />
+        <protvista-datatable>
+          <table>
+            <thead>
+              <tr>
+                <th>Accession</th>
+                <th>Protein ID</th>
+                <th>Position</th>
+                <th>Position in alignment</th>
+              </tr>
+            </thead>
+            <tbody>
+              {processedData.map((alignment) =>
+                alignment.mappedSites.map((row) => (
+                  <tr
+                    key={row.accession}
+                    data-start={alignment.sitePosition}
+                    data-end={alignment.sitePosition}
+                  >
+                    <td>
+                      <a
+                        href={`//www.uniprot.org/uniprot/${row.accession}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {row.accession}
+                      </a>
+                    </td>
+                    <td>{row.uniProtId}</td>
+                    <td>{alignment.sitePosition}</td>
+                    <td>{row.position}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </protvista-datatable>
       </protvista-manager>
-      <protvista-tooltip
-        x={x}
-        y={y}
-        visible={visible ? "" : undefined}
-        title="Orthologue"
-      >
-        {ttContent}
-      </protvista-tooltip>
     </div>
   );
 };
