@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
         - name: disease-portal-client
-          image: dockerhub.ebi.ac.uk/uniprot/disease-portal/disease-portal-client
+          image: dockerhub.ebi.ac.uk/uniprot/front-end/disease-portal-client
           ports:
             - containerPort: 80
           imagePullPolicy: Always
