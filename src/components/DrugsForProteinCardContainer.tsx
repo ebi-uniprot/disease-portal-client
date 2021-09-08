@@ -8,7 +8,7 @@ import { Context } from "../types/context";
 import { drugsForProteinUrl } from "../urls";
 
 const DrugsForProteinCardContainer = () => {
-  const { proteinid } = useParams();
+  const { proteinid } = useParams<{ proteinid: string }>();
   const { data, isLoading } = useApi<{ results: DrugsData[] }>(
     drugsForProteinUrl(proteinid)
   );
@@ -21,7 +21,10 @@ const DrugsForProteinCardContainer = () => {
       isLoading={isLoading}
     >
       {data?.results.map((item) => (
-        <DrugsCard data={item} key={item.sourceId} />
+        <DrugsCard
+          data={item}
+          key={`${item.name}${item.proteinAccession}${item.moleculeType}`}
+        />
       ))}
     </PageTemplate>
   );

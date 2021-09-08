@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import ProtvistaDatatable from "protvista-datatable";
 
-import { DrugsData, sortDiseases } from "../cards/DrugsCard";
+import { DrugsData } from "../cards/DrugsCard";
 import { loadWebComponent } from "../cards/VariantCard";
 import { Context, ContextObj } from "../../types/context";
 
@@ -47,13 +47,15 @@ const DrugsTable: FunctionComponent<{
           </thead>
           <tbody>
             {data.map((drug) => (
-              <tr key={drug.name}>
+              <tr
+                key={`${drug.name}${drug.proteinAccession}${drug.mechanismOfAction}`}
+              >
                 <td data-filter="drug_name" data-filter-value={drug.name}>
                   {drug.name}
                 </td>
                 <td
                   data-filter="drug_phase"
-                  data-filter-value={drug.clinicalTrialPhase}
+                  data-filter-value={drug.maxTrialPhase}
                 >
                   {drug.clinicalTrialLink ? (
                     <a
@@ -61,68 +63,63 @@ const DrugsTable: FunctionComponent<{
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Phase {drug.clinicalTrialPhase}
+                      Phase {drug.maxTrialPhase}
                     </a>
                   ) : (
-                    <>Phase {drug.clinicalTrialPhase}</>
+                    <>Phase {drug.maxTrialPhase}</>
                   )}
                 </td>
                 <td>{drug.moleculeType}</td>
                 <td>{drug.mechanismOfAction}</td>
                 <td data-filter="drug_protein">
-                  {drug.proteins?.map((protein) => (
-                    <p key={protein}>
-                      <a
-                        href={`/${
-                          ContextObj[Context.DISEASE].id
-                        }/${diseaseId}/${
-                          ContextObj[Context.PROTEIN].id
-                        }/${protein}/${ContextObj[Context.PROTEIN].id}`}
-                      >
-                        {protein}
-                      </a>
-                    </p>
-                  ))}
-                </td>
-                <td>
                   <a
-                    href={`//www.ebi.ac.uk/chembl/compound_report_card/${drug.sourceId}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href={`/${ContextObj[Context.DISEASE].id}/${diseaseId}/${
+                      ContextObj[Context.PROTEIN].id
+                    }/${drug.proteinAccession}/${
+                      ContextObj[Context.PROTEIN].id
+                    }`}
                   >
-                    {drug.sourceId}
+                    {drug.proteinAccession}
                   </a>
                 </td>
                 <td>
-                  {drug.diseases && (
-                    <div style={{ overflowY: "auto", height: "10vh" }}>
-                      {sortDiseases(drug.diseases).map((disease) => {
-                        return disease.proteinCount &&
-                          disease.proteinCount > 0 ? (
-                          <p key={disease.diseaseId}>
-                            <a
-                              href={`/${ContextObj[Context.DISEASE].id}/${
-                                disease.diseaseId
-                              }/${ContextObj[Context.PROTEIN].id}`}
-                            >
-                              {disease.diseaseName}
-                            </a>
-                          </p>
-                        ) : disease.diseaseName.match("http") ? (
-                          <p key={disease.diseaseId}>
-                            <a
-                              href={disease.diseaseName}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              {disease.diseaseName}
-                            </a>
-                          </p>
-                        ) : (
-                          <p key={disease.diseaseId}>{disease.diseaseName}</p>
-                        );
-                      })}
-                    </div>
+                  {drug.sourceIds.map((sourceId) => (
+                    <a
+                      href={`//www.ebi.ac.uk/chembl/compound_report_card/${sourceId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      key={sourceId}
+                    >
+                      {sourceId}
+                    </a>
+                  ))}
+                </td>
+                <td>
+                  {drug.disease.proteinCount &&
+                  drug.disease.proteinCount > 0 ? (
+                    <p key={drug.disease.diseaseId}>
+                      <a
+                        href={`/${ContextObj[Context.DISEASE].id}/${
+                          drug.disease.diseaseId
+                        }/${ContextObj[Context.PROTEIN].id}`}
+                      >
+                        {drug.disease.diseaseName}
+                      </a>
+                    </p>
+                  ) : drug.disease.diseaseName.match("http") ? (
+                    <p key={drug.disease.diseaseId}>
+                      <a
+                        href={drug.disease.diseaseName}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {drug.disease.diseaseName}
+                      </a>
+                    </p>
+                  ) : (
+                    <p key={drug.disease.diseaseId}>
+                      {drug.disease.diseaseName}
+                    </p>
                   )}
                 </td>
                 <td>
