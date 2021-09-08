@@ -48,8 +48,13 @@ const DrugsTable: FunctionComponent<{
           <tbody>
             {data.map((drug) => (
               <tr key={drug.name}>
-                <td data-filter="drug_name">{drug.name}</td>
-                <td data-filter="drug_phase">
+                <td data-filter="drug_name" data-filter-value={drug.name}>
+                  {drug.name}
+                </td>
+                <td
+                  data-filter="drug_phase"
+                  data-filter-value={drug.clinicalTrialPhase}
+                >
                   {drug.clinicalTrialLink ? (
                     <a
                       href={drug.clinicalTrialLink}

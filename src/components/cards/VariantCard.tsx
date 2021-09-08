@@ -4,8 +4,8 @@ import React, {
   useState,
   useRef,
   useMemo,
+  Fragment,
 } from "react";
-import { html } from "lit-html";
 import { v1 } from "uuid";
 import { Card } from "franklin-sites";
 
@@ -18,7 +18,7 @@ import ProtvistaFilter from "protvista-filter";
 
 import {
   ProteinsAPIVariation,
-  Feature as VariantFeature,
+  Variant,
   Prediction,
 } from "protvista-variation-adapter/dist/es/variants";
 
@@ -26,7 +26,7 @@ import "./VariantCard.css";
 import { groupBy } from "lodash-es";
 import { OrthologueMapping } from "./OrthologuesCard";
 
-type VariantWithId = { protvistaFeatureId: string } & VariantFeature;
+type VariantWithId = { protvistaFeatureId: string } & Variant;
 
 interface ProtvistaManager extends Element {}
 
@@ -57,7 +57,7 @@ export interface ChangeEvent extends Event {
     type: string;
     value: string[];
     eventtype?: string;
-    feature?: VariantFeature | OrthologueMapping;
+    feature?: Variant | OrthologueMapping;
     coords: number[];
   };
 }
@@ -95,14 +95,16 @@ export const getPredictions = (predictions: Prediction[]) => {
       })),
     };
   });
-  return html`${counts.map(
-    (countItem) =>
-      html`<p>
-        <strong>${countItem.algorithm}</strong> ${countItem.values.map(
-          (countValue) => html`${countValue.name}<br />`
-        )}
-      </p>`
-  )}`;
+  return (
+    <ul>
+      {counts.map((countItem) => (
+        <li key={countItem.algorithm}>
+          <strong>{countItem.algorithm}</strong>{" "}
+          {countItem.values.map((countValue) => countValue.name).join(", ")}
+        </li>
+      ))}
+    </ul>
+  );
 };
 
 const colours = {
@@ -110,7 +112,7 @@ const colours = {
   other: "#00a6d5",
 };
 
-const getColour = (variant: VariantFeature) => {
+const getColour = (variant: Variant) => {
   if (variant.association) {
     return colours.diseaseColour;
   } else {
@@ -131,91 +133,7 @@ const processVariantData = (variantData: VariantWithId[]) =>
     };
   });
 
-const columns = {
-  change: {
-    label: "Change",
-    resolver: (d: VariantFeature) => {
-      return `
-        ${d.wildType}->${d.alternativeSequence}
-      `;
-    },
-  },
-  positions: {
-    label: "Positions",
-    resolver: (d: VariantFeature) => {
-      return d.begin === d.end ? d.begin : `${d.begin}-${d.end}`;
-    },
-  },
-  description: {
-    label: "Description",
-    resolver: (d: VariantFeature) => {
-      return d.descriptions?.map(
-        (description) =>
-          html`<p>${description.value} (${description.sources.join(", ")})</p>`
-      );
-    },
-  },
-  rsId: {
-    label: "IDs",
-    resolver: (d: VariantFeature) => {
-      return html`${d.xrefs?.map(
-        ({ id, url }) =>
-          html`<p>
-            ${url
-              ? html`<a href="${url}" target="_blank" rel="noopener noreferrer"
-                  >${id}</a
-                >`
-              : id}
-          </p>`
-      )}`;
-    },
-  },
-  genomicLocation: {
-    label: "Genomic location",
-    resolver: (d: VariantFeature) => d.genomicLocation,
-  },
-  popFrequencey: {
-    label: "Population frequencies",
-    child: true,
-    resolver: (d: VariantFeature) =>
-      d.populationFrequencies?.map(
-        (frequency) =>
-          html`${frequency.populationName} - ${frequency.frequency}`
-      ),
-  },
-  predictions: {
-    label: "Predictions",
-    child: true,
-    resolver: (d: VariantFeature) =>
-      d.predictions ? getPredictions(d.predictions) : "",
-  },
-  association: {
-    label: "Disease association",
-    child: "true",
-    resolver: (d: VariantFeature) =>
-      d.association
-        ? d.association.map(
-            (association) =>
-              html`
-                <p>
-                  <strong>${association.name}</strong>${association.evidences &&
-                  association.evidences.map((ev) =>
-                    ev.source.url
-                      ? html`
-                          <a href=${ev.source.url} target="_blank"
-                            >${ev.source.name}:${ev.source.id}</a
-                          >
-                        `
-                      : html` ${ev.source.name}:${ev.source.id} `
-                  )}
-                </p>
-              `
-          )
-        : " - ",
-  },
-};
-
-const getDiseaseListForFeatures = (features: VariantFeature[]) => {
+const getDiseaseListForFeatures = (features: Variant[]) => {
   const diseaseSet = new Set();
   features.forEach(
     (variant) =>
@@ -242,7 +160,7 @@ const VariantCard: FunctionComponent<{
     [data]
   );
 
-  const getFilters = (data: VariantFeature[]) => {
+  const getFilters = (data: Variant[]) => {
     const diseases = getDiseaseListForFeatures(data);
 
     return Array.from(diseases).map((diseaseName) => {
@@ -256,16 +174,14 @@ const VariantCard: FunctionComponent<{
         filterData: (variants: any) =>
           variants.map((variantPosition: any) => ({
             ...variantPosition,
-            variants: variantPosition.variants.filter(
-              (variant: VariantFeature) => {
-                if (!variant.association) {
-                  return null;
-                }
-                return variant.association.some(
-                  (varantDiseaseName) => varantDiseaseName.name === diseaseName
-                );
+            variants: variantPosition.variants.filter((variant: Variant) => {
+              if (!variant.association) {
+                return null;
               }
-            ),
+              return variant.association.some(
+                (varantDiseaseName) => varantDiseaseName.name === diseaseName
+              );
+            }),
           })),
       };
     });
@@ -310,9 +226,6 @@ const VariantCard: FunctionComponent<{
     const protvistaVariation = document.querySelector<ProtvistaVariation>(
       `[data-uuid='${idRef.current}_var']`
     );
-    const protvistaDatatable = document.querySelector<ProtvistaDatatableType>(
-      `[data-uuid='${idRef.current}_table']`
-    );
 
     if (protvistaFilter) {
       protvistaFilter.filters = diseaseFilter;
@@ -323,10 +236,6 @@ const VariantCard: FunctionComponent<{
         sequence: idData.sequence,
         variants: processVariantData(filteredData),
       };
-    }
-    if (protvistaDatatable) {
-      protvistaDatatable.columns = columns;
-      protvistaDatatable.data = filteredData;
     }
   }, [activeFilters, data.features, data.sequence, diseaseFilter, idData]);
 
@@ -370,10 +279,110 @@ const VariantCard: FunctionComponent<{
               View all sequence annotation
             </a>
           </section>
-          <protvista-datatable
-            height="30"
-            data-uuid={`${idRef.current}_table`}
-          />
+          <protvista-datatable height="30">
+            <table>
+              <thead>
+                <tr>
+                  <th>Change</th>
+                  <th>Positions</th>
+                  <th>Description</th>
+                  <th>IDs</th>
+                  <th>Genomic location</th>
+                </tr>
+              </thead>
+              <tbody>
+                {idData.features.map((d) => (
+                  <Fragment key={d.protvistaFeatureId}>
+                    <tr
+                      data-id={d.protvistaFeatureId}
+                      data-start={d.begin}
+                      data-end={d.begin}
+                    >
+                      <td>{`${d.wildType} -> ${d.alternativeSequence}`}</td>
+                      <td>
+                        {d.begin === d.end ? d.begin : `{d.begin}-{d.end}`}
+                      </td>
+                      <td>
+                        {d.descriptions?.map((description) => (
+                          <div key={description.value}>
+                            {description.value} (
+                            {description.sources.join(", ")})
+                          </div>
+                        ))}
+                      </td>
+                      <td>
+                        {d.xrefs?.map(({ id, url }, i) => (
+                          <div key={`${url}${i}`}>
+                            {url ? (
+                              <a
+                                href={url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {id}
+                              </a>
+                            ) : (
+                              id
+                            )}
+                          </div>
+                        ))}
+                      </td>
+                      <td>{d.genomicLocation}</td>
+                    </tr>
+                    <tr data-group-for={d.protvistaFeatureId}>
+                      <td>
+                        {d.populationFrequencies && (
+                          <div>
+                            <strong>Population frequencies:</strong>
+                            <ul>
+                              {d.populationFrequencies.map((frequency) => (
+                                <li key={frequency.populationName}>
+                                  {frequency.populationName}
+                                  {" - "}
+                                  {frequency.frequency}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        {d.predictions && (
+                          <div>
+                            <strong>Predictions:</strong>
+                            {getPredictions(d.predictions)}
+                          </div>
+                        )}
+                        {d.association && (
+                          <div>
+                            <strong>Disease association:</strong>
+                            {d.association.map((association) => (
+                              <div key={association.name}>
+                                <strong>{association.name}</strong>:
+                                {association.evidences?.map((ev) => (
+                                  <span key={ev.source.id}>
+                                    {ev.source.url ? (
+                                      <a
+                                        href={ev.source.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                      >
+                                        {ev.source.name}:{ev.source.id}{" "}
+                                      </a>
+                                    ) : (
+                                      `${ev.source.name} : ${ev.source.id}{' '}`
+                                    )}
+                                  </span>
+                                ))}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  </Fragment>
+                ))}
+              </tbody>
+            </table>
+          </protvista-datatable>
         </protvista-manager>
       </div>
     </Card>
