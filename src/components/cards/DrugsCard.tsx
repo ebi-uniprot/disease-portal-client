@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { Fragment, FunctionComponent } from "react";
 import { Card, InfoList } from "franklin-sites";
 import { Link } from "react-router-dom";
 import { Context, ContextObj } from "../../types/context";
@@ -47,7 +47,7 @@ const DiseaseLink: FunctionComponent<{
   );
 };
 
-const DrugsCard: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
+const DrugsCardItem: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
   const infoData = [
     {
       title: "Max Phase",
@@ -110,10 +110,24 @@ const DrugsCard: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
     },
   ];
 
+  return <InfoList infoData={infoData} />;
+};
+
+const DrugsCard: FunctionComponent<{ data: DrugsData[]; drugName: string }> = ({
+  data,
+  drugName,
+}) => {
   return (
     <Card>
-      <h4>{data.name}</h4>
-      <InfoList infoData={infoData} />
+      <h4>{drugName}</h4>
+      {data.map((drugsItem) => (
+        <Fragment
+          key={`${drugsItem.disease.diseaseName}${drugsItem.mechanismOfAction}`}
+        >
+          <DrugsCardItem data={drugsItem} />
+          <hr />
+        </Fragment>
+      ))}
     </Card>
   );
 };
