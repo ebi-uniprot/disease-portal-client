@@ -25,7 +25,7 @@ const DrugsForProteinCardContainer = () => {
     <PageTemplate
       context={Context.DRUG}
       id={proteinid}
-      length={data?.results.length}
+      length={Object.keys(groupedData).length}
       isLoading={isLoading}
     >
       {Object.keys(groupedData).map((drugName) => (
