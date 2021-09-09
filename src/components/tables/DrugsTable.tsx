@@ -71,7 +71,10 @@ const DrugsTable: FunctionComponent<{
                 </td>
                 <td>{drug.moleculeType}</td>
                 <td>{drug.mechanismOfAction}</td>
-                <td data-filter="drug_protein">
+                <td
+                  data-filter="drug_protein"
+                  data-filter-value={drug.proteinAccession}
+                >
                   <a
                     href={`/${ContextObj[Context.DISEASE].id}/${diseaseId}/${
                       ContextObj[Context.PROTEIN].id
