@@ -120,12 +120,12 @@ const DrugsCard: FunctionComponent<{ data: DrugsData[]; drugName: string }> = ({
   return (
     <Card>
       <h4>{drugName}</h4>
-      {data.map((drugsItem) => (
+      {data.map((drugsItem, index) => (
         <Fragment
           key={`${drugsItem.disease.diseaseName}${drugsItem.mechanismOfAction}`}
         >
+          {index !== 0 && <hr />}
           <DrugsCardItem data={drugsItem} />
-          <hr />
         </Fragment>
       ))}
     </Card>
