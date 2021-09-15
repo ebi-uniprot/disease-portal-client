@@ -94,6 +94,10 @@ const OrthologuesCard: FunctionComponent<{
   return (
     <div>
       <h5>Orthologues</h5>
+      <p>
+        Alignment of Human, Mouse and Rat sequences based on UniRef90 clusters.
+        Positions at which sequences differ are displayed below in blue:
+      </p>
       <protvista-manager
         attributes="displaystart displayend highlight selectedid"
         data-uuid={`${idRef.current}_manager`}
