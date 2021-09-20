@@ -111,9 +111,7 @@ const ProteinCardCompact: FunctionComponent<{
             Disease association source: Imported
           </span>
         ) : (
-          <span className="label label__reviewed">
-            Disease association source: UniProt
-          </span>
+          <span className="label label__reviewed">UniProtKB reviewed</span>
         )}
       </h5>
       {data.proteinName} {" • "}

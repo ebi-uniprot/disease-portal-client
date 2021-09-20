@@ -1,6 +1,7 @@
 import React, { FunctionComponent, Fragment } from "react";
 import { Card } from "franklin-sites";
 import { formatTextWithPubmeds } from "../../utils";
+import OrthologuesForProteinContainer from "../OrthologuesForProteinContainer";
 
 export type ProteinData = {
   proteinId: string;
@@ -112,6 +113,7 @@ const ProteinCard: FunctionComponent<{ data: ProteinData; id: string }> = ({
           ))}
         </Fragment>
       )}
+      <OrthologuesForProteinContainer id={id} />
     </Card>
   );
 };

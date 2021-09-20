@@ -1,5 +1,7 @@
 import React from "react";
 import { useParams } from "react-router";
+import { uniq } from "lodash-es";
+
 import useApi from "./hooks/UseApi";
 import { DrugsData } from "./cards/DrugsCard";
 import PageTemplate from "../layout/PageTemplate";
@@ -23,11 +25,13 @@ const DrugsForDiseaseContainer = () => {
     );
   }
 
+  const count = uniq(data?.results?.map((row) => row.name)).length;
+
   return (
     <PageTemplate
       context={Context.DRUG}
       id={diseaseid}
-      length={data?.results?.length}
+      length={count}
       isLoading={isLoading}
     >
       <DrugsTable data={data.results} diseaseId={diseaseid} />

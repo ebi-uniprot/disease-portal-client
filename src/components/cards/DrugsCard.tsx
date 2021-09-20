@@ -1,6 +1,5 @@
-import React, { FunctionComponent } from "react";
-import { Card, InfoList, ExpandableList } from "franklin-sites";
-import { groupBy, sortBy } from "lodash-es";
+import React, { Fragment, FunctionComponent } from "react";
+import { Card, InfoList } from "franklin-sites";
 import { Link } from "react-router-dom";
 import { Context, ContextObj } from "../../types/context";
 
@@ -12,26 +11,15 @@ export type DiseaseForDrug = {
 
 export type DrugsData = {
   name: string;
-  sourceType: string;
-  sourceId: string;
+  proteinAccession: string;
+  disease: DiseaseForDrug;
   moleculeType: string;
-  clinicalTrialLink: string;
-  clinicalTrialPhase: number;
-  evidences?: string[];
   mechanismOfAction: string;
-  diseases?: DiseaseForDrug[];
-  proteins?: string[];
-};
-
-export const sortDiseases = (diseases: DiseaseForDrug[]) => {
-  const grouped = groupBy(
-    diseases,
-    (disease) => disease.proteinCount !== undefined && disease.proteinCount > 0
-  );
-  return [
-    ...(grouped["true"] ? sortBy(grouped["true"], "diseaseName") : []),
-    ...(grouped["false"] ? sortBy(grouped["false"], "diseaseName") : []),
-  ];
+  maxTrialPhase: number;
+  clinicalTrialLink: string;
+  sourceType: string;
+  sourceIds: string[];
+  evidences?: string[];
 };
 
 const DiseaseLink: FunctionComponent<{
@@ -59,22 +47,22 @@ const DiseaseLink: FunctionComponent<{
   );
 };
 
-const DrugsCard: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
+const DrugsCardItem: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
   const infoData = [
     {
       title: "Max Phase",
       content:
-        data.clinicalTrialPhase &&
+        data.maxTrialPhase &&
         (data.clinicalTrialLink ? (
           <a
             href={data.clinicalTrialLink}
             target="_blank"
             rel="noopener noreferrer"
           >
-            Phase {data.clinicalTrialPhase}
+            Phase {data.maxTrialPhase}
           </a>
         ) : (
-          `Phase ${data.clinicalTrialPhase}`
+          `Phase ${data.maxTrialPhase}`
         )),
     },
     {
@@ -87,41 +75,28 @@ const DrugsCard: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
     },
     {
       title: "Disease(s)",
-      content: (
-        <>
-          {data.diseases && (
-            <ExpandableList
-              numberCollapsedItems={5}
-              descriptionString="diseases"
-            >
-              {sortDiseases(data.diseases).map((disease) => ({
-                id: disease.diseaseName,
-                content: (
-                  <DiseaseLink
-                    name={disease.diseaseName}
-                    withProteins={
-                      disease.proteinCount !== undefined &&
-                      disease.proteinCount > 0
-                    }
-                  />
-                ),
-              }))}
-            </ExpandableList>
-          )}
-        </>
+      content: data.disease.diseaseName && (
+        <DiseaseLink
+          name={data.disease.diseaseName}
+          withProteins={
+            data.disease.proteinCount !== undefined &&
+            data.disease.proteinCount > 0
+          }
+        />
       ),
     },
     {
       title: "Cross Reference",
-      content: (
+      content: data.sourceIds.map((sourceId) => (
         <a
-          href={`//www.ebi.ac.uk/chembl/compound_report_card/${data.sourceId}`}
+          href={`//www.ebi.ac.uk/chembl/compound_report_card/${sourceId}`}
           target="_blank"
           rel="noopener noreferrer"
+          key={sourceId}
         >
-          {data.sourceId}
+          {sourceId}
         </a>
-      ),
+      )),
     },
     {
       title: "Evidences",
@@ -135,10 +110,24 @@ const DrugsCard: FunctionComponent<{ data: DrugsData }> = ({ data }) => {
     },
   ];
 
+  return <InfoList infoData={infoData} />;
+};
+
+const DrugsCard: FunctionComponent<{ data: DrugsData[]; drugName: string }> = ({
+  data,
+  drugName,
+}) => {
   return (
     <Card>
-      <h4>{data.name}</h4>
-      <InfoList infoData={infoData} />
+      <h4>{drugName}</h4>
+      {data.map((drugsItem, index) => (
+        <Fragment
+          key={`${drugsItem.disease.diseaseName}${drugsItem.mechanismOfAction}`}
+        >
+          {index !== 0 && <hr />}
+          <DrugsCardItem data={drugsItem} />
+        </Fragment>
+      ))}
     </Card>
   );
 };

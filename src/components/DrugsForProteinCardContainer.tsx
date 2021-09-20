@@ -1,5 +1,6 @@
 import React from "react";
 import { useParams } from "react-router";
+import { groupBy } from "lodash";
 
 import useApi from "./hooks/UseApi";
 import DrugsCard, { DrugsData } from "./cards/DrugsCard";
@@ -7,21 +8,32 @@ import PageTemplate from "../layout/PageTemplate";
 import { Context } from "../types/context";
 import { drugsForProteinUrl } from "../urls";
 
+export type DrugsDataGrouped = {
+  name: string;
+};
+
 const DrugsForProteinCardContainer = () => {
-  const { proteinid } = useParams();
+  const { proteinid } = useParams<{ proteinid: string }>();
   const { data, isLoading } = useApi<{ results: DrugsData[] }>(
     drugsForProteinUrl(proteinid)
   );
+
+  // Group drugs by name
+  const groupedData = groupBy(data?.results, "name");
 
   return (
     <PageTemplate
       context={Context.DRUG}
       id={proteinid}
-      length={data?.results.length}
+      length={Object.keys(groupedData).length}
       isLoading={isLoading}
     >
-      {data?.results.map((item) => (
-        <DrugsCard data={item} key={item.sourceId} />
+      {Object.keys(groupedData).map((drugName) => (
+        <DrugsCard
+          drugName={drugName}
+          data={groupedData[drugName]}
+          key={drugName}
+        />
       ))}
     </PageTemplate>
   );
