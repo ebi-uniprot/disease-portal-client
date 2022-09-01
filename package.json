@@ -30,9 +30,9 @@
     "typescript": "^3.9.5"
   },
   "scripts": {
-    "start": "env-cmd -f .env.staging react-scripts start",
-    "build:staging": "env-cmd -f .env.staging react-scripts build",
-    "build:production": "env-cmd -f .env.production react-scripts build",
+    "start": "env-cmd -f .env.development react-scripts start",
+    "build:dev": "env-cmd -f .env.staging react-scripts build",
+    "build:prod": "env-cmd -f .env.production react-scripts build",
     "test": "react-scripts test",
     "predeploy": "yarn build:staging",
     "eject": "react-scripts eject"
