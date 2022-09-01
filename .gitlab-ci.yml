@@ -1,70 +1,7 @@
-stages:
-  - test
-  - build_static_assets
-  - build_docker_image
-  - deploy
+include:
+  - project: "uniprot/front-end/front-end-deploy"
+    file: "templates/.gitlab-ci-template.yml"
 
 variables:
-  CONTAINER_IMAGE: ${CI_REGISTRY_IMAGE}:latest
-
-.js:
-  image: node:16
-  before_script:
-    - node --version
-    - npm --version
-    - yarn --version
-    - yarn
-
-test:
-  extends: .js
-  stage: test
-  script:
-    - yarn test
-
-build_static_assets:
-  extends: .js
-  stage: build_static_assets
-  script:
-    - yarn build:production
-  artifacts:
-    paths:
-      - build/
-
-build_docker_image:
-  stage: build_docker_image
-  image: docker:latest
-  tags:
-    - dind
-  services:
-    - docker:dind
-  before_script:
-    - echo "$CI_REGISTRY_PASSWORD" | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
-    - docker --version
-    - echo ${CONTAINER_IMAGE}
-  script:
-    - docker build -t ${CONTAINER_IMAGE} --no-cache .
-    - docker image ls
-    - docker push ${CONTAINER_IMAGE}
-    - docker rmi ${CONTAINER_IMAGE}
-    - docker logout "$CI_REGISTRY"
-
-deploy:
-  stage: deploy
-  image: ubuntu
-  script:
-    - apt-get update && apt -y install curl
-    - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-    - chmod +x ./kubectl
-    - mv ./kubectl /usr/local/bin/kubectl
-    - mkdir ~/.kube
-    - K8S_CERTIFICATE=${DC}_K8S_CERTIFICATE
-    - K8S_URL=${DC}_K8S_URL
-    - K8S_USER_TOKEN=${DC}_K8S_USER_TOKEN
-    - sed -i "s~__K8S_CERTIFICATE__~${!K8S_CERTIFICATE}~; s~__K8S_URL__~${!K8S_URL}~; s~__K8S_USER_TOKEN__~${!K8S_USER_TOKEN}~" wp-webadmin-02_uniprot-admin_k8s.yaml
-    - cp wp-webadmin-02_uniprot-admin_k8s.yaml ~/.kube/config
-    - kubectl config use-context team-admin-wp-webadmin-02
-    - 'printf "$(kubectl create secret docker-registry gitlab-registry --docker-server=$CI_REGISTRY --docker-username=$CI_DEPLOY_USER --docker-password=$CI_DEPLOY_PASSWORD --docker-email=$GITLAB_USER_EMAIL -o yaml --dry-run=client)" | kubectl apply -f -'
-    - kubectl get secrets gitlab-registry -o yaml
-    - kubectl get secrets gitlab-registry -o yaml
-    - kubectl apply -f k8s_deploy.yml
-    - kubectl rollout restart deployment/disease-portal-client
+  CHART_PROD: "disease-portal-client-prod"
+  CHART_FALLBACK: "disease-portal-client-fallback"
