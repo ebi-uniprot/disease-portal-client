@@ -7,5 +7,9 @@ variables:
   CHART_FALLBACK: "disease-portal-client-fallback"
 
 .js:
-  extends: .js
   image: ${DOCKER_IMAGES_REPO}/alpine-js-16:${DOCKER_IMAGES_VERSION}
+  before_script:
+    - git --version
+    - node --version
+    - npm --version
+    - yarn --version
