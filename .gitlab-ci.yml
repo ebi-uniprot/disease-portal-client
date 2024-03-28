@@ -5,3 +5,7 @@ include:
 variables:
   CHART_PROD: "disease-portal-client-prod"
   CHART_FALLBACK: "disease-portal-client-fallback"
+
+.js:
+  extends: .js
+  image: ${DOCKER_IMAGES_REPO}/alpine-js-16:${DOCKER_IMAGES_VERSION}
